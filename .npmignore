@@ -1,0 +1,41 @@
+node_modules/
+
+# Ignore files with sensitive environment variables
+.env
+.env.test
+
+# Ignore IDE configuration files
+.idea/
+.vscode/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# NPM Blacklist
+src/
+tests/
+webpack/
+dist/
+utils/
+__mocks__
+.storybook
+coverage
+stories
+.babelrc
+.editorconfig
+.eslintrc.js
+.nvmrc
+app.html
+app.tsx
+custom.d.ts
+project.txt
+tsconfig.json
+jest.config.js
+setupTests.js
+index.tsx
+.eslintignore
+README.md

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"isolatedModules": true,
+		"jsx": "react-jsx",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+	},
+  "include": ["src"],
+  "exclude": ["node_modules/**/*"]
+}

@@ -1,0 +1,23 @@
+Github
+thinksters.development@gmail.com
+
+Eslint & Typescript Support:
+https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
+
+TS Compiler Options:
+https://www.typescriptlang.org/docs/handbook/compiler-options.html
+
+TS Rules:
+https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#supported-rules
+
+ES Rules:
+https://eslint.org/docs/rules/
+
+Markdown Examples:
+https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46
+https://guides.github.com/features/mastering-markdown/
+
+React Testing Library:
+
+Jest DOM: Matchers
+https://github.com/testing-library/jest-dom#readme

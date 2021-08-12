@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Component snapshots of default button with children 1`] = `
+<button
+  className=""
+  data-testid="codeannex-button-component"
+  disabled={false}
+  onClick={[Function]}
+>
+  <div>
+    Submit
+  </div>
+</button>
+`;
+
+exports[`Button Component snapshots of default button with label 1`] = `
+<button
+  className=""
+  data-testid="codeannex-button-component"
+  disabled={false}
+  onClick={[Function]}
+>
+  Submit
+</button>
+`;
