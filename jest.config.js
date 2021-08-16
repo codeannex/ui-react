@@ -7,6 +7,6 @@ module.exports = {
     "^.+\\.(js|jsx)$": "babel-jest",
   },
   roots: [
-    '<rootDir>/tests/'
+    '<rootDir>/__tests__/'
   ]
 };

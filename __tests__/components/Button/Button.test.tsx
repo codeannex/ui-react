@@ -5,7 +5,7 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import '@testing-library/jest-dom/extend-expect';
 
-import { Button, ButtonProps, BUTTON_TEST_ID } from '../../../src/components/Button';
+import { Button, ButtonType, ButtonProps, BUTTON_TEST_ID } from '../../../src/components/Button';
 
 import { ElementMock, ButtonTextMock } from '../../../utils/enums';
 
@@ -20,7 +20,7 @@ describe('Button Component', () => {
     test('without crashing', () => {
       const container = document.createElement(ElementMock.DIV);
 
-      ReactDOM.render(<Button>{ButtonTextMock.SUBMIT}</Button>, container);
+      ReactDOM.render(<Button>{ButtonType.SUBMIT}</Button>, container);
       ReactDOM.unmountComponentAtNode(container);
     });
 

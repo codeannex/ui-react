@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading Component snapshots of default heading with label 1`] = `
+<h1
+  className={null}
+  data-testid="codeannex-heading-component"
+>
+  Bar
+</h1>
+`;
+
+exports[`Heading Component snapshots of heading with children 1`] = `
+<h1
+  className={null}
+  data-testid="codeannex-heading-component"
+>
+  Foo
+</h1>
+`;

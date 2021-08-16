@@ -6,35 +6,32 @@ import { Actionable } from '../../core';
 export enum ButtonType {
 
   /** Regular HTML button with no default behavior */
-  Button = 'button',
+  BUTTON = 'button',
 
   /** Reset button resets the form-data to its initial values */
-  Reset = 'reset',
+  RESET = 'reset',
 
   /** Submit button submits form-data */
-  Submit = 'submit',
+  SUBMIT = 'submit',
 }
 
-export enum ButtonStyle {
+export enum ButtonClasses {
 
   /** Class hook for basic button reset styles */
-  Shared = 'btn--base',
+  SHARED = 'btn__base',
 
   /** Modifier button class hooks */
-  Default = 'btn--primary',
-  Secondary = 'btn--secondary',
-  Success = 'btn--success',
-  Danger = 'btn--danger',
-  Warning = 'btn--warning',
-  Info = 'btn--info',
-  Light = 'btn--light',
-  Dark = 'btn--dark',
-  Link = 'btn--link'
+  DEFAULT = 'btn__primary',
+  SECONDARY = 'btn__secondary',
+  SUCCESS = 'btn__success',
+  DANGER = 'btn__danger',
+  WARNING = 'btn__warning',
+  INFO = 'btn__info',
+  LIGHT = 'btn__light',
+  DARL = 'btn__dark',
+  LINK = 'btn__link'
 }
 
-/**
- * Interfaces
- */
  export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
   /**
@@ -44,7 +41,7 @@ export enum ButtonStyle {
    *  Default | Secondary | Success |
    *  Danger | Warning | Info | Light | Dark
    */
-  buttonStyle?: ButtonStyle;
+  buttonClass?: ButtonClasses;
 
   /**
    * Custom class names
@@ -55,7 +52,7 @@ export enum ButtonStyle {
   /**
    * Custom class prefix
    */
-   classPrefix?: string;
+  classPrefix?: string;
 
   /**
    * Specifies whether the component is disabled
@@ -83,7 +80,7 @@ export const BUTTON_TEST_ID = 'codeannex-button-component';
  * Button Component
  */
 const _Button = ({
-  buttonStyle,
+  buttonClass,
   children,
   classes,
   classPrefix,
@@ -93,11 +90,11 @@ const _Button = ({
 }: ButtonProps & { forwardedRef: React.Ref<HTMLButtonElement> }): JSX.Element => {
   let classBase = '';
 
-  if (buttonStyle) {
+  if (buttonClass) {
     if (classPrefix) {
-      classBase = classPrefix + ButtonStyle.Shared
+      classBase = classPrefix + ButtonClasses.SHARED
     } else {
-      classBase = ButtonStyle.Shared
+      classBase = ButtonClasses.SHARED
     }
   }
 
@@ -105,7 +102,7 @@ const _Button = ({
     ...rest,
     className: classNames(
       classBase,
-      buttonStyle && classPrefix ? classPrefix + buttonStyle : buttonStyle,
+      buttonClass && classPrefix ? classPrefix + buttonClass : buttonClass,
       classes && classes.length && classes.join(' ')
     )
   };
