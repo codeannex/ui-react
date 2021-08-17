@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type BaseProps = Pick<React.HTMLAttributes<any>, 'children'> & React.RefAttributes<any>
 
 export type ElementTypeProps = Readonly<BaseProps & {
@@ -8,7 +9,7 @@ export type ElementTypeProps = Readonly<BaseProps & {
 
 /**
  * @Codeannex UI React: Core <Element Components>
- * 
+ *
  * ElementType Component
  * Returns an HTML element based on prop argument.
  */

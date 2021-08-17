@@ -1,6 +1,6 @@
 {
   "name": "@codeannex/ui-react",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "",
   "main": "lib/index.js",
   "publishConfig": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -p tsconfig.json --outDir lib && npx babel src --out-dir lib --extensions='.ts' --extensions='.tsx' --copy-files --ignore [ '**/*.md' ]",
+    "build": "tsc -p tsconfig.json --outDir lib && npx babel src --out-dir lib --extensions='.ts' --extensions='.tsx' --copy-files",
     "dev": "webpack serve --config webpack/development.config.js",
     "lint": "eslint . --ext .ts --ext .tsx",
     "test": "jest --watch"
@@ -18,8 +18,8 @@
   "license": "ISC",
   "peerDependencies": {
     "classnames": "~2.x.x",
-    "react": "~16.x.x",
-    "react-dom": "~16.x.x",
+    "react": "~17.x.x",
+    "react-dom": "~17.x.x",
     "react-transition-group": "^4.x.x"
   },
   "devDependencies": {
@@ -39,13 +39,13 @@
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.6.3",
     "babel-jest": "^27.0.6",
     "babel-loader": "^8.2.2",
     "babel-plugin-jsx-remove-data-test-id": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^6.2.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.24.0",
     "html-loader": "^2.1.2",

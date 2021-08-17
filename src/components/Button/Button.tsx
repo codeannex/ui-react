@@ -76,7 +76,7 @@ export const BUTTON_TEST_ID = 'codeannex-button-component';
 
 /**
  * @Codeannex UI React: Button Component
- * 
+ *
  * Button Component
  */
 const _Button = ({
