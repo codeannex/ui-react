@@ -31,18 +31,18 @@ export type DefaultProps = typeof defaultProps;
 
 /**
  * @Codeannex UI React: Core <Element Components>
- * 
- * Actionable Component
+ *
+ * Handler Component
  * Returns a button element by default with encapsulated functionality.
  */
-const _Actionable = ({
+const _Handler = ({
   disabled,
   from: Component,
   forwardedRef,
   onClick,
   ...rest
 }: Props & { forwardedRef: React.Ref<HTMLButtonElement> }): JSX.Element => {
-  
+
   // Handlers
   const handleClick = React.useCallback<React.MouseEventHandler>(
     (event) => {
@@ -70,11 +70,11 @@ const _Actionable = ({
   return <Component {...props} />
 };
 
-_Actionable.defaultProps = defaultProps;
+_Handler.defaultProps = defaultProps;
 
-export const Actionable = React.forwardRef((
-  props: Omit<Props, keyof DefaultProps> & Partial<DefaultProps>, 
+export const Handler = React.forwardRef((
+  props: Omit<Props, keyof DefaultProps> & Partial<DefaultProps>,
   ref: React.Ref<HTMLButtonElement>
 ): JSX.Element => {
-  return <_Actionable { ...props } forwardedRef={ref} />;
+  return <_Handler { ...props } forwardedRef={ref} />;
 });

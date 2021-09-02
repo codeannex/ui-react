@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import { Actionable } from '../../core';
+import { Handler } from '../../core';
 
 export enum ButtonType {
 
@@ -110,9 +110,9 @@ const _Button = ({
   const content = label ? label : children;
 
   return (
-    <Actionable { ...props } ref={forwardedRef} data-testid={BUTTON_TEST_ID}>
+    <Handler { ...props } ref={forwardedRef} data-testid={BUTTON_TEST_ID}>
       { content }
-    </Actionable>
+    </Handler>
   );
 };
 
