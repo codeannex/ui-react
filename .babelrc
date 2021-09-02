@@ -9,6 +9,6 @@
     "babel-plugin-jsx-remove-data-test-id"
   ],
   "ignore": [
-    "**/*README.md"
+    "**/README.md"
   ]
 }
