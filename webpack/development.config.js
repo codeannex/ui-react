@@ -17,6 +17,7 @@ module.exports = {
     index: 'index.html',
     port: 3000
   },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx', 'scss']
   },
@@ -37,9 +38,9 @@ module.exports = {
             }
           },
           {
-            loader: "ts-loader",
+            loader: 'ts-loader',
             options: {
-              configFile: require.resolve("./config.json"),
+              configFile: require.resolve('./config.json'),
               context: __dirname,
               transpileOnly: true
             }
@@ -50,7 +51,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader"
+            loader: 'html-loader'
           }
         ]
       }
@@ -63,8 +64,8 @@ module.exports = {
       chunkFilename: '[id].css'
     }),
     new HtmlWebpackPlugin({
-      template: "./app.html",
-      filename: "./index.html"
+      template: './app.html',
+      filename: './index.html'
     })
   ]
 };
