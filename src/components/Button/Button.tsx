@@ -28,7 +28,7 @@ export enum ButtonClasses {
   WARNING = 'btn__warning',
   INFO = 'btn__info',
   LIGHT = 'btn__light',
-  DARL = 'btn__dark',
+  DARK = 'btn__dark',
   LINK = 'btn__link'
 }
 
@@ -92,7 +92,7 @@ const _Button = ({
 
   if (buttonClass) {
     if (classPrefix) {
-      classBase = classPrefix + ButtonClasses.SHARED
+      classBase = `${classPrefix}-${ButtonClasses.SHARED}`;
     } else {
       classBase = ButtonClasses.SHARED
     }
@@ -102,7 +102,7 @@ const _Button = ({
     ...rest,
     className: classNames(
       classBase,
-      buttonClass && classPrefix ? classPrefix + buttonClass : buttonClass,
+      buttonClass && classPrefix ? `${classPrefix}-${buttonClass}` : buttonClass,
       classes && classes.length && classes.join(' ')
     )
   };

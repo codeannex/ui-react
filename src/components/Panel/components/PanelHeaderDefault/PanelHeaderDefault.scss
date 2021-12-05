@@ -1,0 +1,12 @@
+.codeannex-panel-header {
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+
+  background-color: green;
+
+  &__btn-close {
+    height: 30px;
+  }
+}

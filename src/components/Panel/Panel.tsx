@@ -3,9 +3,26 @@ import classNames from 'classnames';
 
 import { Portal } from '../Portal';
 
+import { usePanelController} from './usePanelController';
+
+import {
+  PanelHeaderDefault,
+  PanelHeader,
+  PanelHeaderProps,
+  PanelContent,
+  PanelContentProps
+} from './components';
+
 import { usePreviousState } from '../../hooks/usePreviousState';
 
+import { getGuid } from '../../../utils';
+
 import './Panel.scss';
+
+const LIBRARY_CLASSES = {
+  CONTAINER: 'codeannex-panel',
+  CONTENT: 'codeannex-panel-content'
+};
 
 export enum PanelClasses {
 
@@ -13,9 +30,14 @@ export enum PanelClasses {
   SHARED = 'panel__base',
 }
 
-export interface PanelProps {
-  children: React.ReactElement;
-  open?: boolean;
+interface PanelPropsComposition  {
+  Header?: React.FC<PanelHeaderProps>;
+  Content?: React.FC<PanelContentProps>;
+}
+
+export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelPropsComposition {
+  controller?: boolean;
+  open: boolean;
   position?: string;
   renderPortal?: boolean;
 
@@ -29,32 +51,54 @@ export interface PanelProps {
 export const PANEL_TEST_ID = 'codeannex-panel-component';
 
 /**
+ * Creates a unique id which can be used by the Panel Controller to
+ * manage multiple panels.
+ */
+const guid = (function (): string {
+  return getGuid();
+}());
+
+/**
  * @Codeannex UI React: Panel Component
  *
  * Panel Component
  */
-const _Panel = ({
-  forwardedRef,
+export const Panel = ({
   children,
+  controller,
   open,
   renderPortal,
   onClose,
   onClosed,
   onOpen,
   onOpened
-}: PanelProps & { forwardedRef: React.Ref<HTMLDivElement> }): JSX.Element => {
+}: PanelProps): JSX.Element => {
+  const panelController = usePanelController();
+
+  const [headerFound, setHeaderFound] = React.useState<boolean>(false);
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [portal, setPortal] = React.useState(false);
 
+  const openPrev: boolean = usePreviousState(open);
   const isOpenPrev: boolean = usePreviousState(isOpen);
 
-  const classes = classNames('panel', isOpen && 'open');
+  const classes = classNames(LIBRARY_CLASSES.CONTAINER, isOpen && 'open');
+
+  const onHandleOpen = (): void => {
+    setIsOpen(true);
+
+    onOpen && onOpen();
+  };
+
+  const onHandleOpened = (): void => {
+    onOpened && onOpened();
+  };
 
   const onHandleClose = (): void => {
-    onClose && onClose();
-
     setIsOpen(false);
+
+    onClose && onClose();
   };
 
   const onHandleClosed = (): void => {
@@ -62,47 +106,58 @@ const _Panel = ({
   };
 
   /**
-   * Handles rendering the portal before opening the panel when the
-   * renderPortal prop is defined.
+   * Handles rendering the portal before opening the panel when
+   * renderPortal prop is defined and closing the panel if the
+   * open prop is externally changed to false.
    */
   React.useEffect(() => {
     if (open && renderPortal) {
       setPortal(true);
     }
-
-  }, [open, renderPortal]);
+  }, [open, openPrev, renderPortal]);
 
   /**
    * Handles opening the panel and invokes the onOpen callback.
    */
   React.useEffect(() => {
-    if (open && portal) {
-      setTimeout(() => {
-        setIsOpen(true);
+    if (open) {
+      controller && panelController.addPanel({ id: guid });
 
-        onOpen && onOpen();
+      portal && setTimeout(() => {
+        onHandleOpen();
       }, 200);
-    }
 
-    if (open && !renderPortal) {
-      setIsOpen(true);
-
-      onOpen && onOpen();
+      if (!renderPortal) {
+        onHandleOpen();
+      }
     }
-  }, [open, renderPortal, portal]);
+  }, [open, renderPortal, portal, controller]);
 
   /**
-   * Handles state changes with the panel. Removes the portal from the DOM
-   * after a timeout to allow the animation to complete and invokes the
-   * onClosed callback or responds after the panel is opened to invoke the
-   * onOpened callback.
+   * Handles closing the panel when the external open property is
+   * set to false.
+   */
+  React.useEffect(() => {
+    if (!open && openPrev !== undefined &&
+      openPrev !== false && guid) {
+
+      setIsOpen(false);
+      panelController.removePanel({ id: guid });
+    }
+  }, [open, openPrev, controller]);
+
+  /**
+   * Handles removing the portal from the DOM after allowing the
+   * animation to complete and invokes the onClosed callback.
+   *
+   * Handles the onOpened callback.
    */
   React.useEffect(() => {
     if (!isOpen &&
       isOpen !== isOpenPrev &&
       isOpenPrev !== undefined) {
 
-      setTimeout(() => {
+      portal && setTimeout(() => {
         setPortal(false);
 
         onHandleClosed();
@@ -110,37 +165,62 @@ const _Panel = ({
     }
 
     if (isOpen && !isOpenPrev) {
-      onOpened && onOpened();
+      onHandleOpened();
     }
   }, [isOpen, isOpenPrev]);
 
   /**
+   * Handles determining whether the user has provided a custom header using
+   * the optional compound component.
+   */
+  React.useEffect(() => {
+    React.Children.map(children, (child: React.ReactElement) => {
+      if (child && child.type === PanelHeader) {
+        setHeaderFound(true);
+      }
+    });
+  }, [children]);
+
+  // React.useEffect(() => {
+  //   console.log(panelController.panels);
+  // });
+
+  /**
    * Render content.
    */
+  const renderContent = (): JSX.Element => {
+    return (
+      <div className={classes}>
+        {!headerFound ? (
+          <>
+            <PanelHeaderDefault
+              onClose={onHandleClose}
+            />
+            <div className={LIBRARY_CLASSES.CONTENT}>
+              {children}
+            </div>
+          </>
+        ) : (
+          <>
+            {children}
+          </>
+        )}
+      </div>
+    );
+  };
+
   if (renderPortal) {
     return portal ? (
       <Portal>
-        <div ref={forwardedRef} className={classes}>
-          {children}
-
-          <button onClick={onHandleClose}>Close</button>
-        </div>
+        {renderContent()}
       </Portal>
     ): null;
   } else {
-    return (
-      <div ref={forwardedRef} className={classes}>
-        {children}
-
-        <button onClick={onHandleClose}>Close</button>
-      </div>
-    );
+    return renderContent();
   }
 };
 
-export const Panel = React.forwardRef((
-  props: PanelProps,
-  ref: React.Ref<HTMLDivElement>
-): JSX.Element => {
-  return <_Panel { ...props } forwardedRef={ref} data-testid={PANEL_TEST_ID} />
-});
+Panel.Header = PanelHeader;
+Panel.Content = PanelContent;
+
+export default Panel;
