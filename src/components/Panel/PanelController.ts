@@ -8,8 +8,7 @@ export interface Panel {
 export class PanelController {
   private readonly getHighestZIndex: () => number;
 
-  private panels: Panel[] = [];
-
+  public panels: Panel[] = [];
   public initialHighestZIndex = null;
 
   constructor(

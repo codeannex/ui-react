@@ -26,8 +26,21 @@ const LIBRARY_CLASSES = {
 
 export enum PanelClasses {
 
-  /** Class hook for base panel styles */
+  /* Class hook for base panel styles */
   SHARED = 'panel__base',
+
+  /* Animation classes */
+  RIGHT = 'slide-left',
+  BOTTOM = 'slide-up',
+  LEFT = 'slide-right',
+  TOP = 'slide-down'
+}
+
+export enum PanelPosition {
+  RIGHT = 'RIGHT',
+  BOTTOM = 'BOTTOM',
+  LEFT = 'LEFT',
+  TOP = 'TOP'
 }
 
 interface PanelPropsComposition  {
@@ -37,6 +50,7 @@ interface PanelPropsComposition  {
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelPropsComposition {
   controller?: boolean;
+  forwardedRef?: React.Ref<HTMLDivElement>;
   open: boolean;
   position?: string;
   renderPortal?: boolean;
@@ -63,10 +77,11 @@ const guid = (function (): string {
  *
  * Panel Component
  */
-export const Panel = ({
+const PanelComponent = ({
   children,
   controller,
   open,
+  position,
   renderPortal,
   onClose,
   onClosed,
@@ -83,7 +98,11 @@ export const Panel = ({
   const openPrev: boolean = usePreviousState(open);
   const isOpenPrev: boolean = usePreviousState(isOpen);
 
-  const classes = classNames(LIBRARY_CLASSES.CONTAINER, isOpen && 'open');
+  const classes = classNames(
+    LIBRARY_CLASSES.CONTAINER,
+    isOpen && 'open',
+    position && PanelClasses[position]
+  );
 
   const onHandleOpen = (): void => {
     setIsOpen(true);
@@ -220,7 +239,22 @@ export const Panel = ({
   }
 };
 
-Panel.Header = PanelHeader;
-Panel.Content = PanelContent;
+export const Panel = Object.assign(
+  React.forwardRef(
+    (props: PanelProps, ref: React.Ref<HTMLDivElement>): JSX.Element => {
+      return (
+        <PanelComponent
+          {...props}
+          forwardedRef={ref}
+          data-testid={PANEL_TEST_ID}
+        />
+      );
+    }
+  ),
+  {
+    Header: PanelHeader,
+    Content: PanelContent
+  }
+);
 
 export default Panel;

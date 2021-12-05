@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, BrowserRouter as Router, Route, Link, useHistory } from 'react-router-dom';
 
 import { Button, ButtonType, ButtonClasses } from './src';
-import { Panel } from './src/components/Panel/Panel';
+import { PanelGroup, Panel, PanelPosition } from './src';
 import { Portal } from './src/components/Portal';
 import { PanelOverlay } from './src/components/Panel/components';
 import { panelOverlayContext, panelOverlayActionsContext } from './src/components/Panel/PanelContext';
@@ -13,12 +13,15 @@ import './scss/app.scss';
 const Home = () => {
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
 
   const handleClose1 = () => {
     setOpen1(false);
   };
 
   const handleOpen1 = () => {
+    console.log('here')
     setOpen1(true);
   };
 
@@ -30,25 +33,45 @@ const Home = () => {
     setOpen2(true);
   };
 
+  const handleClose3 = () => {
+    setOpen3(false);
+  };
+
+  const handleOpen3 = () => {
+    setOpen3(true);
+  };
+
+  const handleClose4 = () => {
+    setOpen4(false);
+  };
+
+  const handleOpen4 = () => {
+    setOpen4(true);
+  };
+
   return (
     <>
       <div>
         <h2 style={{zIndex: 24}}>About</h2>
         <Button
           onClick={handleOpen1}
-          // buttonClass={ButtonClasses.SECONDARY}
-          // classPrefix={'submission'}
-          // classes={['a', 'b', '']}
         >
-          Open1
+          Slide left
         </Button>
         <Button
           onClick={handleOpen2}
-          // buttonClass={ButtonClasses.SECONDARY}
-          // classPrefix={'submission'}
-          // classes={['a', 'b', '']}
         >
-          Open2
+          Slide Right
+        </Button>
+        <Button
+          onClick={handleOpen3}
+        >
+          Slide Down
+        </Button>
+        <Button
+          onClick={handleOpen4}
+        >
+          Slide Up
         </Button>
       </div>
       {/*{open1 && (*/}
@@ -69,10 +92,50 @@ const Home = () => {
         onClosed={handleClose1}
         controller={true}
         renderPortal={true}
+        position={PanelPosition.RIGHT}
       >
         <div>
           <h2>Panel</h2>
           <button onClick={handleClose1}>Close</button>
+        </div>
+      </Panel>
+
+      <Panel
+        open={open2}
+        onClosed={handleClose2}
+        controller={true}
+        renderPortal={true}
+        position={PanelPosition.LEFT}
+      >
+        <div>
+          <h2>Panel</h2>
+          <button onClick={handleClose2}>Close</button>
+        </div>
+      </Panel>
+
+      <Panel
+        open={open3}
+        onClosed={handleClose3}
+        controller={true}
+        renderPortal={true}
+        position={PanelPosition.TOP}
+      >
+        <div>
+          <h2>Panel</h2>
+          <button onClick={handleClose3}>Close</button>
+        </div>
+      </Panel>
+
+      <Panel
+        open={open4}
+        onClosed={handleClose4}
+        controller={true}
+        renderPortal={true}
+        position={PanelPosition.BOTTOM}
+      >
+        <div>
+          <h2>Panel</h2>
+          <button onClick={handleClose4}>Close</button>
         </div>
       </Panel>
 
@@ -106,6 +169,46 @@ const Home = () => {
       {/*    Panel Content 2*/}
       {/*  </Panel.Content>*/}
       {/*</Panel>*/}
+
+      {/* ======= PANEL GROUP ======= */}
+
+      {/*<PanelGroup*/}
+      {/*  controller={true}*/}
+      {/*>*/}
+      {/*  <Panel*/}
+      {/*    open={open1}*/}
+      {/*    onClosed={handleClose1}*/}
+      {/*    controller={true}*/}
+      {/*    renderPortal={true}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel</h2>*/}
+      {/*      <button onClick={handleClose1}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open1}*/}
+      {/*    onClosed={handleClose1}*/}
+      {/*    controller={true}*/}
+      {/*    renderPortal={true}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel</h2>*/}
+      {/*      <button onClick={handleClose1}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open1}*/}
+      {/*    onClosed={handleClose1}*/}
+      {/*    controller={true}*/}
+      {/*    renderPortal={true}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel</h2>*/}
+      {/*      <button onClick={handleClose1}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*</PanelGroup>*/}
     </>
   );
 };
@@ -122,14 +225,8 @@ const About = () => {
 
 
 export const App = () => {
-  const overlay = panelOverlayContext();
-  const setOverlay = panelOverlayActionsContext();
-
-  console.log(overlay);
-
   return (
     <div id="page" data-test-id="component-app">
-      <PanelOverlay visibility={overlay} />
       <header id="header">
         <nav>
           <ul>
