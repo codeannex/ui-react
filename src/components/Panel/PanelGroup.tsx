@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { Panel } from './Panel';
 import { PanelOverlay } from './components';
 
 import { getHighestZIndex } from "./utils/getHighestZIndex";
+
+import { getGuid } from '../../../utils';
 
 export interface PanelGroupProp extends React.HTMLAttributes<HTMLDivElement> {
   controller?: boolean;
@@ -13,7 +14,7 @@ export const PanelGroup = ({
   children
 }: PanelGroupProp): JSX.Element => {
 
-  const [highetsZIndex, setHighestZIndex] = React.useState(null);
+  const [highestZIndex, setHighestZIndex] = React.useState(null);
 
   /**
    * Handles finding the highest index on the page after render. This value
@@ -26,18 +27,30 @@ export const PanelGroup = ({
     setHighestZIndex(highestIndex);
   }, [getHighestZIndex])
 
-  // React.useEffect(() => {
-  //   React.Children.map(children, (child: React.ReactElement) => {
-  //     if (child && child.type === Panel) {
-  //       console.log(child);
-  //     }
-  //   });
-  // }, []);
+  const renderGroupPanelChildren = (children): React.ReactElement => {
+    let incrementor = highestZIndex + 1;
 
+    return (
+      <React.Fragment>
+        {React.Children.map(children || null, (child) => {
+          const newProps = {...child.props, ZIndex: incrementor };
+
+          incrementor++;
+
+          return <child.type {...newProps } key={getGuid()} />;
+        })}
+      </React.Fragment>
+    );
+  };
+  /**
+   * Left off with getting the overlay to work.
+   */
   return (
     <div>
-      {/*<PanelOverlay visibility={} />*/}
-      {children}
+      <>
+        <PanelOverlay visibility={false} />
+        {renderGroupPanelChildren(children)}
+      </>
     </div>
   );
 };

@@ -100,44 +100,44 @@ const Home = () => {
         </div>
       </Panel>
 
-      <Panel
-        open={open2}
-        onClosed={handleClose2}
-        controller={true}
-        renderPortal={true}
-        position={PanelPosition.LEFT}
-      >
-        <div>
-          <h2>Panel</h2>
-          <button onClick={handleClose2}>Close</button>
-        </div>
-      </Panel>
+      {/*<Panel*/}
+      {/*  open={open2}*/}
+      {/*  onClosed={handleClose2}*/}
+      {/*  controller={true}*/}
+      {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.LEFT}*/}
+      {/*>*/}
+      {/*  <div>*/}
+      {/*    <h2>Panel</h2>*/}
+      {/*    <button onClick={handleClose2}>Close</button>*/}
+      {/*  </div>*/}
+      {/*</Panel>*/}
 
-      <Panel
-        open={open3}
-        onClosed={handleClose3}
-        controller={true}
-        renderPortal={true}
-        position={PanelPosition.TOP}
-      >
-        <div>
-          <h2>Panel</h2>
-          <button onClick={handleClose3}>Close</button>
-        </div>
-      </Panel>
+      {/*<Panel*/}
+      {/*  open={open3}*/}
+      {/*  onClosed={handleClose3}*/}
+      {/*  controller={true}*/}
+      {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.TOP}*/}
+      {/*>*/}
+      {/*  <div>*/}
+      {/*    <h2>Panel</h2>*/}
+      {/*    <button onClick={handleClose3}>Close</button>*/}
+      {/*  </div>*/}
+      {/*</Panel>*/}
 
-      <Panel
-        open={open4}
-        onClosed={handleClose4}
-        controller={true}
-        renderPortal={true}
-        position={PanelPosition.BOTTOM}
-      >
-        <div>
-          <h2>Panel</h2>
-          <button onClick={handleClose4}>Close</button>
-        </div>
-      </Panel>
+      {/*<Panel*/}
+      {/*  open={open4}*/}
+      {/*  onClosed={handleClose4}*/}
+      {/*  controller={true}*/}
+      {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.BOTTOM}*/}
+      {/*>*/}
+      {/*  <div>*/}
+      {/*    <h2>Panel</h2>*/}
+      {/*    <button onClick={handleClose4}>Close</button>*/}
+      {/*  </div>*/}
+      {/*</Panel>*/}
 
       {/*<Panel*/}
       {/*  open={open1}*/}
@@ -180,32 +180,47 @@ const Home = () => {
       {/*    onClosed={handleClose1}*/}
       {/*    controller={true}*/}
       {/*    renderPortal={true}*/}
+      {/*    position={PanelPosition.RIGHT}*/}
       {/*  >*/}
       {/*    <div>*/}
-      {/*      <h2>Panel</h2>*/}
+      {/*      <h2>Panel Slide Left</h2>*/}
       {/*      <button onClick={handleClose1}>Close</button>*/}
       {/*    </div>*/}
       {/*  </Panel>*/}
       {/*  <Panel*/}
-      {/*    open={open1}*/}
-      {/*    onClosed={handleClose1}*/}
+      {/*    open={open2}*/}
+      {/*    onClosed={handleClose2}*/}
       {/*    controller={true}*/}
       {/*    renderPortal={true}*/}
+      {/*    position={PanelPosition.LEFT}*/}
       {/*  >*/}
       {/*    <div>*/}
-      {/*      <h2>Panel</h2>*/}
-      {/*      <button onClick={handleClose1}>Close</button>*/}
+      {/*      <h2>Panel Slide Right</h2>*/}
+      {/*      <button onClick={handleClose2}>Close</button>*/}
       {/*    </div>*/}
       {/*  </Panel>*/}
       {/*  <Panel*/}
-      {/*    open={open1}*/}
-      {/*    onClosed={handleClose1}*/}
+      {/*    open={open3}*/}
+      {/*    onClosed={handleClose3}*/}
       {/*    controller={true}*/}
       {/*    renderPortal={true}*/}
+      {/*    position={PanelPosition.TOP}*/}
       {/*  >*/}
       {/*    <div>*/}
-      {/*      <h2>Panel</h2>*/}
-      {/*      <button onClick={handleClose1}>Close</button>*/}
+      {/*      <h2>Panel Slide Down</h2>*/}
+      {/*      <button onClick={handleClose3}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open4}*/}
+      {/*    onClosed={handleClose4}*/}
+      {/*    controller={true}*/}
+      {/*    renderPortal={true}*/}
+      {/*    position={PanelPosition.BOTTOM}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel Slide Up</h2>*/}
+      {/*      <button onClick={handleClose4}>Close</button>*/}
       {/*    </div>*/}
       {/*  </Panel>*/}
       {/*</PanelGroup>*/}

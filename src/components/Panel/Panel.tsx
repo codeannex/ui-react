@@ -19,6 +19,14 @@ import { getGuid } from '../../../utils';
 
 import './Panel.scss';
 
+/**
+ * Creates a unique id which can be used by the Panel Controller to
+ * manage multiple panels.
+ */
+const guid = (function (): string {
+  return getGuid();
+}());
+
 const LIBRARY_CLASSES = {
   CONTAINER: 'codeannex-panel',
   CONTENT: 'codeannex-panel-content'
@@ -54,6 +62,7 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   open: boolean;
   position?: string;
   renderPortal?: boolean;
+  ZIndex?: number;
 
   // Lifecycle callbacks
   onClose?: () => void;
@@ -62,15 +71,15 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   onOpened?: () => void;
 }
 
-export const PANEL_TEST_ID = 'codeannex-panel-component';
+interface IPanel
+  extends React.ForwardRefExoticComponent<
+    PanelProps & React.RefAttributes<HTMLDivElement>
+    > {
+  Header: typeof PanelHeader;
+  Content: typeof PanelContent;
+}
 
-/**
- * Creates a unique id which can be used by the Panel Controller to
- * manage multiple panels.
- */
-const guid = (function (): string {
-  return getGuid();
-}());
+export const PANEL_TEST_ID = 'codeannex-panel-component';
 
 /**
  * @Codeannex UI React: Panel Component
@@ -83,6 +92,7 @@ const PanelComponent = ({
   open,
   position,
   renderPortal,
+  ZIndex,
   onClose,
   onClosed,
   onOpen,
@@ -200,16 +210,16 @@ const PanelComponent = ({
     });
   }, [children]);
 
-  // React.useEffect(() => {
-  //   console.log(panelController.panels);
-  // });
-
   /**
    * Render content.
    */
   const renderContent = (): JSX.Element => {
     return (
-      <div className={classes}>
+      <div
+        className={classes}
+        style={
+          ZIndex ? { zIndex: ZIndex } : null
+        }>
         {!headerFound ? (
           <>
             <PanelHeaderDefault
