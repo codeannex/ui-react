@@ -1,56 +1,58 @@
 import * as React from 'react';
 
 import { PanelOverlay } from './components';
+import {
+  PanelProvider,
+  panelHighestZIndexActionsContext,
+  panelCountContext
+} from './PanelContext';
 
-import { getHighestZIndex } from "./utils/getHighestZIndex";
-
-import { getGuid } from '../../../utils';
+import { getHighestZIndex } from './utils/getHighestZIndex';
 
 export interface PanelGroupProp extends React.HTMLAttributes<HTMLDivElement> {
-  controller?: boolean;
+  placeholder?: string;
 }
 
-export const PanelGroup = ({
+const PanelGroupComponent = ({
   children
 }: PanelGroupProp): JSX.Element => {
+  const panelCount = panelCountContext();
+  const setPanelHighestZIndex = panelHighestZIndexActionsContext();
 
   const [highestZIndex, setHighestZIndex] = React.useState(null);
+  const [overlayVisible, setOverlayVisible] = React.useState(false);
 
   /**
    * Handles finding the highest index on the page after render. This value
    * will be used as the benchmark to set the z-index of the panel
-   * components.
+   * components managed by this component.
    */
   React.useEffect(() => {
     const highestIndex = getHighestZIndex();
 
+    setPanelHighestZIndex(highestIndex);
     setHighestZIndex(highestIndex);
-  }, [getHighestZIndex])
+  }, []);
 
-  const renderGroupPanelChildren = (children): React.ReactElement => {
-    let incrementor = highestZIndex + 1;
+  React.useEffect(() => {
+    setOverlayVisible(!!panelCount.length);
+  }, [panelCount, setOverlayVisible]);
 
-    return (
-      <React.Fragment>
-        {React.Children.map(children || null, (child) => {
-          const newProps = {...child.props, ZIndex: incrementor };
-
-          incrementor++;
-
-          return <child.type {...newProps } key={getGuid()} />;
-        })}
-      </React.Fragment>
-    );
-  };
-  /**
-   * Left off with getting the overlay to work.
-   */
   return (
-    <div>
-      <>
-        <PanelOverlay visibility={false} />
-        {renderGroupPanelChildren(children)}
-      </>
-    </div>
+    <>
+      <PanelOverlay
+        visibility={overlayVisible}
+        zindex={highestZIndex}
+      />
+      {children}
+    </>
+  );
+};
+
+export const PanelGroup = (props: PanelGroupProp): JSX.Element => {
+  return (
+    <PanelProvider>
+      <PanelGroupComponent { ...props } />
+    </PanelProvider>
   );
 };

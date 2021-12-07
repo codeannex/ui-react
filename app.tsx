@@ -6,6 +6,7 @@ import { PanelGroup, Panel, PanelPosition } from './src';
 import { Portal } from './src/components/Portal';
 import { PanelOverlay } from './src/components/Panel/components';
 import { panelOverlayContext, panelOverlayActionsContext } from './src/components/Panel/PanelContext';
+import { getGuid } from "./utils";
 
 import './scss/reset.scss';
 import './scss/app.scss';
@@ -21,7 +22,6 @@ const Home = () => {
   };
 
   const handleOpen1 = () => {
-    console.log('here')
     setOpen1(true);
   };
 
@@ -87,18 +87,18 @@ const Home = () => {
       {/*  </Panel>*/}
       {/*)}*/}
 
-      <Panel
-        open={open1}
-        onClosed={handleClose1}
-        controller={true}
-        renderPortal={true}
-        position={PanelPosition.RIGHT}
-      >
-        <div>
-          <h2>Panel</h2>
-          <button onClick={handleClose1}>Close</button>
-        </div>
-      </Panel>
+      {/*<Panel*/}
+      {/*  open={open1}*/}
+      {/*  onClosed={handleClose1}*/}
+      {/*  controller={true}*/}
+      {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.RIGHT}*/}
+      {/*>*/}
+      {/*  <div>*/}
+      {/*    <h2>Panel</h2>*/}
+      {/*    <button onClick={handleClose1}>Close</button>*/}
+      {/*  </div>*/}
+      {/*</Panel>*/}
 
       {/*<Panel*/}
       {/*  open={open2}*/}
@@ -139,11 +139,14 @@ const Home = () => {
       {/*  </div>*/}
       {/*</Panel>*/}
 
+      {/* ======= PANEL COMPOUND COMPONENTS ======= */}
+
       {/*<Panel*/}
       {/*  open={open1}*/}
       {/*  onClosed={handleClose1}*/}
-      {/*  renderPortal={true}*/}
       {/*  controller={true}*/}
+      {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.RIGHT}*/}
       {/*>*/}
       {/*  <Panel.Header>*/}
       {/*    <div>*/}
@@ -151,14 +154,16 @@ const Home = () => {
       {/*    </div>*/}
       {/*  </Panel.Header>*/}
       {/*  <Panel.Content>*/}
-      {/*    Panel Content 1*/}
+      {/*    Panel Slide Left*/}
       {/*  </Panel.Content>*/}
       {/*</Panel>*/}
 
       {/*<Panel*/}
       {/*  open={open2}*/}
       {/*  onClosed={handleClose2}*/}
+      {/*  controller={true}*/}
       {/*  renderPortal={true}*/}
+      {/*  position={PanelPosition.LEFT}*/}
       {/*>*/}
       {/*  <Panel.Header>*/}
       {/*    <div>*/}
@@ -166,15 +171,13 @@ const Home = () => {
       {/*    </div>*/}
       {/*  </Panel.Header>*/}
       {/*  <Panel.Content>*/}
-      {/*    Panel Content 2*/}
+      {/*    Panel Slide Right*/}
       {/*  </Panel.Content>*/}
       {/*</Panel>*/}
 
-      {/* ======= PANEL GROUP ======= */}
+      {/* ======= PANEL GROUP COMPOUND COMPONENTS ======= */}
 
-      {/*<PanelGroup*/}
-      {/*  controller={true}*/}
-      {/*>*/}
+      {/*<PanelGroup>*/}
       {/*  <Panel*/}
       {/*    open={open1}*/}
       {/*    onClosed={handleClose1}*/}
@@ -182,11 +185,16 @@ const Home = () => {
       {/*    renderPortal={true}*/}
       {/*    position={PanelPosition.RIGHT}*/}
       {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Left</h2>*/}
-      {/*      <button onClick={handleClose1}>Close</button>*/}
-      {/*    </div>*/}
+      {/*    <Panel.Header>*/}
+      {/*      <div>*/}
+      {/*        <button onClick={handleClose1}>Close</button>*/}
+      {/*      </div>*/}
+      {/*    </Panel.Header>*/}
+      {/*    <Panel.Content>*/}
+      {/*      Panel Slide Left*/}
+      {/*    </Panel.Content>*/}
       {/*  </Panel>*/}
+
       {/*  <Panel*/}
       {/*    open={open2}*/}
       {/*    onClosed={handleClose2}*/}
@@ -194,36 +202,73 @@ const Home = () => {
       {/*    renderPortal={true}*/}
       {/*    position={PanelPosition.LEFT}*/}
       {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Right</h2>*/}
-      {/*      <button onClick={handleClose2}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <Panel*/}
-      {/*    open={open3}*/}
-      {/*    onClosed={handleClose3}*/}
-      {/*    controller={true}*/}
-      {/*    renderPortal={true}*/}
-      {/*    position={PanelPosition.TOP}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Down</h2>*/}
-      {/*      <button onClick={handleClose3}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <Panel*/}
-      {/*    open={open4}*/}
-      {/*    onClosed={handleClose4}*/}
-      {/*    controller={true}*/}
-      {/*    renderPortal={true}*/}
-      {/*    position={PanelPosition.BOTTOM}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Up</h2>*/}
-      {/*      <button onClick={handleClose4}>Close</button>*/}
-      {/*    </div>*/}
+      {/*    <Panel.Header>*/}
+      {/*      <div>*/}
+      {/*        <button onClick={handleClose2}>Close</button>*/}
+      {/*      </div>*/}
+      {/*    </Panel.Header>*/}
+      {/*    <Panel.Content>*/}
+      {/*      Panel Slide Right*/}
+      {/*    </Panel.Content>*/}
       {/*  </Panel>*/}
       {/*</PanelGroup>*/}
+
+      {/* ======= PANEL GROUP STANDARD ======= */}
+
+      <PanelGroup>
+        <Panel
+          id={'1'}
+          open={open1}
+          onClosed={handleClose1}
+          controller={true}
+          renderPortal={true}
+          position={PanelPosition.RIGHT}
+        >
+          <div>
+            <h2>Panel Slide Left</h2>
+            <button onClick={handleClose1}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          id={'2'}
+          open={open2}
+          onClosed={handleClose2}
+          controller={true}
+          renderPortal={true}
+          position={PanelPosition.LEFT}
+        >
+          <div>
+            <h2>Panel Slide Right</h2>
+            <button onClick={handleClose2}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          id={'3'}
+          open={open3}
+          onClosed={handleClose3}
+          controller={true}
+          renderPortal={true}
+          position={PanelPosition.TOP}
+        >
+          <div>
+            <h2>Panel Slide Down</h2>
+            <button onClick={handleClose3}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          id={'4'}
+          open={open4}
+          onClosed={handleClose4}
+          controller={true}
+          renderPortal={true}
+          position={PanelPosition.BOTTOM}
+        >
+          <div>
+            <h2>Panel Slide Up</h2>
+            <button onClick={handleClose4}>Close</button>
+          </div>
+        </Panel>
+      </PanelGroup>
     </>
   );
 };

@@ -3,7 +3,11 @@ import classNames from 'classnames';
 
 import { Portal } from '../Portal';
 
-import { usePanelController} from './usePanelController';
+import {
+  panelHighestZIndexContext,
+  panelCountContext,
+  panelCountActionsContext
+} from './PanelContext';
 
 import {
   PanelHeaderDefault,
@@ -15,17 +19,7 @@ import {
 
 import { usePreviousState } from '../../hooks/usePreviousState';
 
-import { getGuid } from '../../../utils';
-
 import './Panel.scss';
-
-/**
- * Creates a unique id which can be used by the Panel Controller to
- * manage multiple panels.
- */
-const guid = (function (): string {
-  return getGuid();
-}());
 
 const LIBRARY_CLASSES = {
   CONTAINER: 'codeannex-panel',
@@ -57,26 +51,19 @@ interface PanelPropsComposition  {
 }
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelPropsComposition {
-  controller?: boolean;
   forwardedRef?: React.Ref<HTMLDivElement>;
+  controller?: boolean;
+  id?: string;
   open: boolean;
   position?: string;
   renderPortal?: boolean;
-  ZIndex?: number;
+  zindex?: number;
 
   // Lifecycle callbacks
   onClose?: () => void;
   onClosed?: () => void;
   onOpen?: () => void;
   onOpened?: () => void;
-}
-
-interface IPanel
-  extends React.ForwardRefExoticComponent<
-    PanelProps & React.RefAttributes<HTMLDivElement>
-    > {
-  Header: typeof PanelHeader;
-  Content: typeof PanelContent;
 }
 
 export const PANEL_TEST_ID = 'codeannex-panel-component';
@@ -89,16 +76,19 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
 const PanelComponent = ({
   children,
   controller,
+  id,
   open,
   position,
   renderPortal,
-  ZIndex,
+  zindex,
   onClose,
   onClosed,
   onOpen,
   onOpened
 }: PanelProps): JSX.Element => {
-  const panelController = usePanelController();
+  const panelCount = panelCountContext();
+  const setPanelCount = panelCountActionsContext();
+  const panelHighestZIndex = panelHighestZIndexContext();
 
   const [headerFound, setHeaderFound] = React.useState<boolean>(false);
 
@@ -134,6 +124,12 @@ const PanelComponent = ({
     onClosed && onClosed();
   };
 
+  React.useEffect(() => {
+    if (panelHighestZIndex) {
+      // TODO apply updates zindex
+    }
+  }, [panelHighestZIndex]);
+
   /**
    * Handles rendering the portal before opening the panel when
    * renderPortal prop is defined and closing the panel if the
@@ -146,12 +142,12 @@ const PanelComponent = ({
   }, [open, openPrev, renderPortal]);
 
   /**
-   * Handles opening the panel and invokes the onOpen callback.
+   * Handles opening the panel
+   * Handles invoking the onOpen callback.
+   * Handles added the panel to the panel count context.
    */
   React.useEffect(() => {
     if (open) {
-      controller && panelController.addPanel({ id: guid });
-
       portal && setTimeout(() => {
         onHandleOpen();
       }, 200);
@@ -159,8 +155,13 @@ const PanelComponent = ({
       if (!renderPortal) {
         onHandleOpen();
       }
+
+      // ensured to fire for one render.
+      if (!openPrev) {
+        controller && setPanelCount([...panelCount, { id: id }]);
+      }
     }
-  }, [open, renderPortal, portal, controller]);
+  }, [open, openPrev, renderPortal, portal, controller]);
 
   /**
    * Handles closing the panel when the external open property is
@@ -168,10 +169,17 @@ const PanelComponent = ({
    */
   React.useEffect(() => {
     if (!open && openPrev !== undefined &&
-      openPrev !== false && guid) {
+      openPrev !== false && id) {
 
       setIsOpen(false);
-      panelController.removePanel({ id: guid });
+
+      if (controller) {
+        const newPanelCountContext = panelCount.filter((panel: any) => {
+          return panel.id !== id;
+        });
+
+        setPanelCount(newPanelCountContext);
+      }
     }
   }, [open, openPrev, controller]);
 
@@ -218,7 +226,7 @@ const PanelComponent = ({
       <div
         className={classes}
         style={
-          ZIndex ? { zIndex: ZIndex } : null
+          zindex ? { zIndex: zindex } : null
         }>
         {!headerFound ? (
           <>
