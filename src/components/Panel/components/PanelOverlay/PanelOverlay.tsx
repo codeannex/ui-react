@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import './PanelOverlay.scss';
 
-interface PanelOverlayProps {
+export interface PanelOverlayProps {
   visibility: boolean;
   zindex?: number;
 }

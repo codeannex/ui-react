@@ -1,0 +1,64 @@
+1. create props to give precedents to panels.
+2. width and height settings for panels. percent or explicit
+3. zindex is not working for un grouped panels
+4. overlay option
+
+
+
+
+
+NOTES:
+
+1. When using the PanelGroup with compound components the Panel components must have
+a unique id. The id cannot change.
+
+
+Panel Props: ======
+1. open: boolean <required>
+2. position: enum <required>
+3. ref: React.ref <optional>
+4. renderPortal: boolean <optional>
+5. zindex: number <optional>
+
+6. onClose: function <required>
+7. onClosed: function <optional>
+8. onOpen: function <optional>
+9. onOpened: function <optional>
+
+
+Panel Group Rules: ======
+1. open: boolean <required>
+2. onClose: function <required>
+3. position: enum <required>
+4. id: string <required>
+
+
+
+ZIndex Rules: ======
+
+Individual Panel
+1. Should have a default
+2. Should accept a prop to override default
+
+Grouped Panels
+1. Should have a default managed
+2. Should accept a prop to override default
+3. Should have default precedence over vertical vs horizontal
+4. Should accept a prop to override default precedence over vertical vs horizontal
+
+
+Overlay Rules: ======
+
+Individual Panel
+1. Should have prop to enable overlay
+2. Should manage the highest zindex
+3. Should have a prop to override managed highest zindex
+
+Grouped Panels
+1. Should have a prop to enable overlay - managed
+
+
+BUG:
+
+1. When close is handled from within the component "open" prop remains true so the portal is
+rendered again.

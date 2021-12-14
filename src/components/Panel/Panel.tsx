@@ -4,9 +4,11 @@ import classNames from 'classnames';
 import { Portal } from '../Portal';
 
 import {
-  panelHighestZIndexContext,
-  panelCountContext,
-  panelCountActionsContext
+  panelGroupHighestZIndexContext,
+  panelGroupCountContext,
+  panelGroupContext,
+  panelGroupCountActionsContext,
+  PanelCount
 } from './PanelContext';
 
 import {
@@ -14,10 +16,13 @@ import {
   PanelHeader,
   PanelHeaderProps,
   PanelContent,
-  PanelContentProps
+  PanelContentProps,
+  PanelOverlay
 } from './components';
 
 import { usePreviousState } from '../../hooks/usePreviousState';
+
+import { getZIndexValues } from './utils/getZIndex';
 
 import './Panel.scss';
 
@@ -45,6 +50,11 @@ export enum PanelPosition {
   TOP = 'TOP'
 }
 
+interface ZIndex {
+  panel: number;
+  overlay: number;
+}
+
 interface PanelPropsComposition  {
   Header?: React.FC<PanelHeaderProps>;
   Content?: React.FC<PanelContentProps>;
@@ -52,10 +62,10 @@ interface PanelPropsComposition  {
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelPropsComposition {
   forwardedRef?: React.Ref<HTMLDivElement>;
-  controller?: boolean;
-  id?: string;
+  controllerId?: string;
   open: boolean;
-  position?: string;
+  overlay?: boolean;
+  position: PanelPosition;
   renderPortal?: boolean;
   zindex?: number;
 
@@ -75,25 +85,34 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
  */
 const PanelComponent = ({
   children,
-  controller,
-  id,
+  controllerId,
   open,
+  overlay,
   position,
   renderPortal,
   zindex,
+
   onClose,
   onClosed,
   onOpen,
   onOpened
 }: PanelProps): JSX.Element => {
-  const panelCount = panelCountContext();
-  const setPanelCount = panelCountActionsContext();
-  const panelHighestZIndex = panelHighestZIndexContext();
+  const panelGroupUsed = panelGroupContext();
+
+  /**
+   * This group of values are only used when a PanelGroup exists.
+   */
+  const panelGroupCount = panelGroupCountContext();
+  const setPanelGroupCount = panelGroupCountActionsContext();
+  const panelGroupHighestZIndex = panelGroupHighestZIndexContext();
 
   const [headerFound, setHeaderFound] = React.useState<boolean>(false);
-
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [portal, setPortal] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [portal, setPortal] = React.useState<boolean>(false);
+  const [zIndex, setZindex] = React.useState<ZIndex>({
+    panel: null,
+    overlay: null
+  });
 
   const openPrev: boolean = usePreviousState(open);
   const isOpenPrev: boolean = usePreviousState(isOpen);
@@ -104,6 +123,9 @@ const PanelComponent = ({
     position && PanelClasses[position]
   );
 
+  /**
+   * Handlers
+   */
   const onHandleOpen = (): void => {
     setIsOpen(true);
 
@@ -124,27 +146,59 @@ const PanelComponent = ({
     onClosed && onClosed();
   };
 
-  React.useEffect(() => {
-    if (panelHighestZIndex) {
-      // TODO apply updates zindex
-    }
-  }, [panelHighestZIndex]);
-
   /**
-   * Handles rendering the portal before opening the panel when
-   * renderPortal prop is defined and closing the panel if the
-   * open prop is externally changed to false.
+   * Handles adding the zindex to a panel managed by the Group Panel
+   * component. The top and bottom panels will be give a higher
+   * precedence than the side panels.
+   *
+   * TODO: offer and override to switch the precedence.
    */
   React.useEffect(() => {
-    if (open && renderPortal) {
+    if (controllerId && panelGroupUsed && panelGroupHighestZIndex) {
+      position === PanelPosition.TOP || position === PanelPosition.BOTTOM ?
+        setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 2 }) :
+        setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 1 });
+    }
+
+    if (!controllerId && !zIndex.panel) {
+      const { zIndexPanel, zIndexOverlay } = getZIndexValues(zindex, overlay);
+
+      setZindex({
+        panel: zIndexPanel,
+        overlay: zIndexOverlay
+      });
+    }
+
+
+  }, [
+    controllerId,
+    panelGroupUsed,
+    panelGroupHighestZIndex,
+    position
+  ]);
+
+  /**
+   * Handles rendering the portal before opening the panel when renderPortal
+   * prop is defined and zindex is calculated.
+   * Handles closing the panel if the open prop is externally changed
+   * to false.
+   */
+  React.useEffect(() => {
+    if (zIndex.panel && !portal && open && renderPortal) {
       setPortal(true);
     }
-  }, [open, openPrev, renderPortal]);
+  }, [
+    open,
+    openPrev,
+    portal,
+    renderPortal,
+    zIndex
+  ]);
 
   /**
    * Handles opening the panel
    * Handles invoking the onOpen callback.
-   * Handles added the panel to the panel count context.
+   * Handles adding the panel to the panel count context.
    */
   React.useEffect(() => {
     if (open) {
@@ -158,10 +212,12 @@ const PanelComponent = ({
 
       // ensured to fire for one render.
       if (!openPrev) {
-        controller && setPanelCount([...panelCount, { id: id }]);
+        panelGroupUsed && setPanelGroupCount([...panelGroupCount, {
+          id: controllerId
+        }]);
       }
     }
-  }, [open, openPrev, renderPortal, portal, controller]);
+  }, [open, openPrev, renderPortal, portal, panelGroupUsed]);
 
   /**
    * Handles closing the panel when the external open property is
@@ -169,24 +225,24 @@ const PanelComponent = ({
    */
   React.useEffect(() => {
     if (!open && openPrev !== undefined &&
-      openPrev !== false && id) {
+      openPrev !== false) {
 
       setIsOpen(false);
 
-      if (controller) {
-        const newPanelCountContext = panelCount.filter((panel: any) => {
-          return panel.id !== id;
+      if (panelGroupUsed) {
+        const newPanelCountContext = panelGroupCount.filter((panel: PanelCount) => {
+          return panel.id !== controllerId;
         });
 
-        setPanelCount(newPanelCountContext);
+        panelGroupUsed && setPanelGroupCount(newPanelCountContext);
       }
     }
-  }, [open, openPrev, controller]);
+  }, [open, openPrev, panelGroupUsed, controllerId]);
 
   /**
    * Handles removing the portal from the DOM after allowing the
-   * animation to complete and invokes the onClosed callback.
-   *
+   * animation to complete.
+   * Handles invoking the onClosed callback.
    * Handles the onOpened callback.
    */
   React.useEffect(() => {
@@ -218,31 +274,43 @@ const PanelComponent = ({
     });
   }, [children]);
 
+  const renderOverlay = (): JSX.Element => {
+    return (
+      <Portal>
+        <PanelOverlay
+          visibility={open}
+          zindex={zIndex.overlay}
+        />
+      </Portal>
+    );
+  };
+
   /**
    * Render content.
    */
   const renderContent = (): JSX.Element => {
     return (
-      <div
-        className={classes}
-        style={
-          zindex ? { zIndex: zindex } : null
-        }>
-        {!headerFound ? (
-          <>
-            <PanelHeaderDefault
-              onClose={onHandleClose}
-            />
-            <div className={LIBRARY_CLASSES.CONTENT}>
+      <>
+        <div
+          className={classes}
+          style={{ zIndex: zIndex.panel }}>
+          {!headerFound ? (
+            <>
+              <PanelHeaderDefault
+                onClose={onHandleClose}
+              />
+              <div className={LIBRARY_CLASSES.CONTENT}>
+                {children}
+              </div>
+            </>
+          ) : (
+            <>
               {children}
-            </div>
-          </>
-        ) : (
-          <>
-            {children}
-          </>
-        )}
-      </div>
+            </>
+          )}
+        </div>
+        {overlay && open && renderOverlay()}
+      </>
     );
   };
 

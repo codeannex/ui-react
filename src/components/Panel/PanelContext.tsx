@@ -1,70 +1,48 @@
 import React, { useState, useContext } from 'react';
 
-const PanelCountContext = React.createContext([]);
-const PanelCountActionsContext = React.createContext(undefined);
-const PanelOverlayContext = React.createContext(undefined);
-const PanelOverlayActionsContext = React.createContext(undefined);
-const PanelHighestZIndexContext = React.createContext(undefined);
-const PanelHighestZIndexActionsContext = React.createContext(undefined);
+const PanelGroupCountContext = React.createContext([]);
+const PanelGroupCountActionsContext = React.createContext(undefined);
+const PanelGroupOverlayContext = React.createContext(undefined);
+const PanelGroupOverlayActionsContext = React.createContext(undefined);
+const PanelGroupHighestZIndexContext = React.createContext(undefined);
+const PanelGroupHighestZIndexActionsContext = React.createContext(undefined);
+const PanelGroupContext = React.createContext(undefined);
+const PanelGroupActionsContext = React.createContext(undefined);
 
-export const panelCountContext = (): any[] => {
-  const context = useContext(PanelCountContext);
+export interface PanelCount {
+  id: string;
+}
 
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
-
-  return context;
+export const panelGroupCountContext = (): PanelCount[] => {
+  return useContext(PanelGroupCountContext);
 };
 
-export const panelCountActionsContext = ()  => {
-  const context = useContext(PanelCountActionsContext);
-
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
-
-  return context;
+export const panelGroupCountActionsContext = (): (PanelCount) => void  => {
+  return useContext(PanelGroupCountActionsContext);
 };
 
-export const panelOverlayContext = (): boolean => {
-  const context = useContext(PanelOverlayContext);
-
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
-
-  return context;
+export const panelGroupOverlayContext = (): boolean => {
+  return useContext(PanelGroupOverlayContext);
 };
 
-export const panelOverlayActionsContext = ()  => {
-  const context = useContext(PanelOverlayActionsContext);
-
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
-
-  return context;
+export const panelGroupOverlayActionsContext = (): (boolean) => void  => {
+  return useContext(PanelGroupOverlayActionsContext);
 };
 
-export const panelHighestZIndexContext = (): number => {
-  const context = useContext(PanelHighestZIndexContext);
-
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
-
-  return context;
+export const panelGroupHighestZIndexContext = (): number => {
+  return useContext(PanelGroupHighestZIndexContext);
 };
 
-export const panelHighestZIndexActionsContext = ()  => {
-  const context = useContext(PanelHighestZIndexActionsContext);
+export const panelGroupHighestZIndexActionsContext = (): (number) => void  => {
+  return useContext(PanelGroupHighestZIndexActionsContext);
+};
 
-  if (context === undefined) {
-    throw new Error(`Error`);
-  }
+export const panelGroupContext = (): boolean => {
+  return useContext(PanelGroupContext);
+};
 
-  return context;
+export const panelGroupActionsContext = (): (boolean) => void  => {
+  return useContext(PanelGroupActionsContext);
 };
 
 interface Props {
@@ -75,23 +53,28 @@ export const PanelProvider: React.FC<Props> = ({
   // eslint-disable-next-line react/prop-types
   children,
 }): React.ReactElement => {
-  const [panelCount, setPanelCount] = useState([]);
-  const [panelOverlay, setPanelOverlay] = useState(false);
-  const [panelHighestZIndex, setPanelHighestZIndex] = useState(null);
+  const [panelGroupCount, setPanelGroupCount] = useState([]);
+  const [panelGroupOverlay, setPanelGroupOverlay] = useState(false);
+  const [panelGroupHighestZIndex, setPanelGroupHighestZIndex] = useState(null);
+  const [panelGroupUsed, setPanelGroupUsed] = useState(false);
 
   return (
-    <PanelCountContext.Provider value={panelCount}>
-      <PanelCountActionsContext.Provider value={setPanelCount}>
-        <PanelOverlayContext.Provider value={panelOverlay}>
-          <PanelOverlayActionsContext.Provider value={setPanelOverlay}>
-            <PanelHighestZIndexContext.Provider value={panelHighestZIndex}>
-              <PanelHighestZIndexActionsContext.Provider value={setPanelHighestZIndex}>
-                {children}
-              </PanelHighestZIndexActionsContext.Provider>
-            </PanelHighestZIndexContext.Provider>
-          </PanelOverlayActionsContext.Provider>
-        </PanelOverlayContext.Provider>
-      </PanelCountActionsContext.Provider>
-    </PanelCountContext.Provider>
+    <PanelGroupCountContext.Provider value={panelGroupCount}>
+      <PanelGroupCountActionsContext.Provider value={setPanelGroupCount}>
+        <PanelGroupOverlayContext.Provider value={panelGroupOverlay}>
+          <PanelGroupOverlayActionsContext.Provider value={setPanelGroupOverlay}>
+            <PanelGroupHighestZIndexContext.Provider value={panelGroupHighestZIndex}>
+              <PanelGroupHighestZIndexActionsContext.Provider value={setPanelGroupHighestZIndex}>
+                <PanelGroupContext.Provider value={panelGroupUsed}>
+                  <PanelGroupActionsContext.Provider value={setPanelGroupUsed}>
+                    {children}
+                  </PanelGroupActionsContext.Provider>
+                </PanelGroupContext.Provider>
+              </PanelGroupHighestZIndexActionsContext.Provider>
+            </PanelGroupHighestZIndexContext.Provider>
+          </PanelGroupOverlayActionsContext.Provider>
+        </PanelGroupOverlayContext.Provider>
+      </PanelGroupCountActionsContext.Provider>
+    </PanelGroupCountContext.Provider>
   );
 };
