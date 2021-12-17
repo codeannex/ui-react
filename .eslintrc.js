@@ -28,7 +28,7 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 2,
-    '@typescript-eslint/no-explicit-any': 2,
+    '@typescript-eslint/no-explicit-any': 0,
     'react/display-name': 'off',
 
     'no-console': 1

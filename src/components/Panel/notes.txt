@@ -62,3 +62,5 @@ BUG:
 
 1. When close is handled from within the component "open" prop remains true so the portal is
 rendered again.
+
+2. Looks like the overlay is not removed when closing with the default header button.
