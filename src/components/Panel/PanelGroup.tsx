@@ -2,15 +2,16 @@ import * as React from 'react';
 
 import { PanelOverlay } from './components';
 import {
-  PanelProvider,
+  PanelGroupProvider,
   panelGroupHighestZIndexActionsContext,
   panelGroupActionsContext,
   panelGroupCountContext
-} from './PanelContext';
+} from './PanelGroupContext';
 
 import { getHighestZIndex } from './utils/getHighestZIndex';
 
 export interface PanelGroupProp extends React.HTMLAttributes<HTMLDivElement> {
+  controller?: boolean;
   overlay?: boolean;
   zindex?: number;
 }
@@ -33,6 +34,8 @@ const PanelGroupComponent = ({
 
   const [highestZIndex, setHighestZIndex] = React.useState(null);
   const [overlayVisible, setOverlayVisible] = React.useState(false);
+
+
 
   /**
    * Handles finding the highest z-index on the page after render.
@@ -66,8 +69,8 @@ const PanelGroupComponent = ({
 
 export const PanelGroup = (props: PanelGroupProp): JSX.Element => {
   return (
-    <PanelProvider>
-      <PanelGroupComponent { ...props } />
-    </PanelProvider>
+    <PanelGroupProvider>
+      <PanelGroupComponent { ...props } controller={true} />
+    </PanelGroupProvider>
   );
 };

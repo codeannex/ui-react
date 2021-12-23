@@ -6,11 +6,15 @@ import './PanelOverlay.scss';
 export interface PanelOverlayProps {
   visibility: boolean;
   zindex?: number;
+
+  onClick: () => void;
 }
 
 export const PanelOverlay = ({
   visibility,
-  zindex
+  zindex,
+
+  onClick
 }: PanelOverlayProps): JSX.Element  => {
 
   const classes = classNames(
@@ -18,8 +22,17 @@ export const PanelOverlay = ({
     visibility && 'visible'
   );
 
+  const handleOnClick = (): void => {
+    onClick && onClick();
+  };
+
   return (
-    <div className={classes} style={{ zIndex: zindex }} />
+    <div
+      className={classes}
+      style={{ zIndex: zindex }}
+
+      onClick={handleOnClick}
+    />
   );
 };
 

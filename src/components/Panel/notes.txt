@@ -1,10 +1,6 @@
-1. create props to give precedents to panels.
-2. width and height settings for panels. percent or explicit
-3. zindex is not working for un grouped panels
-4. overlay option
-
-
-
+TOTO:
+1. Add error handling for the instance a user gives a child panel the renderPortal prop.
+2. Setup class props so the user can easily style the default header
 
 
 NOTES:
@@ -57,10 +53,10 @@ Individual Panel
 Grouped Panels
 1. Should have a prop to enable overlay - managed
 
+Loader Rules: ======
+1. Loader is only included when the default header is used.
 
-BUG:
+TODO: It might be good to allow the default header to have compound component.
 
-1. When close is handled from within the component "open" prop remains true so the portal is
-rendered again.
 
-2. Looks like the overlay is not removed when closing with the default header button.
+BUGS:
