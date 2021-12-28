@@ -10,7 +10,7 @@ const LIBRARY_CLASSES = {
 };
 
 export interface PanelHeaderDefaultProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const PanelHeaderDefault = ({

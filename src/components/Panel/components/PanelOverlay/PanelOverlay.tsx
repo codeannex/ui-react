@@ -7,7 +7,7 @@ export interface PanelOverlayProps {
   visibility: boolean;
   zindex?: number;
 
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const PanelOverlay = ({

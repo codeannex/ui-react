@@ -103,9 +103,6 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   onClosed?: () => void;
   onOpen?: () => void;
   onOpened?: () => void;
-
-  defaultCloseCallback?: () => void;
-  closeCompletedCallback?: () => void;
 }
 
 export const PANEL_TEST_ID = 'codeannex-panel-component';
@@ -115,7 +112,7 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
  *
  * Panel Component
  */
-const PanelComponent = ({
+const PanelComponent = React.memo(({
   children,
   classes,
   controller,
@@ -135,26 +132,13 @@ const PanelComponent = ({
   onClosed,
   onOpen,
   onOpened,
-  defaultCloseCallback,
-  closeCompletedCallback
 }: PanelProps): JSX.Element => {
   let expanseValue = {};
 
   const containerRef = React.useRef(undefined);
   const openStateRef = React.useRef(undefined);
 
-  /**
-   * This group of values are only used when a PanelGroup exists.
-   */
-  const panelGroupUsed = panelGroupContext();
-  const panelGroupCount = panelGroupCountContext();
-  const setPanelGroupCount = panelGroupCountActionsContext();
-  const panelGroupHighestZIndex = panelGroupHighestZIndexContext();
-
-  const panelController = panelPanelControllerContext();
-
   const [headerFound, setHeaderFound] = React.useState<boolean>(false);
-  const [internalId, setInternalId] = React.useState<string>(null);
   const [open, setOpen] = React.useState<boolean>(false);
   const [portal, setPortal] = React.useState<boolean>(false);
   const [zIndex, setZindex] = React.useState<ZIndex>({
@@ -162,12 +146,17 @@ const PanelComponent = ({
     overlay: null
   });
 
-  const openPrev: boolean = usePreviousState(open);
+  const panelClasses = classNames(
+    LIBRARY_CLASSES.CONTAINER,
+    open && 'open',
+    position && PanelClasses[position],
+    classes
+  );
 
   /**
    * Handles prop override of width or height for the panel.
    */
-  if (expanse) {
+   if (expanse) {
     const property = expanse ?
       position === PanelPosition.TOP ||
       position === PanelPosition.BOTTOM ?
@@ -176,18 +165,11 @@ const PanelComponent = ({
     expanseValue = {
       [property]: expanse
     }
-  }
+   }
 
-  const setOpenStateRef = (openStateChange): void => {
+   const setOpenStateRef = (openStateChange): void => {
     openStateRef.current = openStateChange;
   };
-
-  const panelClasses = classNames(
-    LIBRARY_CLASSES.CONTAINER,
-    open && 'open',
-    position && PanelClasses[position],
-    classes
-  );
 
   const animationEnd = React.useCallback(() => {
     openStateRef.current ? onHandleOpened() : onHandleClosed();
@@ -197,33 +179,31 @@ const PanelComponent = ({
    * Handlers and lifecycle callbacks
    */
   const onHandleOpen = (): void => {
-    panelController.addPanel({
-      id: internalId,
-      position: position,
-      isChild: true
-    });
-
     setOpen(true);
 
-    onOpen && onOpen();
-  };
-
-  const onHandleOpened = (): void => {
-    onOpened && onOpened();
+    // panelController.addPanel({
+    //   id: internalId,
+    //   position: position,
+    //   isChild: true
+    // });
   };
 
   const onHandleClose = (): void => {
     setOpen(false);
 
-    panelController.removePanel({ id: internalId });
+    // panelController.addPanel({
+    //   id: internalId,
+    //   position: position,
+    //   isChild: true
+    // });
+  };
 
-    onClose && onClose();
+  const onHandleOpened = (): void => {
+    // code...
   };
 
   const onHandleClosed = (): void => {
-    closeCompletedCallback();
-
-    onClosed && onClosed();
+    // code...
   };
 
   /**
@@ -233,22 +213,13 @@ const PanelComponent = ({
    * will be give a higher precedence than the side panels.
    */
   React.useEffect(() => {
-    if (openState && !zIndex.panel) {
-
-      /**
-       * Adds zindex to a panel managed by the Panel Group.
-       */
-      if (controller && panelGroupUsed && panelGroupHighestZIndex) {
-        position === PanelPosition.TOP || position === PanelPosition.BOTTOM ?
-          setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 2 }) :
-          setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 1 });
-      }
+    if (!zIndex.panel) {
 
       /**
        * Adds zindex to a panel. This panel is not managed by the
        * Panel Group.
        */
-      if (!controller && !zIndex.panel && !zindex) {
+      if (!zIndex.panel && !zindex) {
         const { zIndexPanel, zIndexOverlay } = getZIndexValues(zindex, overlay);
 
         setZindex({
@@ -261,50 +232,27 @@ const PanelComponent = ({
        * Adds zindex to a panel when the zindex prop is explicitly
        * set.
        */
-      if (!controller && !zIndex.panel && zindex) {
+       if (!zIndex.panel && zindex) {
         setZindex({
           panel: zindex + 1,
           overlay: zindex
         });
       }
     }
-
-  }, [
-    controller,
-    openState,
-    panelGroupUsed,
-    panelGroupHighestZIndex,
-    position,
-    zIndex,
-    zindex
-  ]);
+  }, [openState, zIndex, zindex]);
 
   /**
    * Use Effect 2
    *
    * Handles rendering the portal before opening the panel when renderPortal
-   * prop is enabled and after zindex is calculated by use effect 1.
+   * prop is enabled and after zindex is calculated.
    */
   React.useEffect(() => {
-
-    /**
-     * Checks:
-     *
-     * 1. zIndex was set by use effect 1
-     * 2. render portal prop was set
-     * 3. portal does not exist
-     * 4. openState is true
-     */
     if (openState && zIndex.panel && renderPortal && !portal) {
       setPortal(true);
     }
-  }, [
-    openState,
-    openPrev,
-    portal,
-    renderPortal,
-    zIndex
-  ]);
+  }, [openState, portal, renderPortal, zIndex]);
+
 
   /**
    * Use Effect 3
@@ -312,117 +260,40 @@ const PanelComponent = ({
    * Handles opening the panel
    */
   React.useEffect(() => {
-
-    /**
-     * Checks:
-     *
-     * 1. openState is true
-     * 2. open is false
-     * 3. open is equal to openPrev - During re-renders isOpen can be
-     * false. This ensures the check runs once when the panel is opened and
-     * is not reset after any re-renders.
-     */
     if (openState && !open) {
 
-      /**
-       * Opens the panel when portal is true. The delay ensures the portal is
-       * rendered before the panel allowing the animation to work.
-       */
       portal && setTimeout(() => {
         onHandleOpen();
       }, TIMEOUT.PORTAL_RENDER_DELAY);
 
-      /**
-       * Opens the panel when the portal prop is not enabled. No delay is needed
-       * for the animation.
-       */
       if (!renderPortal) {
         onHandleOpen();
       }
-
-      /**
-       * Adds the panel to the panel group when Panel Group is enabled.
-       */
-      if (panelGroupUsed && !openPrev) {
-        const found = panelGroupCount.find((panel: PanelCount) => {
-          return panel.id === internalId;
-        });
-
-        !found && panelGroupUsed && setPanelGroupCount([...panelGroupCount, {
-          id: internalId
-        }]);
-      }
     }
-  }, [
-    open,
-    openPrev,
-    openState,
-    openPrev,
-    internalId,
-    renderPortal,
-    portal,
-    panelGroupUsed
-  ]);
+  }, [open, openState, portal, renderPortal]);
 
   /**
    * Use Effect 4
    *
-   * Handles closing the panel when the open prop is set to false.
+   * Handles closing the panel
    */
   React.useEffect(() => {
-
-    /**
-     * Checks:
-     *
-     * 1. openState prop has been set to false
-     * 2. open is true - when openState is set to false the close process
-     * begins and open will be true.
-     */
     if (!openState && open) {
       onHandleClose();
 
-      /**
-       * Removes the panel from the Panel Group when Panel Group is enabled.
-       */
-      if (panelGroupUsed) {
-        const newPanelCountContext = panelGroupCount.filter((panel: PanelCount) => {
-          return panel.id !== internalId;
-        });
-
-        panelGroupUsed && setPanelGroupCount(newPanelCountContext);
-      }
+      portal && setTimeout(() => {
+        setPortal(false);
+      }, TIMEOUT.PANEL_CLOSED_DELAY);
     }
-  }, [open, openState, openPrev, panelGroupUsed, internalId]);
+  }, [open, openState, portal, renderPortal]);
 
   /**
    * Use Effect 5
    *
-   * Handles cleanup by resetting the external open state to false
-   * and destroys the portal if portal was enabled.
-   */
-  React.useEffect(() => {
-
-    /**
-     * Checks:
-     *
-     * open state is set to false
-     * openPrev is true - indicates the panel has been closed as
-     * the previous state is true.
-     */
-    if (!open && openPrev) {
-      setTimeout(() => {
-        portal && setPortal(false);
-      }, TIMEOUT.PANEL_CLOSED_DELAY);
-    }
-  }, [open, openPrev]);
-
-  /**
-   * Use Effect 6
-   *
    * Handles determining whether the user has provided a custom header using
    * the optional compound component.
    */
-  React.useEffect(() => {
+   React.useEffect(() => {
     React.Children.map(children, (child: React.ReactElement) => {
       if (child && child.type === PanelHeader) {
         setHeaderFound(true);
@@ -431,22 +302,18 @@ const PanelComponent = ({
   }, [children]);
 
   /**
-   * Use Effect 7
-   *
    * Setup animation transition end event handler.
    */
-  React.useEffect(() => {
+   React.useEffect(() => {
     if (containerRef?.current &&
         !containerRef.current.getAttribute(CONSTANT.DATA_ANIMATION)) {
 
       containerRef.current.addEventListener(CONSTANT.TRANSITION_END, animationEnd);
       containerRef.current.setAttribute(CONSTANT.DATA_ANIMATION, 'animation');
     }
-  });
+   });
 
   /**
-   * Use Effect 8
-   *
    * Updates openStateRef so animationEnd callback has
    * access to the latest state change from openState.
    */
@@ -455,42 +322,30 @@ const PanelComponent = ({
   }, [openState]);
 
   /**
-   * Use Effect 9
-   *
    * Handles on mount simulation and cleanup when component unmounts.
    */
-  React.useEffect(() => {
-    setInternalId(getGuid());
+   React.useEffect(() => {
 
     return (): void => {
       containerRef.current.removeEventListener(CONSTANT.TRANSITION_END, animationEnd);
     }
   }, []);
 
-  /**
-   * Gets current panel
-   */
-  // React.useEffect(() => {
-  //   if (openState) {
-  //     const panel = panelController.getPanel({ id: internalId });
-  //   }
-  // }, [openState, panelController])
-
-  console.log('render =================');
-  console.log(panelGroupCount);
-  console.log('render =================');
+  // console.log('RENDER panel =================');
+  // console.log('openState ', openState);
+  // console.log('RENDER panel =================');
 
   /**
    * Render content.
    */
-  const renderOverlay = (): JSX.Element => {
+   const renderOverlay = (): JSX.Element => {
     return (
       <Portal>
         <PanelOverlay
           visibility={openState}
           zindex={zIndex.overlay}
 
-          onClick={defaultCloseCallback}
+          onClick={onClose}
         />
       </Portal>
     );
@@ -508,7 +363,7 @@ const PanelComponent = ({
             {!headerFound ? (
               <>
                 <PanelHeaderDefault
-                  onClose={defaultCloseCallback}
+                  onClose={onClose}
                 />
                 <div className={LIBRARY_CLASSES.CONTENT}>
                   {loading ? <PanelLoader theme={loaderTheme} /> : (
@@ -539,73 +394,51 @@ const PanelComponent = ({
   } else {
     return renderPanel();
   }
-};
+}, (prevProps, nextProps) => {
+  // Limits re-rendering the PanelComponent until the openState prop has been changed.
+  return prevProps.openState === nextProps.openState;
+});
 
-export const Panel = Object.assign(
-  React.forwardRef(
-    (props: PanelProps, ref: React.Ref<HTMLDivElement>): JSX.Element => {
-      const { open, renderPortal } = props;
+export const Panel = React.memo(Object.assign(
+  React.forwardRef((
+    props: PanelProps,
+    ref: React.Ref<HTMLDivElement>
+  ): JSX.Element => {
+      const { open, onClose } = props;
 
-      const [openProp, ] = React.useState<boolean>(open);
-      const [closing, setClosing] = React.useState<boolean>(false);
       const [openState, setOpenState] = React.useState<boolean>(false);
 
-      const openPropPrev = usePreviousState(openProp);
-      const openStatePrev = usePreviousState(openState);
+      const openPrev = usePreviousState(open);
 
-      const handleDefaultCloseButtonCallback = (): void => {
-        setClosing(true);
-        setOpenState(false);
+      // console.log('RENDER =================');
+      // console.log('open ', open);
+      // console.log('openState ', openState);
+      // console.log('RENDER =================');
+
+      const handleOnClose = (): void => {
+        onClose && onClose();
       };
 
-      const handleCloseCompletedCallback = (): void => {
-        setClosing(false);
-      };
-
-      /**
-       * Handles preventing the panel from opening when renderPortal
-       * prop is enabled. This check should only run on initial load.
-       */
       React.useLayoutEffect(() => {
-        if (renderPortal && !open && openPropPrev === undefined) {
-          setOpenState(null);
-        }
-      }, [open, renderPortal, openPropPrev]);
-
-      /**
-       * Handles opening the panel when the external prop open is
-       * set to true.
-       */
-      React.useLayoutEffect(() => {
-        if (!closing && open && !openState && !openStatePrev) {
+        if (open) {
           setOpenState(true);
         }
-      }, [closing, open, openState, openStatePrev]);
-
+      }, [open]);
 
       React.useLayoutEffect(() => {
-
-        /**
-         * Check closes panel when open prop is set to false. This check
-         * handles closing the panel when the user has opted to use the
-         * Panel.Header compound component and because the default header
-         * close button which is handled internally will not be used.
-         */
-        if (!open && openStatePrev !== undefined && openState) {
+        if (!open && openPrev) {
           setOpenState(false);
         }
-
-      }, [open, openState, openStatePrev]);
+      }, [open, openPrev]);
 
       return (
         <PanelProvider controller={PanelController}>
           <PanelComponent
-            {...props }
+            { ...props }
             openState={openState}
             forwardedRef={ref}
             data-testid={PANEL_TEST_ID}
-            defaultCloseCallback={handleDefaultCloseButtonCallback}
-            closeCompletedCallback={handleCloseCompletedCallback}
+            onClose={handleOnClose}
           />
         </PanelProvider>
       );
@@ -615,6 +448,9 @@ export const Panel = Object.assign(
     Header: PanelHeader,
     Content: PanelContent
   }
-);
+), ((prevProps, nextProps) => {
+  // Limits re-rendering the Panel until the open prop has been changed.
+  return prevProps.open === nextProps.open;
+}));
 
 export default Panel;
