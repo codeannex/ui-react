@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Panel } from './Panel';
 import { PanelOverlay } from './components';
 import {
   PanelGroupProvider,
@@ -11,7 +12,6 @@ import {
 import { getHighestZIndex } from './utils/getHighestZIndex';
 
 export interface PanelGroupProp extends React.HTMLAttributes<HTMLDivElement> {
-  controller?: boolean;
   overlay?: boolean;
   zindex?: number;
 }
@@ -62,7 +62,9 @@ const PanelGroupComponent = ({
           zindex={highestZIndex}
         />
       )}
-      {children}
+      {React.Children.map(children, (child: any) => {
+        return React.cloneElement(child, { controller: true });
+      })}
     </div>
   );
 };
@@ -70,7 +72,7 @@ const PanelGroupComponent = ({
 export const PanelGroup = (props: PanelGroupProp): JSX.Element => {
   return (
     <PanelGroupProvider>
-      <PanelGroupComponent { ...props } controller={true} />
+      <PanelGroupComponent { ...props } />
     </PanelGroupProvider>
   );
 };

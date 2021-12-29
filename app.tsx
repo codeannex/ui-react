@@ -71,12 +71,12 @@ const Home = () => {
   const handleOnClose2 = () => {
     // console.log('callback on close');
     // on closed callback
+    setOpen2(false);
   };
 
   const handleOnClosed2 = () => {
     // console.log('callback on closed');
     // on closed callback
-    setOpen2(false);
   };
 
   // ============================ panel 3
@@ -170,9 +170,6 @@ const Home = () => {
     setOpen5(false);
   };
 
-  console.log('render =================');
-  console.log(Panel);
-  console.log('render =================');
   return (
     <>
       <div>
@@ -207,17 +204,16 @@ const Home = () => {
 
       {/* ======= Panels ======= */}
 
-      {/* <Panel
+      <Panel
         open={open1}
         expanse={'30%'}
         loaderTheme={PanelLoaderTheme.DARK}
         // loading={loading1}
-        // renderPortal={true}
+        renderPortal={true}
         position={PanelPosition.RIGHT}
         overlay={true}
         zindex={600}
 
-        onOpen={handleOnOpen1}
         onOpened={handleOnOpened1}
         onClose={handleOnClose1}
         onClosed={handleOnClosed1}
@@ -225,9 +221,9 @@ const Home = () => {
         <div>
           <h2>Panel</h2>
         </div>
-      </Panel> */}
+      </Panel>
 
-      <Panel
+      {/* <Panel
         open={open1}
         renderPortal={true}
         position={PanelPosition.RIGHT}
@@ -247,108 +243,108 @@ const Home = () => {
         <Panel.Content>
           Panel Slide Left
         </Panel.Content>
-      </Panel>
+      </Panel> */}
 
-      {/*<PanelGroup*/}
-      {/*  // overlay={true}*/}
-      {/*  zindex={600}*/}
-      {/*>*/}
-      {/*  <Panel*/}
-      {/*    open={open1}*/}
-      {/*    position={PanelPosition.RIGHT}*/}
-      {/*    renderPortal={true}*/}
+      {/* <PanelGroup
+        // overlay={true}
+        // zindex={600}
+      >
+        <Panel
+          open={open1}
+          position={PanelPosition.RIGHT}
+          renderPortal={true}
 
-      {/*    onOpen={handleOnOpen1}*/}
-      {/*    onOpened={handleOnOpened1}*/}
-      {/*    onClose={handleOnClose1}*/}
-      {/*    onClosed={handleOnClosed1}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Left</h2>*/}
-      {/*      <button onClick={panelClose1}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <Panel*/}
-      {/*    open={open2}*/}
-      {/*    position={PanelPosition.LEFT}*/}
-      {/*    renderPortal={true}*/}
+          onOpen={handleOnOpen1}
+          onOpened={handleOnOpened1}
+          onClose={handleOnClose1}
+          onClosed={handleOnClosed1}
+        >
+          <div>
+            <h2>Panel Slide Left</h2>
+            <button onClick={panelClose1}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          open={open2}
+          position={PanelPosition.LEFT}
+          renderPortal={true}
 
-      {/*    onOpen={handleOnOpen2}*/}
-      {/*    onOpened={handleOnOpened2}*/}
-      {/*    onClose={handleOnClose2}*/}
-      {/*    onClosed={handleOnClosed2}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Right</h2>*/}
-      {/*      <button onClick={panelClose2}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <Panel*/}
-      {/*    open={open3}*/}
-      {/*    position={PanelPosition.TOP}*/}
-      {/*    renderPortal={true}*/}
+          onOpen={handleOnOpen2}
+          onOpened={handleOnOpened2}
+          onClose={handleOnClose2}
+          onClosed={handleOnClosed2}
+        >
+          <div>
+            <h2>Panel Slide Right</h2>
+            <button onClick={panelClose2}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          open={open3}
+          position={PanelPosition.TOP}
+          renderPortal={true}
 
-      {/*    onOpen={handleOnOpen3}*/}
-      {/*    onOpened={handleOnOpened3}*/}
-      {/*    onClose={handleOnClose3}*/}
-      {/*    onClosed={handleOnClosed3}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide Down</h2>*/}
-      {/*      <button onClick={panelClose3}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <Panel*/}
-      {/*    open={open4}*/}
-      {/*    position={PanelPosition.BOTTOM}*/}
-      {/*    renderPortal={true}*/}
+          onOpen={handleOnOpen3}
+          onOpened={handleOnOpened3}
+          onClose={handleOnClose3}
+          onClosed={handleOnClosed3}
+        >
+          <div>
+            <h2>Panel Slide Down</h2>
+            <button onClick={panelClose3}>Close</button>
+          </div>
+        </Panel>
+        <Panel
+          open={open4}
+          position={PanelPosition.BOTTOM}
+          renderPortal={true}
 
-      {/*    onOpen={handleOnOpen4}*/}
-      {/*    onOpened={handleOnOpened4}*/}
-      {/*    onClose={handleOnClose4}*/}
-      {/*    onClosed={handleOnClosed4}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      <h2>Panel Slide UP</h2>*/}
-      {/*      <button onClick={panelClose4}>Close</button>*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*</PanelGroup>*/}
+          onOpen={handleOnOpen4}
+          onOpened={handleOnOpened4}
+          onClose={handleOnClose4}
+          onClosed={handleOnClosed4}
+        >
+          <div>
+            <h2>Panel Slide UP</h2>
+            <button onClick={panelClose4}>Close</button>
+          </div>
+        </Panel>
+      </PanelGroup> */}
 
       {/* ======= Panels Nested ======= */}
 
-      {/*<Panel*/}
-      {/*  open={open1}*/}
-      {/*  renderPortal={true}*/}
-      {/*  position={PanelPosition.RIGHT}*/}
-      {/*  overlay={true}*/}
-      {/*  zindex={600}*/}
+      {/* <Panel
+        open={open1}
+        renderPortal={true}
+        position={PanelPosition.RIGHT}
+        overlay={true}
+        zindex={600}
 
-      {/*  onOpen={handleOnOpen1}*/}
-      {/*  onOpened={handleOnOpened1}*/}
-      {/*  onClose={handleOnClose1}*/}
-      {/*  onClosed={handleOnClosed1}*/}
-      {/*>*/}
-      {/*  <Panel*/}
-      {/*    open={open5}*/}
-      {/*    classes={'one'}*/}
-      {/*    expanse={'20%'}*/}
-      {/*    position={PanelPosition.LEFT}*/}
+        onOpen={handleOnOpen1}
+        onOpened={handleOnOpened1}
+        onClose={handleOnClose1}
+        onClosed={handleOnClosed1}
+      >
+        <Panel
+          open={open5}
+          classes={'one'}
+          expanse={'20%'}
+          position={PanelPosition.LEFT}
 
-      {/*    onOpen={handleOnOpen5}*/}
-      {/*    onOpened={handleOnOpened5}*/}
-      {/*    onClose={handleOnClose5}*/}
-      {/*    onClosed={handleOnClosed5}*/}
-      {/*  >*/}
-      {/*    <div>*/}
-      {/*      Inner Panel*/}
-      {/*    </div>*/}
-      {/*  </Panel>*/}
-      {/*  <div>*/}
-      {/*    <h2>Panel</h2>*/}
-      {/*    <button onClick={panelOpen5}>Open Inner Panel</button>*/}
-      {/*  </div>*/}
-      {/*</Panel>*/}
+          onOpen={handleOnOpen5}
+          onOpened={handleOnOpened5}
+          onClose={handleOnClose5}
+          onClosed={handleOnClosed5}
+        >
+          <div>
+            Inner Panel
+          </div>
+        </Panel>
+        <div>
+          <h2>Panel</h2>
+          <button onClick={panelOpen5}>Open Inner Panel</button>
+        </div>
+      </Panel> */}
     </>
   );
 };

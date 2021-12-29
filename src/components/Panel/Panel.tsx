@@ -83,11 +83,8 @@ interface PanelPropsComposition  {
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelPropsComposition {
   open: boolean;
-  position: PanelPosition;
-
-  forwardedRef?: React.Ref<HTMLDivElement>;
+  position?: PanelPosition;
   classes?: string;
-  controller?: boolean;
   errorText?: string;
   expanse?: string;
   loaderTheme?: string;
@@ -96,12 +93,11 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   overlay?: boolean;
   renderPortal?: boolean;
   zindex?: number;
-  openState?: boolean;
+  controller?: boolean;
 
   // Lifecycle callbacks
   onClose?: () => void;
   onClosed?: () => void;
-  onOpen?: () => void;
   onOpened?: () => void;
 }
 
@@ -122,7 +118,7 @@ const PanelComponent = React.memo(({
   loading = false,
   loadingText,
   overlay,
-  position,
+  position = PanelPosition.RIGHT,
   renderPortal,
   zindex,
 
@@ -130,15 +126,25 @@ const PanelComponent = React.memo(({
 
   onClose,
   onClosed,
-  onOpen,
-  onOpened,
-}: PanelProps): JSX.Element => {
+  onOpened
+}: PanelProps & { forwardedRef: React.Ref<HTMLElement> } & { openState: boolean }): JSX.Element => {
   let expanseValue = {};
 
   const containerRef = React.useRef(undefined);
   const openStateRef = React.useRef(undefined);
 
+  /**
+   * This group of values are only used when a PanelGroup exists.
+   */
+  const panelGroupUsed = panelGroupContext();
+  const panelGroupCount = panelGroupCountContext();
+  const setPanelGroupCount = panelGroupCountActionsContext();
+  const panelGroupHighestZIndex = panelGroupHighestZIndexContext();
+
+  const panelController = panelPanelControllerContext();
+
   const [headerFound, setHeaderFound] = React.useState<boolean>(false);
+  const [internalId, setInternalId] = React.useState<string>(null);
   const [open, setOpen] = React.useState<boolean>(false);
   const [portal, setPortal] = React.useState<boolean>(false);
   const [zIndex, setZindex] = React.useState<ZIndex>({
@@ -180,30 +186,18 @@ const PanelComponent = React.memo(({
    */
   const onHandleOpen = (): void => {
     setOpen(true);
-
-    // panelController.addPanel({
-    //   id: internalId,
-    //   position: position,
-    //   isChild: true
-    // });
   };
 
   const onHandleClose = (): void => {
     setOpen(false);
-
-    // panelController.addPanel({
-    //   id: internalId,
-    //   position: position,
-    //   isChild: true
-    // });
   };
 
   const onHandleOpened = (): void => {
-    // code...
+    onOpened && onOpened();
   };
 
   const onHandleClosed = (): void => {
-    // code...
+    onClosed && onClosed();
   };
 
   /**
@@ -216,10 +210,19 @@ const PanelComponent = React.memo(({
     if (!zIndex.panel) {
 
       /**
+       * Adds zindex to a panel managed by the Panel Group.
+       */
+      if (controller && panelGroupUsed && panelGroupHighestZIndex) {
+        position === PanelPosition.TOP || position === PanelPosition.BOTTOM ?
+          setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 2 }) :
+          setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 1 });
+      }
+
+      /**
        * Adds zindex to a panel. This panel is not managed by the
        * Panel Group.
        */
-      if (!zIndex.panel && !zindex) {
+      if (!controller && !zIndex.panel && !zindex) {
         const { zIndexPanel, zIndexOverlay } = getZIndexValues(zindex, overlay);
 
         setZindex({
@@ -232,14 +235,22 @@ const PanelComponent = React.memo(({
        * Adds zindex to a panel when the zindex prop is explicitly
        * set.
        */
-       if (!zIndex.panel && zindex) {
+      if (!controller && !zIndex.panel && zindex) {
         setZindex({
           panel: zindex + 1,
           overlay: zindex
         });
       }
     }
-  }, [openState, zIndex, zindex]);
+  }, [
+    controller,
+    openState,
+    panelGroupUsed,
+    panelGroupHighestZIndex,
+    position,
+    zIndex,
+    zindex
+  ]);
 
   /**
    * Use Effect 2
@@ -269,8 +280,37 @@ const PanelComponent = React.memo(({
       if (!renderPortal) {
         onHandleOpen();
       }
+
+      /**
+       * Adds the panel to the panel group when Panel Group is enabled.
+       */
+      if (panelGroupUsed) {
+        const found = panelGroupCount.find((panel: PanelCount) => {
+          return panel.id === internalId;
+        });
+
+        !found && panelGroupUsed && setPanelGroupCount([...panelGroupCount, {
+          id: internalId
+        }]);
+      }
+
+      panelController.addPanel({
+        id: internalId,
+        position: position,
+        isChild: true
+      });
     }
-  }, [open, openState, portal, renderPortal]);
+  }, [
+    internalId,
+    open,
+    openState,
+    panelController,
+    panelGroupCount,
+    panelGroupUsed,
+    portal,
+    position,
+    renderPortal
+  ]);
 
   /**
    * Use Effect 4
@@ -284,8 +324,33 @@ const PanelComponent = React.memo(({
       portal && setTimeout(() => {
         setPortal(false);
       }, TIMEOUT.PANEL_CLOSED_DELAY);
+
+      /**
+       * Removes the panel from the Panel Group when Panel Group is enabled.
+       */
+      if (panelGroupUsed) {
+        const newPanelCountContext = panelGroupCount.filter((panel: PanelCount) => {
+          return panel.id !== internalId;
+        });
+
+        panelGroupUsed && setPanelGroupCount(newPanelCountContext);
+      }
+
+      panelController.removePanel({
+        id: internalId,
+        position: position,
+        isChild: true
+      });
     }
-  }, [open, openState, portal, renderPortal]);
+  }, [
+    internalId,
+    open,
+    openState,
+    panelGroupCount,
+    panelGroupUsed,
+    portal,
+    renderPortal
+  ]);
 
   /**
    * Use Effect 5
@@ -293,7 +358,7 @@ const PanelComponent = React.memo(({
    * Handles determining whether the user has provided a custom header using
    * the optional compound component.
    */
-   React.useEffect(() => {
+  React.useEffect(() => {
     React.Children.map(children, (child: React.ReactElement) => {
       if (child && child.type === PanelHeader) {
         setHeaderFound(true);
@@ -304,14 +369,14 @@ const PanelComponent = React.memo(({
   /**
    * Setup animation transition end event handler.
    */
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (containerRef?.current &&
         !containerRef.current.getAttribute(CONSTANT.DATA_ANIMATION)) {
 
       containerRef.current.addEventListener(CONSTANT.TRANSITION_END, animationEnd);
       containerRef.current.setAttribute(CONSTANT.DATA_ANIMATION, 'animation');
     }
-   });
+  });
 
   /**
    * Updates openStateRef so animationEnd callback has
@@ -324,16 +389,22 @@ const PanelComponent = React.memo(({
   /**
    * Handles on mount simulation and cleanup when component unmounts.
    */
-   React.useEffect(() => {
+  React.useEffect(() => {
+    setInternalId(getGuid());
 
     return (): void => {
       containerRef.current.removeEventListener(CONSTANT.TRANSITION_END, animationEnd);
     }
   }, []);
 
-  // console.log('RENDER panel =================');
-  // console.log('openState ', openState);
-  // console.log('RENDER panel =================');
+  /**
+   * Gets current panel
+   */
+  React.useEffect(() => {
+    if (openState) {
+      const panel = panelController.getPanel({ id: internalId });
+    }
+  }, [openState, panelController]);
 
   /**
    * Render content.
@@ -399,7 +470,7 @@ const PanelComponent = React.memo(({
   return prevProps.openState === nextProps.openState;
 });
 
-export const Panel = React.memo(Object.assign(
+export const Panel = Object.assign(
   React.forwardRef((
     props: PanelProps,
     ref: React.Ref<HTMLDivElement>
@@ -409,11 +480,6 @@ export const Panel = React.memo(Object.assign(
       const [openState, setOpenState] = React.useState<boolean>(false);
 
       const openPrev = usePreviousState(open);
-
-      // console.log('RENDER =================');
-      // console.log('open ', open);
-      // console.log('openState ', openState);
-      // console.log('RENDER =================');
 
       const handleOnClose = (): void => {
         onClose && onClose();
@@ -448,9 +514,6 @@ export const Panel = React.memo(Object.assign(
     Header: PanelHeader,
     Content: PanelContent
   }
-), ((prevProps, nextProps) => {
-  // Limits re-rendering the Panel until the open prop has been changed.
-  return prevProps.open === nextProps.open;
-}));
+);
 
 export default Panel;
