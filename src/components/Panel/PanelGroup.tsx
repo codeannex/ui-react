@@ -5,7 +5,6 @@ import { PanelOverlay } from './components';
 import {
   PanelGroupProvider,
   panelGroupHighestZIndexActionsContext,
-  panelGroupActionsContext,
   panelGroupCountContext
 } from './PanelGroupContext';
 
@@ -19,9 +18,7 @@ export interface PanelGroupProp extends React.HTMLAttributes<HTMLDivElement> {
 export const PANEL_GROUP_TEST_ID = 'codeannex-panel-component';
 
 /**
- * @Codeannex UI React: Panel Component
- *
- * Panel Group Component
+ * @Codeannex UI React: Panel Group Component
  */
 const PanelGroupComponent = ({
   children,
@@ -30,7 +27,6 @@ const PanelGroupComponent = ({
 }: PanelGroupProp): JSX.Element => {
   const panelGroupCount = panelGroupCountContext();
   const setPanelGroupHighestZIndex = panelGroupHighestZIndexActionsContext();
-  const setPanelGroupUsed = panelGroupActionsContext();
 
   const [highestZIndex, setHighestZIndex] = React.useState(null);
   const [overlayVisible, setOverlayVisible] = React.useState(false);
@@ -49,10 +45,12 @@ const PanelGroupComponent = ({
     setHighestZIndex(highestIndex);
   }, [zindex]);
 
+  /**
+   * Handles rendering the overlay when the overlay prop is set.
+   */
   React.useEffect(() => {
     setOverlayVisible(!!panelGroupCount.length);
-    setPanelGroupUsed(true);
-  }, [panelGroupCount, setOverlayVisible, setPanelGroupUsed]);
+  }, [panelGroupCount, setOverlayVisible]);
 
   return (
     <div id={PANEL_GROUP_TEST_ID}>
@@ -63,7 +61,9 @@ const PanelGroupComponent = ({
         />
       )}
       {React.Children.map(children, (child: any) => {
-        return React.cloneElement(child, { controller: true });
+        return child.type === Panel ?
+          React.cloneElement(child, { controller: true }) :
+          child;
       })}
     </div>
   );

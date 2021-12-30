@@ -14,24 +14,20 @@ const Home = () => {
   const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
 
-  const [toggle, setToggle]  = React.useState(false);
   const [loading1, setLoading1] = React.useState(true);
 
-  const toggleString = () => {
+  const stopLoading = () => {
     setLoading1(false);
   };
 
   // ============================ panel 1
   const panelOpen1 = () => {
     setOpen1(true);
+    setLoading1(true);
   };
 
   const panelClose1 = () => {
     setOpen1(false);
-  };
-
-  const handleOnOpen1 = () => {
-    console.log('callback on open');
   };
 
   const handleOnOpened1 = () => {
@@ -45,8 +41,6 @@ const Home = () => {
 
   const handleOnClosed1 = () => {
     console.log('callback on closed');
-    // on closed callback
-    setOpen1(false);
   };
 
   // ============================ panel 2
@@ -55,28 +49,20 @@ const Home = () => {
   };
 
   const panelClose2 = () => {
-    setOpen2(false);
-  };
-
-  const handleOnOpen2 = () => {
-    // console.log('callback on open');
-    // on open callback
+    setOpen1(false);
   };
 
   const handleOnOpened2 = () => {
-    // console.log('callback on opened');
-    // on opened callback
+    console.log('callback on opened');
   };
 
   const handleOnClose2 = () => {
-    // console.log('callback on close');
-    // on closed callback
+    console.log('callback on close');
     setOpen2(false);
   };
 
   const handleOnClosed2 = () => {
-    // console.log('callback on closed');
-    // on closed callback
+    console.log('callback on closed');
   };
 
   // ============================ panel 3
@@ -88,25 +74,17 @@ const Home = () => {
     setOpen3(false);
   };
 
-  const handleOnOpen3 = () => {
-    // console.log('callback on open');
-    // on open callback
-  };
-
   const handleOnOpened3 = () => {
-    // console.log('callback on opened');
-    // on opened callback
+    console.log('callback on opened');
   };
 
   const handleOnClose3 = () => {
-    // console.log('callback on close');
-    // on closed callback
+    console.log('callback on close');
+    setOpen3(false);
   };
 
   const handleOnClosed3 = () => {
-    // console.log('callback on closed');
-    // on closed callback
-    setOpen3(false);
+    console.log('callback on closed');
   };
 
   // ============================ panel 4
@@ -118,56 +96,39 @@ const Home = () => {
     setOpen4(false);
   };
 
-  const handleOnOpen4 = () => {
-    // console.log('callback on open');
-    // on open callback
-  };
-
   const handleOnOpened4 = () => {
-    // console.log('callback on opened');
-    // on opened callback
+    console.log('callback on opened');
   };
 
   const handleOnClose4 = () => {
-    // console.log('callback on close');
-    // on closed callback
+    console.log('callback on close');
+    setOpen4(false);
   };
 
   const handleOnClosed4 = () => {
-    // console.log('callback on closed');
-    // on closed callback
-    setOpen4(false);
+    console.log('callback on closed');
   };
 
   // ============================ panel 5
   const panelOpen5 = () => {
-    console.log('here clicked');
     setOpen5(true);
   };
 
   const panelClose5 = () => {
-    setOpen5(false);
-  };
-
-  const handleOnOpen5 = () => {
-    // console.log('callback on open');
-    // on open callback
+    setOpen1(false);
   };
 
   const handleOnOpened5 = () => {
-    // console.log('callback on opened');
-    // on opened callback
+    console.log('callback on opened');
   };
 
   const handleOnClose5 = () => {
-    // console.log('callback on close');
-    // on closed callback
+    console.log('callback on close');
+    setOpen5(false);
   };
 
   const handleOnClosed5 = () => {
-    // console.log('callback on closed');
-    // on closed callback
-    setOpen5(false);
+    console.log('callback on closed');
   };
 
   return (
@@ -195,20 +156,19 @@ const Home = () => {
           Slide Up
         </Button>
         <Button
-          onClick={toggleString}
+          onClick={stopLoading}
         >
-          Toggle
+          Stop Loading
         </Button>
-        <div>{toggle ? 'true' : 'false'}</div>
       </div>
 
       {/* ======= Panels ======= */}
 
-      <Panel
+      {/* <Panel
         open={open1}
         expanse={'30%'}
         loaderTheme={PanelLoaderTheme.DARK}
-        // loading={loading1}
+        loading={loading1}
         renderPortal={true}
         position={PanelPosition.RIGHT}
         overlay={true}
@@ -221,7 +181,7 @@ const Home = () => {
         <div>
           <h2>Panel</h2>
         </div>
-      </Panel>
+      </Panel> */}
 
       {/* <Panel
         open={open1}
@@ -245,16 +205,15 @@ const Home = () => {
         </Panel.Content>
       </Panel> */}
 
-      {/* <PanelGroup
-        // overlay={true}
-        // zindex={600}
+      <PanelGroup
+        overlay={true}
+        zindex={600}
       >
         <Panel
           open={open1}
           position={PanelPosition.RIGHT}
           renderPortal={true}
 
-          onOpen={handleOnOpen1}
           onOpened={handleOnOpened1}
           onClose={handleOnClose1}
           onClosed={handleOnClosed1}
@@ -269,7 +228,6 @@ const Home = () => {
           position={PanelPosition.LEFT}
           renderPortal={true}
 
-          onOpen={handleOnOpen2}
           onOpened={handleOnOpened2}
           onClose={handleOnClose2}
           onClosed={handleOnClosed2}
@@ -283,8 +241,8 @@ const Home = () => {
           open={open3}
           position={PanelPosition.TOP}
           renderPortal={true}
+          overlay={true}
 
-          onOpen={handleOnOpen3}
           onOpened={handleOnOpened3}
           onClose={handleOnClose3}
           onClosed={handleOnClosed3}
@@ -298,8 +256,8 @@ const Home = () => {
           open={open4}
           position={PanelPosition.BOTTOM}
           renderPortal={true}
+          expanse={"50%"}
 
-          onOpen={handleOnOpen4}
           onOpened={handleOnOpened4}
           onClose={handleOnClose4}
           onClosed={handleOnClosed4}
@@ -309,7 +267,7 @@ const Home = () => {
             <button onClick={panelClose4}>Close</button>
           </div>
         </Panel>
-      </PanelGroup> */}
+      </PanelGroup>
 
       {/* ======= Panels Nested ======= */}
 

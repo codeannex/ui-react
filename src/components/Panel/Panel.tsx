@@ -16,7 +16,6 @@ import {
 import {
   panelGroupHighestZIndexContext,
   panelGroupCountContext,
-  panelGroupContext,
   panelGroupCountActionsContext,
   PanelCount
 } from './PanelGroupContext';
@@ -85,11 +84,9 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   open: boolean;
   position?: PanelPosition;
   classes?: string;
-  errorText?: string;
   expanse?: string;
   loaderTheme?: string;
   loading?: boolean;
-  loadingText?: string;
   overlay?: boolean;
   renderPortal?: boolean;
   zindex?: number;
@@ -109,21 +106,20 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
  * Panel Component
  */
 const PanelComponent = React.memo(({
+  // Props
   children,
   classes,
   controller,
-  errorText,
   expanse,
   loaderTheme,
   loading = false,
-  loadingText,
   overlay,
   position = PanelPosition.RIGHT,
   renderPortal,
   zindex,
-
   openState,
 
+  // Functions
   onClose,
   onClosed,
   onOpened
@@ -132,11 +128,11 @@ const PanelComponent = React.memo(({
 
   const containerRef = React.useRef(undefined);
   const openStateRef = React.useRef(undefined);
+  const portalStateRef = React.useRef(undefined);
 
   /**
    * This group of values are only used when a PanelGroup exists.
    */
-  const panelGroupUsed = panelGroupContext();
   const panelGroupCount = panelGroupCountContext();
   const setPanelGroupCount = panelGroupCountActionsContext();
   const panelGroupHighestZIndex = panelGroupHighestZIndexContext();
@@ -160,9 +156,10 @@ const PanelComponent = React.memo(({
   );
 
   /**
-   * Handles prop override of width or height for the panel.
+   * Handles prop override of panel width or height. Whether it is a width or height
+   * dependes on the position of the panel.
    */
-   if (expanse) {
+  if (expanse) {
     const property = expanse ?
       position === PanelPosition.TOP ||
       position === PanelPosition.BOTTOM ?
@@ -171,15 +168,26 @@ const PanelComponent = React.memo(({
     expanseValue = {
       [property]: expanse
     }
-   }
+  }
 
-   const setOpenStateRef = (openStateChange): void => {
-    openStateRef.current = openStateChange;
-  };
-
+  /**
+   * Handles firing the related callback based on the completion of the
+   * animation, signaling whether the panel has finished opening or closing.
+   */
   const animationEnd = React.useCallback(() => {
     openStateRef.current ? onHandleOpened() : onHandleClosed();
   }, [openStateRef]);
+
+  /**
+   * Functions for tracking state via ref
+   */
+  const setOpenStateRef = (openStateChange): void => {
+    openStateRef.current = openStateChange;
+  };
+
+  const setPortalStateRef = (portalStateChange): void => {
+    portalStateRef.current = portalStateChange;
+  };
 
   /**
    * Handlers and lifecycle callbacks
@@ -197,14 +205,19 @@ const PanelComponent = React.memo(({
   };
 
   const onHandleClosed = (): void => {
+    if (portalStateRef.current) {
+      setPortal(false);
+      setPortalStateRef(false);
+    }
+
     onClosed && onClosed();
   };
 
   /**
    * Use Effect 1
    *
-   * Handles adding the zindex to a panel. The top and bottom panels
-   * will be give a higher precedence than the side panels.
+   * Handles adding the zindex to the panel. The top and bottom panels
+   * will be give a higher zindex precedence than the side panels.
    */
   React.useEffect(() => {
     if (!zIndex.panel) {
@@ -212,7 +225,7 @@ const PanelComponent = React.memo(({
       /**
        * Adds zindex to a panel managed by the Panel Group.
        */
-      if (controller && panelGroupUsed && panelGroupHighestZIndex) {
+      if (controller && panelGroupHighestZIndex) {
         position === PanelPosition.TOP || position === PanelPosition.BOTTOM ?
           setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 2 }) :
           setZindex({ ...zIndex, panel: panelGroupHighestZIndex + 1 });
@@ -232,8 +245,8 @@ const PanelComponent = React.memo(({
       }
 
       /**
-       * Adds zindex to a panel when the zindex prop is explicitly
-       * set.
+       * Adds zindex to the panel based on zindex prop being explicitly
+       * set. This will override the panels auto setting of zindex.
        */
       if (!controller && !zIndex.panel && zindex) {
         setZindex({
@@ -245,7 +258,6 @@ const PanelComponent = React.memo(({
   }, [
     controller,
     openState,
-    panelGroupUsed,
     panelGroupHighestZIndex,
     position,
     zIndex,
@@ -261,6 +273,7 @@ const PanelComponent = React.memo(({
   React.useEffect(() => {
     if (openState && zIndex.panel && renderPortal && !portal) {
       setPortal(true);
+      setPortalStateRef(true);
     }
   }, [openState, portal, renderPortal, zIndex]);
 
@@ -268,11 +281,16 @@ const PanelComponent = React.memo(({
   /**
    * Use Effect 3
    *
-   * Handles opening the panel
+   * Handles opening the panel.
    */
   React.useEffect(() => {
     if (openState && !open) {
 
+      /**
+       * Adds a short delay to allow the portal to render before
+       * opening the panel. This is done when renderPortal prop is set
+       * and the portal has been created.
+       */
       portal && setTimeout(() => {
         onHandleOpen();
       }, TIMEOUT.PORTAL_RENDER_DELAY);
@@ -282,18 +300,22 @@ const PanelComponent = React.memo(({
       }
 
       /**
-       * Adds the panel to the panel group when Panel Group is enabled.
+       * Adds the panel to the panel group when PanelGroup component has
+       * been instantiated.
        */
-      if (panelGroupUsed) {
+      if (controller) {
         const found = panelGroupCount.find((panel: PanelCount) => {
           return panel.id === internalId;
         });
 
-        !found && panelGroupUsed && setPanelGroupCount([...panelGroupCount, {
+        !found && setPanelGroupCount([...panelGroupCount, {
           id: internalId
         }]);
       }
 
+      /**
+       * Adds the panel object to the panel controller.
+       */
       panelController.addPanel({
         id: internalId,
         position: position,
@@ -306,7 +328,6 @@ const PanelComponent = React.memo(({
     openState,
     panelController,
     panelGroupCount,
-    panelGroupUsed,
     portal,
     position,
     renderPortal
@@ -321,21 +342,20 @@ const PanelComponent = React.memo(({
     if (!openState && open) {
       onHandleClose();
 
-      portal && setTimeout(() => {
-        setPortal(false);
-      }, TIMEOUT.PANEL_CLOSED_DELAY);
-
       /**
        * Removes the panel from the Panel Group when Panel Group is enabled.
        */
-      if (panelGroupUsed) {
+      if (controller) {
         const newPanelCountContext = panelGroupCount.filter((panel: PanelCount) => {
           return panel.id !== internalId;
         });
 
-        panelGroupUsed && setPanelGroupCount(newPanelCountContext);
+        setPanelGroupCount(newPanelCountContext);
       }
 
+      /**
+       * Removes the panel object from the panel controller.
+       */
       panelController.removePanel({
         id: internalId,
         position: position,
@@ -347,7 +367,6 @@ const PanelComponent = React.memo(({
     open,
     openState,
     panelGroupCount,
-    panelGroupUsed,
     portal,
     renderPortal
   ]);
@@ -466,8 +485,10 @@ const PanelComponent = React.memo(({
     return renderPanel();
   }
 }, (prevProps, nextProps) => {
+
   // Limits re-rendering the PanelComponent until the openState prop has been changed.
-  return prevProps.openState === nextProps.openState;
+  return prevProps.openState !== nextProps.openState ||
+    prevProps.loading !== nextProps.loading ? false : true;
 });
 
 export const Panel = Object.assign(

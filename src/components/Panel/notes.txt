@@ -26,7 +26,6 @@ Panel Group Rules: ======
 1. open: boolean <required>
 2. onClose: function <required>
 3. position: enum <required>
-4. id: string <required>
 
 
 
@@ -61,4 +60,4 @@ TODO: It might be good to allow the default header to have compound component.
 
 BUGS:
 
-1. Setting zindex on the PanelGroup causes a bug if the value is higher than what is found in the group manager. The overlay will be on top of the panel.
+1.

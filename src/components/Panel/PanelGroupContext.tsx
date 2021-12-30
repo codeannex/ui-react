@@ -2,12 +2,8 @@ import React, { useState, useContext } from 'react';
 
 const PanelGroupCountContext = React.createContext([]);
 const PanelGroupCountActionsContext = React.createContext(undefined);
-const PanelGroupOverlayContext = React.createContext(undefined);
-const PanelGroupOverlayActionsContext = React.createContext(undefined);
 const PanelGroupHighestZIndexContext = React.createContext(undefined);
 const PanelGroupHighestZIndexActionsContext = React.createContext(undefined);
-const PanelGroupContext = React.createContext(undefined);
-const PanelGroupActionsContext = React.createContext(undefined);
 
 export interface PanelCount {
   id: string;
@@ -17,32 +13,16 @@ export const panelGroupCountContext = (): PanelCount[] => {
   return useContext(PanelGroupCountContext);
 };
 
-export const panelGroupCountActionsContext = (): (PanelCount) => void  => {
+export const panelGroupCountActionsContext = (): (panel: PanelCount[]) => void => {
   return useContext(PanelGroupCountActionsContext);
-};
-
-export const panelGroupOverlayContext = (): boolean => {
-  return useContext(PanelGroupOverlayContext);
-};
-
-export const panelGroupOverlayActionsContext = (): (boolean) => void  => {
-  return useContext(PanelGroupOverlayActionsContext);
 };
 
 export const panelGroupHighestZIndexContext = (): number => {
   return useContext(PanelGroupHighestZIndexContext);
 };
 
-export const panelGroupHighestZIndexActionsContext = (): (number) => void  => {
+export const panelGroupHighestZIndexActionsContext = (): (zindex: number) => void => {
   return useContext(PanelGroupHighestZIndexActionsContext);
-};
-
-export const panelGroupContext = (): boolean => {
-  return useContext(PanelGroupContext);
-};
-
-export const panelGroupActionsContext = (): (boolean) => void  => {
-  return useContext(PanelGroupActionsContext);
 };
 
 interface Props {
@@ -53,27 +33,33 @@ export const PanelGroupProvider: React.FC<Props> = ({
   // eslint-disable-next-line react/prop-types
   children,
 }): React.ReactElement => {
+
+  /**
+   * Contains an array of active panels (panels in the open state). When a
+   * group managed panel is opened the associated panel object is added to
+   * this array. Inversely when the group managed panel is closed the
+   * associated panel object is removed. This state is tracked in the system
+   * and used to drive other state changes.
+   */
   const [panelGroupCount, setPanelGroupCount] = useState([]);
-  const [panelGroupOverlay, setPanelGroupOverlay] = useState(false);
+
+  /**
+   * Contains a numeric value associated to the highest zindex. The highest
+   * zindex is determined by the system when the GroupPanel component is
+   * initialized. The system queries the DOM for all the zindex rules found
+   * in the DOM, whether it is inline or CSS. This state is tracked in the system
+   * and used to drive other state changes.
+   */
   const [panelGroupHighestZIndex, setPanelGroupHighestZIndex] = useState(null);
-  const [panelGroupUsed, setPanelGroupUsed] = useState(false);
 
   return (
     <PanelGroupCountContext.Provider value={panelGroupCount}>
       <PanelGroupCountActionsContext.Provider value={setPanelGroupCount}>
-        <PanelGroupOverlayContext.Provider value={panelGroupOverlay}>
-          <PanelGroupOverlayActionsContext.Provider value={setPanelGroupOverlay}>
-            <PanelGroupHighestZIndexContext.Provider value={panelGroupHighestZIndex}>
-              <PanelGroupHighestZIndexActionsContext.Provider value={setPanelGroupHighestZIndex}>
-                <PanelGroupContext.Provider value={panelGroupUsed}>
-                  <PanelGroupActionsContext.Provider value={setPanelGroupUsed}>
-                    {children}
-                  </PanelGroupActionsContext.Provider>
-                </PanelGroupContext.Provider>
-              </PanelGroupHighestZIndexActionsContext.Provider>
-            </PanelGroupHighestZIndexContext.Provider>
-          </PanelGroupOverlayActionsContext.Provider>
-        </PanelGroupOverlayContext.Provider>
+        <PanelGroupHighestZIndexContext.Provider value={panelGroupHighestZIndex}>
+          <PanelGroupHighestZIndexActionsContext.Provider value={setPanelGroupHighestZIndex}>
+            {children}
+          </PanelGroupHighestZIndexActionsContext.Provider>
+        </PanelGroupHighestZIndexContext.Provider>
       </PanelGroupCountActionsContext.Provider>
     </PanelGroupCountContext.Provider>
   );
