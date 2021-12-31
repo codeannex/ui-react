@@ -31,7 +31,7 @@ const Home = () => {
   };
 
   const handleOnOpened1 = () => {
-    console.log('callback on opened');
+    console.log('callback on opened 1');
   };
 
   const handleOnClose1 = () => {
@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   const handleOnOpened2 = () => {
-    console.log('callback on opened');
+    console.log('callback on opened 2');
   };
 
   const handleOnClose2 = () => {
@@ -75,7 +75,7 @@ const Home = () => {
   };
 
   const handleOnOpened3 = () => {
-    console.log('callback on opened');
+    console.log('callback on opened 3');
   };
 
   const handleOnClose3 = () => {
@@ -97,7 +97,7 @@ const Home = () => {
   };
 
   const handleOnOpened4 = () => {
-    console.log('callback on opened');
+    console.log('callback on opened 4');
   };
 
   const handleOnClose4 = () => {
@@ -111,15 +111,16 @@ const Home = () => {
 
   // ============================ panel 5
   const panelOpen5 = () => {
+    console.log('panel open');
     setOpen5(true);
   };
 
   const panelClose5 = () => {
-    setOpen1(false);
+    setOpen5(false);
   };
 
   const handleOnOpened5 = () => {
-    console.log('callback on opened');
+    console.log('callback on opened 5');
   };
 
   const handleOnClose5 = () => {
@@ -164,9 +165,9 @@ const Home = () => {
 
       {/* ======= Panels ======= */}
 
-      {/* <Panel
+      <Panel
         open={open1}
-        expanse={'100%'}
+        expanse={'50%'}
         loaderTheme={PanelLoaderTheme.DARK}
         loading={loading1}
         renderPortal={true}
@@ -181,7 +182,7 @@ const Home = () => {
         <div>
           <h2>Panel</h2>
         </div>
-      </Panel> */}
+      </Panel>
 
       {/* <Panel
         open={open1}
@@ -205,12 +206,11 @@ const Home = () => {
         </Panel.Content>
       </Panel> */}
 
-      {/* <PanelGroup zindex={600} overlay={false}>
+      {/* <PanelGroup zindex={600} overlay={true}>
         <Panel
           open={open1}
           position={PanelPosition.RIGHT}
           renderPortal={true}
-
 
           onOpened={handleOnOpened1}
           onClose={handleOnClose1}
@@ -270,10 +270,7 @@ const Home = () => {
 
       {/* <Panel
         open={open1}
-        renderPortal={true}
         position={PanelPosition.RIGHT}
-        overlay={true}
-        zindex={600}
 
         onOpened={handleOnOpened1}
         onClose={handleOnClose1}
@@ -281,8 +278,7 @@ const Home = () => {
       >
         <Panel
           open={open5}
-          classes={'one'}
-          expanse={'20%'}
+          expanse={'100%'}
           position={PanelPosition.LEFT}
 
           onOpened={handleOnOpened5}

@@ -106,7 +106,7 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
  *
  * Panel Component
  */
-const PanelComponent = React.memo(({
+const PanelComponent = ({
   // Props
   children,
   classes,
@@ -427,12 +427,16 @@ const PanelComponent = React.memo(({
     }
   }, [openState, panelController]);
 
+  /**
+   * Handles listening for the overlay click event managed by the group
+   * panel. This indicates the overlay was selected and closing the panel
+   * must occur.
+   */
   React.useEffect(() => {
     if (panelGroupOverlayCloseClick) {
       onClose && onClose();
     }
   }, [panelGroupOverlayCloseClick]);
-
 
   /**
    * Render content.
@@ -493,53 +497,47 @@ const PanelComponent = React.memo(({
   } else {
     return renderPanel();
   }
-}, (prevProps, nextProps) => {
-
-  // Limits re-rendering the PanelComponent until the openState prop has been changed.
-  return prevProps.openState !== nextProps.openState ||
-    prevProps.loading !== nextProps.loading ? false : true;
-});
+};
 
 export const Panel = Object.assign(
   React.forwardRef((
     props: PanelProps,
     ref: React.Ref<HTMLDivElement>
   ): JSX.Element => {
-      const { open, onClose } = props;
+    const { open, onClose, id } = props;
 
-      const [openState, setOpenState] = React.useState<boolean>(false);
+    const [openState, setOpenState] = React.useState<boolean>(false);
 
-      const openPrev = usePreviousState(open);
+    const openPrev = usePreviousState(open);
 
-      const handleOnClose = (): void => {
-        onClose && onClose();
-      };
+    const handleOnClose = (): void => {
+      onClose && onClose();
+    };
 
-      React.useLayoutEffect(() => {
-        if (open) {
-          setOpenState(true);
-        }
-      }, [open]);
+    React.useLayoutEffect(() => {
+      if (open) {
+        setOpenState(true);
+      }
+    }, [open]);
 
-      React.useLayoutEffect(() => {
-        if (!open && openPrev) {
-          setOpenState(false);
-        }
-      }, [open, openPrev]);
+    React.useLayoutEffect(() => {
+      if (!open && openPrev) {
+        setOpenState(false);
+      }
+    }, [open, openPrev]);
 
-      return (
-        <PanelProvider controller={PanelController}>
-          <PanelComponent
-            { ...props }
-            openState={openState}
-            forwardedRef={ref}
-            data-testid={PANEL_TEST_ID}
-            onClose={handleOnClose}
-          />
-        </PanelProvider>
-      );
-    }
-  ),
+    return (
+      <PanelProvider controller={PanelController}>
+        <PanelComponent
+          { ...props }
+          openState={openState}
+          forwardedRef={ref}
+          data-testid={PANEL_TEST_ID}
+          onClose={handleOnClose}
+        />
+      </PanelProvider>
+    );
+  }),
   {
     Header: PanelHeader,
     Content: PanelContent
