@@ -166,7 +166,7 @@ const Home = () => {
 
       {/* <Panel
         open={open1}
-        expanse={'30%'}
+        expanse={'100%'}
         loaderTheme={PanelLoaderTheme.DARK}
         loading={loading1}
         renderPortal={true}
@@ -205,14 +205,12 @@ const Home = () => {
         </Panel.Content>
       </Panel> */}
 
-      <PanelGroup
-        overlay={true}
-        zindex={600}
-      >
+      {/* <PanelGroup zindex={600} overlay={false}>
         <Panel
           open={open1}
           position={PanelPosition.RIGHT}
           renderPortal={true}
+
 
           onOpened={handleOnOpened1}
           onClose={handleOnClose1}
@@ -241,7 +239,6 @@ const Home = () => {
           open={open3}
           position={PanelPosition.TOP}
           renderPortal={true}
-          overlay={true}
 
           onOpened={handleOnOpened3}
           onClose={handleOnClose3}
@@ -267,7 +264,7 @@ const Home = () => {
             <button onClick={panelClose4}>Close</button>
           </div>
         </Panel>
-      </PanelGroup>
+      </PanelGroup> */}
 
       {/* ======= Panels Nested ======= */}
 
@@ -278,7 +275,6 @@ const Home = () => {
         overlay={true}
         zindex={600}
 
-        onOpen={handleOnOpen1}
         onOpened={handleOnOpened1}
         onClose={handleOnClose1}
         onClosed={handleOnClosed1}
@@ -289,7 +285,6 @@ const Home = () => {
           expanse={'20%'}
           position={PanelPosition.LEFT}
 
-          onOpen={handleOnOpen5}
           onOpened={handleOnOpened5}
           onClose={handleOnClose5}
           onClosed={handleOnClosed5}

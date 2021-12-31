@@ -10,12 +10,13 @@ export interface PanelOverlayProps {
   onClick?: () => void;
 }
 
-export const PanelOverlay = ({
+const PanelOverlayComponent = ({
+  forwardedRef,
   visibility,
   zindex,
 
   onClick
-}: PanelOverlayProps): JSX.Element  => {
+}: PanelOverlayProps & { forwardedRef: React.Ref<HTMLElement> }): JSX.Element => {
 
   const classes = classNames(
     'codeannex-panel-overlay',
@@ -35,5 +36,14 @@ export const PanelOverlay = ({
     />
   );
 };
+
+export const PanelOverlay = React.forwardRef((
+  props: PanelOverlayProps,
+  ref: React.Ref<HTMLDivElement>
+): JSX.Element => {
+  return (
+    <PanelOverlayComponent { ...props } forwardedRef={ref} />
+  );
+});
 
 export default PanelOverlay;

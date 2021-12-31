@@ -4,6 +4,8 @@ const PanelGroupCountContext = React.createContext([]);
 const PanelGroupCountActionsContext = React.createContext(undefined);
 const PanelGroupHighestZIndexContext = React.createContext(undefined);
 const PanelGroupHighestZIndexActionsContext = React.createContext(undefined);
+const PanelGroupOverlayCloseClickContext = React.createContext(undefined);
+const PanelGroupOverlayCloseClickActionsContext = React.createContext(undefined);
 
 export interface PanelCount {
   id: string;
@@ -23,6 +25,14 @@ export const panelGroupHighestZIndexContext = (): number => {
 
 export const panelGroupHighestZIndexActionsContext = (): (zindex: number) => void => {
   return useContext(PanelGroupHighestZIndexActionsContext);
+};
+
+export const panelGroupOverlayCloseClickContext = (): boolean => {
+  return useContext(PanelGroupOverlayCloseClickContext);
+};
+
+export const panelGroupOverlayCloseClickActionsContext = (): (event: boolean) => void => {
+  return useContext(PanelGroupOverlayCloseClickActionsContext);
 };
 
 interface Props {
@@ -52,12 +62,22 @@ export const PanelGroupProvider: React.FC<Props> = ({
    */
   const [panelGroupHighestZIndex, setPanelGroupHighestZIndex] = useState(null);
 
+  /**
+   * Contains a boolean value associated with the click event attached to the overlay
+   * managed by the PanelGroup component.
+   */
+  const [panelGroupOverlayCloseClick, setPanelGroupOverlayCloseClick] = useState(false);
+
   return (
     <PanelGroupCountContext.Provider value={panelGroupCount}>
       <PanelGroupCountActionsContext.Provider value={setPanelGroupCount}>
         <PanelGroupHighestZIndexContext.Provider value={panelGroupHighestZIndex}>
           <PanelGroupHighestZIndexActionsContext.Provider value={setPanelGroupHighestZIndex}>
-            {children}
+            <PanelGroupOverlayCloseClickContext.Provider value={panelGroupOverlayCloseClick}>
+              <PanelGroupOverlayCloseClickActionsContext.Provider value={setPanelGroupOverlayCloseClick}>
+                {children}
+              </PanelGroupOverlayCloseClickActionsContext.Provider>
+            </PanelGroupOverlayCloseClickContext.Provider>
           </PanelGroupHighestZIndexActionsContext.Provider>
         </PanelGroupHighestZIndexContext.Provider>
       </PanelGroupCountActionsContext.Provider>

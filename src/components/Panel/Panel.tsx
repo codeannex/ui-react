@@ -17,6 +17,7 @@ import {
   panelGroupHighestZIndexContext,
   panelGroupCountContext,
   panelGroupCountActionsContext,
+  panelGroupOverlayCloseClickContext,
   PanelCount
 } from './PanelGroupContext';
 
@@ -113,7 +114,7 @@ const PanelComponent = React.memo(({
   expanse,
   loaderTheme,
   loading = false,
-  overlay,
+  overlay = false,
   position = PanelPosition.RIGHT,
   renderPortal,
   zindex,
@@ -136,6 +137,7 @@ const PanelComponent = React.memo(({
   const panelGroupCount = panelGroupCountContext();
   const setPanelGroupCount = panelGroupCountActionsContext();
   const panelGroupHighestZIndex = panelGroupHighestZIndexContext();
+  const panelGroupOverlayCloseClick = panelGroupOverlayCloseClickContext();
 
   const panelController = panelPanelControllerContext();
 
@@ -424,6 +426,13 @@ const PanelComponent = React.memo(({
       const panel = panelController.getPanel({ id: internalId });
     }
   }, [openState, panelController]);
+
+  React.useEffect(() => {
+    if (panelGroupOverlayCloseClick) {
+      onClose && onClose();
+    }
+  }, [panelGroupOverlayCloseClick]);
+
 
   /**
    * Render content.

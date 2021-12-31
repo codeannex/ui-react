@@ -5,7 +5,8 @@ import { PanelOverlay } from './components';
 import {
   PanelGroupProvider,
   panelGroupHighestZIndexActionsContext,
-  panelGroupCountContext
+  panelGroupCountContext,
+  panelGroupOverlayCloseClickActionsContext
 } from './PanelGroupContext';
 
 import { getHighestZIndex } from './utils/getHighestZIndex';
@@ -27,11 +28,16 @@ const PanelGroupComponent = ({
 }: PanelGroupProp): JSX.Element => {
   const panelGroupCount = panelGroupCountContext();
   const setPanelGroupHighestZIndex = panelGroupHighestZIndexActionsContext();
+  const setPanelGroupOverlayCloseClick = panelGroupOverlayCloseClickActionsContext();
 
   const [highestZIndex, setHighestZIndex] = React.useState(null);
   const [overlayVisible, setOverlayVisible] = React.useState(false);
 
+  const overlayRef = React.useRef(undefined);
 
+  const handleCloseClick = () => {
+    setPanelGroupOverlayCloseClick(true);
+  };
 
   /**
    * Handles finding the highest z-index on the page after render.
@@ -49,6 +55,10 @@ const PanelGroupComponent = ({
    * Handles rendering the overlay when the overlay prop is set.
    */
   React.useEffect(() => {
+    if (panelGroupCount.length) {
+      setPanelGroupOverlayCloseClick(false);
+    }
+
     setOverlayVisible(!!panelGroupCount.length);
   }, [panelGroupCount, setOverlayVisible]);
 
@@ -56,8 +66,11 @@ const PanelGroupComponent = ({
     <div id={PANEL_GROUP_TEST_ID}>
       {overlay && (
         <PanelOverlay
+          ref={overlayRef}
           visibility={overlayVisible}
           zindex={highestZIndex}
+
+          onClick={handleCloseClick}
         />
       )}
       {React.Children.map(children, (child: any) => {
