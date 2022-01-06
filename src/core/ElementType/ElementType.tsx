@@ -5,7 +5,6 @@ type BaseProps = Pick<React.HTMLAttributes<any>, 'children'> & React.RefAttribut
 
 export type ElementTypeProps = Readonly<BaseProps & {
   from: string;
-  style: any;
 }>
 
 /**
