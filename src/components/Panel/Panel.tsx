@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 
 import { Portal } from '../Portal';
+import { ElementType } from '../../core/';
 
 import {
   PanelHeaderDefault,
@@ -28,7 +29,7 @@ import {
 
 import { PanelController } from './PanelController';
 
-import { usePreviousState } from '../../hooks/usePreviousState';
+import { usePreviousState, useMergeRefs } from '../../hooks';
 
 import { getZIndexValues } from './utils/getZIndex';
 import { getGuid } from '../../../utils';
@@ -108,6 +109,7 @@ export const PANEL_TEST_ID = 'codeannex-panel-component';
  */
 const PanelComponent = ({
   // Props
+  forwardedRef,
   children,
   classes,
   controller,
@@ -130,6 +132,8 @@ const PanelComponent = ({
   const containerRef = React.useRef(undefined);
   const openStateRef = React.useRef(undefined);
   const portalStateRef = React.useRef(undefined);
+
+  const ref = useMergeRefs(containerRef, forwardedRef);
 
   /**
    * This group of values are only used when a PanelGroup exists.
@@ -159,7 +163,7 @@ const PanelComponent = ({
 
   /**
    * Handles prop override of panel width or height. Whether it is a width or height
-   * dependes on the position of the panel.
+   * dependencies on the position of the panel.
    */
   if (expanse) {
     const property = expanse ?
@@ -248,7 +252,7 @@ const PanelComponent = ({
 
       /**
        * Adds zindex to the panel based on zindex prop being explicitly
-       * set. This will override the panels auto setting of zindex.
+       * set. This will override the panel auto setting of zindex.
        */
       if (!controller && !zIndex.panel && zindex) {
         setZindex({
@@ -424,6 +428,9 @@ const PanelComponent = ({
   React.useEffect(() => {
     if (openState) {
       const panel = panelController.getPanel({ id: internalId });
+
+      // eslint-disable-next-line no-console
+      console.log(panel);
     }
   }, [openState, panelController]);
 
@@ -437,6 +444,12 @@ const PanelComponent = ({
       onClose && onClose();
     }
   }, [panelGroupOverlayCloseClick]);
+
+  const panelProps = {
+    from: 'div',
+    className: panelClasses,
+    style: { zIndex: zIndex.panel, ...expanseValue }
+  };
 
   /**
    * Render content.
@@ -457,11 +470,7 @@ const PanelComponent = ({
   const renderPanel = (): JSX.Element => {
     return (
       <>
-        <div
-          className={panelClasses}
-          style={{ zIndex: zIndex.panel, ...expanseValue }}
-          ref={containerRef}
-        >
+        <ElementType { ...panelProps } ref={ref}>
           <div className={LIBRARY_CLASSES.CONTAINER_INNER}>
             {!headerFound ? (
               <>
@@ -482,7 +491,7 @@ const PanelComponent = ({
               </>
             )}
           </div>
-        </div>
+        </ElementType>
         {overlay && open && renderOverlay()}
       </>
     );

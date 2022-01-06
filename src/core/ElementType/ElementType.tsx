@@ -5,6 +5,7 @@ type BaseProps = Pick<React.HTMLAttributes<any>, 'children'> & React.RefAttribut
 
 export type ElementTypeProps = Readonly<BaseProps & {
   from: string;
+  style: any;
 }>
 
 /**
@@ -24,7 +25,7 @@ const _ElementType = ({
     ...rest
   };
 
-  return <Component {...props} />
+  return <Component { ...props } />
 };
 
 export const ElementType = React.forwardRef((
