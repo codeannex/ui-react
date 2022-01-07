@@ -1,14 +1,14 @@
 {
   "name": "@codeannex/ui-react",
-  "version": "0.0.4",
+  "version": "0.0.12",
   "description": "",
-  "main": "lib/index.js",
+  "main": "lib/src/index.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -p tsconfig.json --outDir lib && npx babel src --out-dir lib --extensions \".ts\",\".tsx\"",
+    "build": "tsc -p tsconfig.json --outDir lib/src && npx babel src --copy-files --out-dir lib/src --extensions \".ts\",\".tsx\"",
     "dev": "webpack serve --config webpack/development.config.js",
     "lint": "eslint . --ext .ts --ext .tsx",
     "test": "jest --watch"
@@ -25,11 +25,11 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.16.7",
     "@babel/node": "^7.14.9",
     "@babel/plugin-transform-arrow-functions": "^7.14.5",
     "@babel/plugin-transform-template-literals": "^7.14.5",
-    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.15.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
@@ -66,5 +66,12 @@
     "webpack": "^5.50.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
+    "@babel/plugin-transform-react-jsx": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "babel-plugin-transform-react-jsx": "^6.24.1"
   }
 }

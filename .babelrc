@@ -1,14 +1,15 @@
 {
   "presets": [
     "@babel/preset-typescript",
+    "@babel/preset-env",
     "@babel/preset-react"
   ],
   "plugins": [
+    "transform-react-jsx",
     "@babel/plugin-transform-template-literals",
     "@babel/plugin-transform-arrow-functions",
-    "babel-plugin-jsx-remove-data-test-id"
-  ],
-  "ignore": [
-    "**/README.md"
+    "babel-plugin-jsx-remove-data-test-id",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-runtime"
   ]
 }

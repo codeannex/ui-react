@@ -16,6 +16,8 @@ const Home = () => {
 
   const [loading1, setLoading1] = React.useState(true);
 
+  const panelRef = React.useRef(undefined);
+
   const stopLoading = () => {
     setLoading1(false);
   };
@@ -132,6 +134,10 @@ const Home = () => {
     console.log('callback on closed');
   };
 
+  React.useEffect(() => {
+    console.log(panelRef && panelRef.current);
+  });
+
   return (
     <>
       <div>
@@ -174,6 +180,7 @@ const Home = () => {
         position={PanelPosition.RIGHT}
         overlay={true}
         zindex={600}
+        ref={panelRef}
 
         onOpened={handleOnOpened1}
         onClose={handleOnClose1}
@@ -206,65 +213,65 @@ const Home = () => {
         </Panel.Content>
       </Panel> */}
 
-      {/* <PanelGroup zindex={600} overlay={true}>
-        <Panel
-          open={open1}
-          position={PanelPosition.RIGHT}
-          renderPortal={true}
+      {/*<PanelGroup zindex={600} overlay={false}>*/}
+      {/*  <Panel*/}
+      {/*    open={open1}*/}
+      {/*    position={PanelPosition.RIGHT}*/}
+      {/*    renderPortal={true}*/}
 
-          onOpened={handleOnOpened1}
-          onClose={handleOnClose1}
-          onClosed={handleOnClosed1}
-        >
-          <div>
-            <h2>Panel Slide Left</h2>
-            <button onClick={panelClose1}>Close</button>
-          </div>
-        </Panel>
-        <Panel
-          open={open2}
-          position={PanelPosition.LEFT}
-          renderPortal={true}
+      {/*    onOpened={handleOnOpened1}*/}
+      {/*    onClose={handleOnClose1}*/}
+      {/*    onClosed={handleOnClosed1}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel Slide Left</h2>*/}
+      {/*      <button onClick={panelClose1}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open2}*/}
+      {/*    position={PanelPosition.LEFT}*/}
+      {/*    renderPortal={true}*/}
 
-          onOpened={handleOnOpened2}
-          onClose={handleOnClose2}
-          onClosed={handleOnClosed2}
-        >
-          <div>
-            <h2>Panel Slide Right</h2>
-            <button onClick={panelClose2}>Close</button>
-          </div>
-        </Panel>
-        <Panel
-          open={open3}
-          position={PanelPosition.TOP}
-          renderPortal={true}
+      {/*    onOpened={handleOnOpened2}*/}
+      {/*    onClose={handleOnClose2}*/}
+      {/*    onClosed={handleOnClosed2}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel Slide Right</h2>*/}
+      {/*      <button onClick={panelClose2}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open3}*/}
+      {/*    position={PanelPosition.TOP}*/}
+      {/*    renderPortal={true}*/}
 
-          onOpened={handleOnOpened3}
-          onClose={handleOnClose3}
-          onClosed={handleOnClosed3}
-        >
-          <div>
-            <h2>Panel Slide Down</h2>
-            <button onClick={panelClose3}>Close</button>
-          </div>
-        </Panel>
-        <Panel
-          open={open4}
-          position={PanelPosition.BOTTOM}
-          renderPortal={true}
-          expanse={"50%"}
+      {/*    onOpened={handleOnOpened3}*/}
+      {/*    onClose={handleOnClose3}*/}
+      {/*    onClosed={handleOnClosed3}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel Slide Down</h2>*/}
+      {/*      <button onClick={panelClose3}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*  <Panel*/}
+      {/*    open={open4}*/}
+      {/*    position={PanelPosition.BOTTOM}*/}
+      {/*    renderPortal={true}*/}
+      {/*    expanse={"50%"}*/}
 
-          onOpened={handleOnOpened4}
-          onClose={handleOnClose4}
-          onClosed={handleOnClosed4}
-        >
-          <div>
-            <h2>Panel Slide UP</h2>
-            <button onClick={panelClose4}>Close</button>
-          </div>
-        </Panel>
-      </PanelGroup> */}
+      {/*    onOpened={handleOnOpened4}*/}
+      {/*    onClose={handleOnClose4}*/}
+      {/*    onClosed={handleOnClosed4}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <h2>Panel Slide UP</h2>*/}
+      {/*      <button onClick={panelClose4}>Close</button>*/}
+      {/*    </div>*/}
+      {/*  </Panel>*/}
+      {/*</PanelGroup>*/}
 
       {/* ======= Panels Nested ======= */}
 

@@ -32,7 +32,7 @@ import { PanelController } from './PanelController';
 import { usePreviousState, useMergeRefs } from '../../hooks';
 
 import { getZIndexValues } from './utils/getZIndex';
-import { getGuid } from '../../../utils';
+import { getGuid } from '../../utils';
 
 import './Panel.scss';
 
@@ -95,7 +95,7 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement>, PanelP
   controller?: boolean;
 
   // Lifecycle callbacks
-  onClose?: () => void;
+  onClose: () => void;
   onClosed?: () => void;
   onOpened?: () => void;
 }
