@@ -5,10 +5,21 @@ type BaseProps = Pick<React.HTMLAttributes<any>, 'children'> & React.RefAttribut
 
 type Props = Readonly<BaseProps & {
 
+  ariaLabel?: string;
+
+  ariaLabelledBy?: string
+
   /**
    * Click event handler.
    */
   onClick?: React.MouseEventHandler;
+
+  /**
+   * Sets the underlying DOM element tag.
+   * @default "button"
+   */
+  from: string;
+
 } & DefaultProps>
 
 const defaultProps = {
@@ -18,13 +29,6 @@ const defaultProps = {
    * @default false
    */
   disabled: false,
-
-  /**
-   * Sets the underlying DOM element tag.
-   * @default "button"
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  from: 'button' as keyof JSX.IntrinsicElements | React.ComponentType<any>
 };
 
 export type DefaultProps = typeof defaultProps;
@@ -36,8 +40,10 @@ export type DefaultProps = typeof defaultProps;
  * Returns a button element by default with encapsulated functionality.
  */
 const _Handler = ({
+  ariaLabel,
+  ariaLabelledBy,
   disabled,
-  from: Component,
+  from: HTMLElement,
   forwardedRef,
   onClick,
   ...rest
@@ -67,7 +73,13 @@ const _Handler = ({
     ...rest
   };
 
-  return <Component {...props} />
+  return (
+    <HTMLElement
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      { ...props }
+    />
+  );
 };
 
 _Handler.defaultProps = defaultProps;

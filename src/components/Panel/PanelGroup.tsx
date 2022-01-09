@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Panel } from './Panel';
+import { Panel } from 'components';
 import { PanelOverlay } from './components';
 import {
   PanelGroupProvider,
@@ -35,7 +35,7 @@ const PanelGroupComponent = ({
 
   const overlayRef = React.useRef(undefined);
 
-  const handleCloseClick = () => {
+  const handleCloseClick = (): void => {
     setPanelGroupOverlayCloseClick(true);
   };
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import { Handler } from '../../core';
+import { Handler } from 'core';
 
 export enum CardNodeType {
   DIV = 'div',

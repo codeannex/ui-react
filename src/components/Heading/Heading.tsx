@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import { ElementType } from '../../core';
+import { ElementType } from 'core';
 
 export enum HeadingType {
 
@@ -53,7 +53,7 @@ export interface HeadingProps extends React.HtmlHTMLAttributes<HTMLBaseElement> 
   el: HeadingType;
 
   /**
-   * Heading class 
+   * Heading class
    */
   headingClass?: boolean;
 
@@ -72,7 +72,7 @@ export const HEADING_TEST_ID = 'codeannex-heading-component';
 
 /**
  * @Codeannex UI React: Heading Component
- * 
+ *
  * Heading Component
  */
  const _Heading = ({

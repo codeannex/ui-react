@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import renderer from 'react-test-renderer';
-import '@testing-library/jest-dom/extend-expect';
 
-import { Button, ButtonType, ButtonProps, BUTTON_TEST_ID } from '../../../src/components/Button';
+import { Button, ButtonType, ButtonProps, BUTTON_TEST_ID } from '../../../src';
 
 import { ElementMock, ButtonTextMock } from '../../../utils/enums';
 
-function button(props: ButtonProps): JSX.Element {
+function component(props: ButtonProps): JSX.Element {
   return <Button { ...props } />;
 }
 
@@ -25,20 +25,24 @@ describe('Button Component', () => {
     });
 
     test('default button', () => {
-      const { getByTestId } = render(<Button>{ButtonTextMock.SUBMIT}</Button>);
+      render(<Button>{ButtonTextMock.SUBMIT}</Button>);
 
-      expect(getByTestId(BUTTON_TEST_ID)).toHaveTextContent(
+      const button = screen.getByTestId(BUTTON_TEST_ID);
+
+      expect(button).toHaveTextContent(
         ButtonTextMock.SUBMIT
       );
     });
 
     describe('with classes', () => {
       test('custom classes', () => {
-        const { getByTestId } = render(button({
+        render(component({
           classes: ['one', 'two', 'three']
         }));
 
-        expect(getByTestId(BUTTON_TEST_ID)).toHaveClass(
+        const button = screen.getByTestId(BUTTON_TEST_ID);
+
+        expect(button).toHaveClass(
           'one', 'two', 'three'
         );
       });
@@ -48,27 +52,35 @@ describe('Button Component', () => {
   describe('events', () => {
     test('click event calls click handler', () => {
       const handleOnClick = jest.fn();
-      const { getByTestId } = render(button({ onClick: handleOnClick }));
 
-      fireEvent.click(getByTestId(BUTTON_TEST_ID));
+      render(component({ onClick: handleOnClick }));
+
+      const button = screen.getByTestId(BUTTON_TEST_ID);
+
+      userEvent.click(button);
+
       expect(handleOnClick).toHaveBeenCalled();
     });
 
     test('click event not allowed button was disabled', () => {
       const handleOnClick = jest.fn();
-      const { getByTestId } = render(button({
+
+      render(component({
         onClick: handleOnClick,
         disabled: true
       }));
 
-      fireEvent.click(getByTestId(BUTTON_TEST_ID));
+      const button = screen.getByTestId(BUTTON_TEST_ID);
+
+      userEvent.click(button);
+
       expect(handleOnClick).not.toHaveBeenCalled();
     });
   });
 
   describe('snapshots', () => {
     test('of default button with label', () => {
-      const tree = renderer.create(button({
+      const tree = renderer.create(component({
         label: ButtonTextMock.SUBMIT
       })).toJSON();
 

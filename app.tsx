@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import React from 'react';
+import {Link, Route, Switch} from 'react-router-dom';
 
-import { Button } from './src';
-import { PanelGroup, Panel, PanelPosition, PanelLoaderTheme } from './src';
+import { Button, ButtonType, Panel, PanelLoaderTheme, PanelPosition } from './src';
 
 import './scss/reset.scss';
 import './scss/app.scss';
@@ -144,6 +143,7 @@ const Home = () => {
         <h2 style={{zIndex: 24}}>About</h2>
         <Button
           onClick={panelOpen1}
+          type={ButtonType.SUBMIT}
         >
           Slide left
         </Button>
