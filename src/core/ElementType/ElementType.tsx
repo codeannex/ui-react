@@ -24,7 +24,7 @@ const _ElementType = ({
     ...rest
   };
 
-  return <Component {...props} />
+  return <Component { ...props } />
 };
 
 export const ElementType = React.forwardRef((

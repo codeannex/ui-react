@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import { Actionable } from '../../core';
+import { Handler } from 'core';
 
 export enum CardNodeType {
   DIV = 'div',
@@ -54,7 +54,7 @@ export const CARD_TEST_ID = 'codeannex-card-component';
 
 /**
  * @Codeannex UI React: Card Component
- * 
+ *
  * Card Component
  */
  export const Card = ({
@@ -78,8 +78,8 @@ export const CARD_TEST_ID = 'codeannex-card-component';
   };
 
   return (
-    <Actionable { ...props } data-testid={CARD_TEST_ID}>
+    <Handler { ...props } data-testid={CARD_TEST_ID}>
       {children}
-    </Actionable>
+    </Handler>
   );
 };

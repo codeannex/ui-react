@@ -1,0 +1,26 @@
+.panel-loader {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+
+  &.light {
+    border: 3px solid rgba(255, 255, 255, .3);
+    border-top-color: #fff;
+  }
+
+  &.dark {
+    border: 3px solid rgba(0, 0, 0, .3);
+    border-top-color: black;
+  }
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}

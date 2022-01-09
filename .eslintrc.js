@@ -1,9 +1,17 @@
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
+  // parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
+    // tsconfigRootDir: __dirname,
+    // project: ['./tsconfig.json'],
+    ecmaVersion: 2019,
+    sourceType: "module",
+    ecmaFeatures: {
+      "jsx": true
+    }
+  },
+  env: {
+    node: true
   },
   plugins: [
     '@typescript-eslint',
@@ -28,8 +36,8 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 2,
-    '@typescript-eslint/no-explicit-any': 2,
-
+    '@typescript-eslint/no-explicit-any': 0,
+    'react/display-name': 'off',
     'no-console': 1
   }
 };

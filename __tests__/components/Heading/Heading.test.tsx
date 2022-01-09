@@ -100,8 +100,8 @@ describe('Heading Component', () => {
     });
 
     test('of default heading with label', () => {
-      const tree = renderer.create(heading({ 
-        el: HeadingType.H1, 
+      const tree = renderer.create(heading({
+        el: HeadingType.H1,
         label: 'Bar' }
       )).toJSON();
 
