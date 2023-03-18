@@ -1,0 +1,58 @@
+Form:
+
+touched: if any field in the form was focused on and then focuse on something else 
+dirty: if any field has a value added or changed
+
+defaultValues: user can add defaultValues to all the fields in the form. The values will only be added if they are matched to a fieldName
+
+* onChange: called when any change occurs in the form
+onSubmit: called on submit 
+
+* onValidate: called for validation
+onValidationFail: called when validation fails
+onPreValidate: ?
+
+onPostSubmit: ?
+* onPreSubmit: ?
+
+
+Fields:
+
+* touched: if field was focused on and then focuse on something else (probably activated by blur)
+* dirty: if field has a value added or changed
+
+* defaultValue: user can add a defaultValue
+* disabled: disables the field based on boolean value
+
+* placeholder: really
+
+* error: display error.
+
+* validateOnSubmitOnly: ???
+* validateOnTouched: ???
+
+
+LEFT 
+1. Develop focus logic
+
+
+NOTE:
+
+1. Might be a good idea to allow field component to be returned as a `li` for list markup.
+2. Error handle duplicate field names.
+
+TODO: 
+1. The `Label` for attribute should be the same as the input id. 
+2. The `Label` should be clickable and set focus to the associated input 
+
+TODO Maybe:
+1. FieldSet
+2. Legend
+
+
+
+
+LEARNING:
+https://blog.logrocket.com/using-react-children-prop-with-typescript/
+
+

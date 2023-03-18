@@ -1,0 +1,26 @@
+{
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "printWidth": 100,
+  "importOrder": [
+    "^react",
+    "^(@mocks)(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^(@components).*$",
+    "^(@core).*$",
+    "^(@contexts).*$",
+    "^(@utils).*$",
+    "^(@hooks).*$",
+    "^(@interfaces).*$",
+    "^(@models).*$",
+    "^(@constants).*$",
+    "^(@styles).*$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true
+}
