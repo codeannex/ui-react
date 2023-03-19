@@ -12,9 +12,9 @@ import { FORM_CONSTANT } from "@constants/index";
 import { FIELD_REF_ACTION_TYPE, FieldRefType } from "../../types";
 
 type FieldProps = {
-  fieldName: string;
   children: React.ReactElement;
   classes?: string | string[];
+  fieldName: string;
   label?: string;
   labelClasses?: string | string[];
   labelFor?: string;
@@ -22,9 +22,9 @@ type FieldProps = {
 };
 
 export const Field: React.FC<FieldProps> = ({
-  fieldName,
   children,
   classes,
+  fieldName,
   label,
   labelClasses,
   labelFor,
@@ -58,8 +58,10 @@ export const Field: React.FC<FieldProps> = ({
     <Element as={ELEMENT_OPTION_TYPE.DIV} className={_classes || undefined}>
       {label && <Label label={label} classes={_labelClasses} form={labelForm} htmlFor={labelFor} />}
       {React.Children.map(children, (child: React.ReactElement) => {
+        // @ts-ignore
+        ref.fieldName = fieldName;
+
         return React.cloneElement(child, {
-          fieldName: fieldName,
           ref,
         });
       })}

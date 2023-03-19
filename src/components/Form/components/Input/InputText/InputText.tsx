@@ -9,15 +9,17 @@ import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputTextProps = {
-  fieldName?: string;
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const InputText: React.FC<InputTextProps> = React.forwardRef(
-  ({ defaultValue, disabled, fieldName = "", placeholder }, ref?: React.Ref<HTMLInputElement>) => {
+  ({ defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+
+    // @ts-ignore
+    const fieldName = ref?.fieldName;
 
     const displatch = useFormStateActionContext();
 
@@ -67,9 +69,10 @@ export const InputText: React.FC<InputTextProps> = React.forwardRef(
           as={ELEMENT_OPTION_TYPE.INPUT}
           disabled={disabled}
           placeholder={placeholder}
-          value={value || ""}
           ref={ref}
           type="text"
+          value={value || ""}
+          /** Handlers */
           onBlur={handleBlur}
           onChange={handleChange}
         />
@@ -82,6 +85,5 @@ export const InputText: React.FC<InputTextProps> = React.forwardRef(
 InputText.propTypes = {
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string,
   placeholder: PropTypes.string,
 };

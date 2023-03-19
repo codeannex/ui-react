@@ -7,6 +7,7 @@ import { FormButton } from "./src/components/Form/components/FormButton/FormButt
 import { InputEmail } from "./src/components/Form/components/Input/InputEmail/InputEmail";
 import { InputPassword } from "./src/components/Form/components/Input/InputPassword/InputPassword";
 import { InputText } from "./src/components/Form/components/Input/InputText/InputText";
+import { TextArea } from "./src/components/Form/components/TextArea/TextArea";
 import { FormRef } from "./src/components/Form/index";
 import { Select } from "./src/components/Form/index";
 import { Element } from "./src/core/Element/Element";
@@ -49,6 +50,8 @@ export const App = () => {
       firstName: values.firstName ? undefined : "Required",
       lastName: values.lastName ? undefined : "Required",
       email: values.email ? undefined : "Required",
+      select: values.select ? undefined : "Required",
+      textarea: values.textarea ? undefined : "Required",
     };
   };
 
@@ -61,10 +64,17 @@ export const App = () => {
   // }, []);
 
   React.useEffect(() => {
-    // console.log("external ========");
-    // console.log(formRef);
-    // console.log("external ========");
+    console.log("external ========");
+    console.log(formRef);
+    console.log("external ========");
   }, [formRef]);
+
+  const options = [
+    { value: "", label: "--Please choose an option--" },
+    { value: "cow", label: "cow" },
+    { value: "cat", label: "cat" },
+    { value: "dog", label: "dog" },
+  ];
 
   return (
     <div id="page" data-test-id="component-app">
@@ -76,6 +86,7 @@ export const App = () => {
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
           validateOnSubmitOnly
+          autoFocus
         >
           <Field fieldName={"firstName"} label="First Name">
             <InputText />
@@ -90,7 +101,10 @@ export const App = () => {
             <InputPassword />
           </Field>
           <Field fieldName={"select"} label="Select">
-            <Select />
+            <Select options={options} />
+          </Field>
+          <Field fieldName={"textarea"} label="Text Area">
+            <TextArea />
           </Field>
         </Form>
         {/* <p>{state.toString()}</p> */}

@@ -6,7 +6,7 @@ dirty: if any field has a value added or changed
 defaultValues: user can add defaultValues to all the fields in the form. The values will only be added if they are matched to a fieldName
 
 * onChange: called when any change occurs in the form
-onSubmit: called on submit 
+* onSubmit: called on submit 
 
 * onValidate: called for validation
 onValidationFail: called when validation fails
@@ -33,7 +33,7 @@ Fields:
 
 
 LEFT 
-1. Develop focus logic
+1. 
 
 
 NOTE:
@@ -49,7 +49,9 @@ TODO Maybe:
 1. FieldSet
 2. Legend
 
-
+TODO: Long
+1. Fix proptype ref setup
+2. 
 
 
 LEARNING:

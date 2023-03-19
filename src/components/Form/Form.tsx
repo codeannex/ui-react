@@ -29,6 +29,7 @@ import {
 import { Errors, FormRef, STATE_ACTION_TYPE, Values } from "./types";
 
 type FormProps = {
+  autoFocus?: boolean;
   children: React.ReactNode;
 
   proxyRef?: (ref: FormRef) => void;
@@ -44,11 +45,21 @@ type FormProps = {
 };
 
 /**
+ * @Codeannex UI React: Form Component
+ *
+ * A React form component. The form component and associated components follow
+ * the principles found in Mozilla documentation which are linked below in the
+ * tutorial tag.
+ *
+ * @description
+ * Currently the form component/components take on a declarative approach, however
+ * development of a use as hook option is underway.
  *
  * @tutorial
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
  */
 const _Form: React.FC<FormProps> = ({
+  autoFocus,
   children,
   proxyRef,
   validateOnSubmitOnly,
@@ -61,9 +72,9 @@ const _Form: React.FC<FormProps> = ({
   const state = useFormStateContext();
   const displatch = useFormStateActionContext();
 
+  // TODO: !!! EXPERIMENTAL !!! develop futher as the API must be simple and useful.
   const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
 
-  // TODO: develop validation focus logic
   const fieldRefs = useFormFieldRefContext();
 
   const controls = useFormControls({
@@ -123,8 +134,6 @@ const _Form: React.FC<FormProps> = ({
     onChange && onChange(values);
   }, [values]);
 
-  console.log(fieldRefs);
-
   /**
    * Handles pre-submission logic, including validation during
    * preSubmit.
@@ -146,6 +155,35 @@ const _Form: React.FC<FormProps> = ({
           type: STATE_ACTION_TYPE.SET_TOUCHED,
           payload: errors,
         });
+
+        /**
+         * Auto focus enables the form to set focus on the first error found
+         * in the form. If enabled the form determines field order based on
+         * DOM position and maps the associated errors to the first field in
+         * the DOM setting focus.
+         */
+        if (autoFocus) {
+          /** Sorts field refs according to position in the DOM. **/
+          const refs = new Map(
+            [...Object.entries(fieldRefs)].sort((a, b) => {
+              // @ts-ignore
+              return a[1].current.compareDocumentPosition(b[1].current) &
+                Node.DOCUMENT_POSITION_FOLLOWING
+                ? -1
+                : 1;
+            })
+          );
+
+          /** Set focus on first error found **/
+          // @ts-ignore
+          for (let [key, value] of refs.entries()) {
+            if (errors[key]) {
+              value.current.focus();
+
+              break;
+            }
+          }
+        }
       } else {
         displatch({
           type: STATE_ACTION_TYPE.SET_VALID,
@@ -157,7 +195,7 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [preSubmit, submit]);
+  }, [fieldRefs, preSubmit, submit]);
 
   /**
    * Handles form submission.
@@ -180,6 +218,14 @@ export const Form: React.FC<FormProps> = (props) => {
 };
 
 Form.propTypes = {
+  autoFocus: PropTypes.bool,
+  children: PropTypes.arrayOf(PropTypes.element),
   proxyRef: PropTypes.func,
+  validateOnSubmitOnly: PropTypes.bool,
+
+  /** Handlers */
+  onChange: PropTypes.func,
+  onPreSubmit: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
+  onValidate: PropTypes.func,
 };

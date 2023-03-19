@@ -1,30 +1,22 @@
 import * as React from "react";
 
-import {
-  Error,
-  Option,
-  useFormStateActionContext,
-  useFormStateContext,
-} from "@components/Form/index";
+import PropTypes from "prop-types";
+
+import { Error, useFormStateActionContext, useFormStateContext } from "@components/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 
-import { getGuid } from "@utils/getGuid";
-
 import { STATE_ACTION_TYPE } from "../../../types";
 
-type Options<O = unknown> = { value: any; label: string };
-
-type SelectProps<T> = {
+export type InputProps = {
+  asType?: string;
+  defaultValue?: string;
   disabled?: boolean;
-  options: T[];
+  placeholder?: string;
 };
 
-export const Select = React.forwardRef(
-  <T extends Options>(
-    { disabled, options }: SelectProps<T>,
-    ref?: React.Ref<HTMLSelectElement>
-  ) => {
+export const Input: React.FC<InputProps> = React.forwardRef(
+  ({ asType = "text", defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -39,7 +31,7 @@ export const Select = React.forwardRef(
     /**
      * Handlers
      */
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e?.target.value;
 
       displatch({
@@ -61,24 +53,38 @@ export const Select = React.forwardRef(
       }
     };
 
+    React.useEffect(() => {
+      if (defaultValue) {
+        displatch({
+          type: STATE_ACTION_TYPE.UPDATE_VALUE,
+          payload: {
+            [fieldName]: defaultValue,
+          },
+        });
+      }
+    }, []);
+
     return (
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
-          as={ELEMENT_OPTION_TYPE.SELECT}
+          as={ELEMENT_OPTION_TYPE.INPUT}
           disabled={disabled}
+          placeholder={placeholder}
           ref={ref}
+          type={asType}
           value={value || ""}
-          /** Handlers */
+          /** Handlers **/
           onBlur={handleBlur}
           onChange={handleChange}
-        >
-          {options &&
-            options.map((option: any) => {
-              return <Option option={option} key={getGuid()} />;
-            })}
-        </Element>
+        />
         {error && <Error />}
       </Element>
     );
   }
 );
+
+Input.propTypes = {
+  defaultValue: PropTypes.string,
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
+};
