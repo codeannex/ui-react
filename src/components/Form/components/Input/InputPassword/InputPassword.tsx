@@ -9,15 +9,17 @@ import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputPasswordProps = {
-  fieldName?: string;
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
-  ({ defaultValue, disabled, fieldName = "", placeholder }, ref?: React.Ref<HTMLInputElement>) => {
+  ({ defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+
+    // @ts-ignore
+    const fieldName = ref?.fieldName;
 
     const displatch = useFormStateActionContext();
 
@@ -82,6 +84,5 @@ export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
 InputPassword.propTypes = {
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string,
   placeholder: PropTypes.string,
 };

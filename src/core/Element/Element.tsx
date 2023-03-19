@@ -17,14 +17,19 @@ export const enum ELEMENT_OPTION_TYPE {
   DIV = "div",
   INPUT = "input",
   LABEL = "label",
+  OPTION = "option",
   SELECT = "select",
   SPAN = "span",
   STRONG = "strong",
+  TEXT_AREA = "textarea",
 }
 
 type ElementProps = {
   classes?: string | string[];
 
+  /**
+   * Available handlers.
+   */
   onBlur?: React.FocusEventHandler;
   onChange?: React.ChangeEventHandler;
   onClick?: React.MouseEventHandler;
@@ -52,9 +57,7 @@ export const Element: ElementComponent = React.forwardRef(
       classes,
       style,
 
-      /**
-       * Callback Handlers
-       */
+      /** Callback Handlers **/
       onBlur,
       onChange,
       onClick,

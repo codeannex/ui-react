@@ -94,7 +94,8 @@ export type StateReducerActionContext = React.Dispatch<StateAction>;
 /**
  * Refs
  */
-export type FieldRefType = HTMLInputElement | HTMLSelectElement;
+export type FieldRefType = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 export type FieldRefAction = {
   type: FIELD_REF_ACTION_TYPE;
   payload: FieldRefState;
