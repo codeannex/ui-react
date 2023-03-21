@@ -107,3 +107,9 @@ export type FieldRefState = {
 
 export type FieldRef = React.RefObject<FieldRefType>;
 export type FieldRefReducerActionContext = React.Dispatch<FieldRefAction>;
+
+/**
+ * Common
+ */
+export type RadioOption = { label: string; value: any; name: string };
+export type SelectOption = { value: any; label: string };

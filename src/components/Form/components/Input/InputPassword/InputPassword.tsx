@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import { Error, useFormStateActionContext, useFormStateContext } from "@components/Form/index";
@@ -9,13 +10,14 @@ import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputPasswordProps = {
+  classes?: string | string[];
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
-  ({ defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
+  ({ classes, defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -24,8 +26,9 @@ export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
     const displatch = useFormStateActionContext();
 
     const value = values[fieldName] as string;
-
     const error = errors[fieldName] && touched[fieldName];
+
+    const _classes = classNames(classes && classes);
 
     /**
      * Handlers
@@ -67,6 +70,7 @@ export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
           as={ELEMENT_OPTION_TYPE.INPUT}
+          classes={_classes || undefined}
           disabled={disabled}
           placeholder={placeholder}
           value={value || ""}
@@ -82,6 +86,7 @@ export const InputPassword: React.FC<InputPasswordProps> = React.forwardRef(
 );
 
 InputPassword.propTypes = {
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
