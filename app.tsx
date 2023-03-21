@@ -4,9 +4,11 @@ import ReactDOM from "react-dom/client";
 import { Form } from "./src/components/Form/Form";
 import { Field } from "./src/components/Form/components/Field/Field";
 import { FormButton } from "./src/components/Form/components/FormButton/FormButton";
+import { Input } from "./src/components/Form/components/Input/Input/Input";
 import { InputEmail } from "./src/components/Form/components/Input/InputEmail/InputEmail";
 import { InputPassword } from "./src/components/Form/components/Input/InputPassword/InputPassword";
 import { InputText } from "./src/components/Form/components/Input/InputText/InputText";
+import { Radio } from "./src/components/Form/components/Radio/Radio";
 import { TextArea } from "./src/components/Form/components/TextArea/TextArea";
 import { FormRef } from "./src/components/Form/index";
 import { Select } from "./src/components/Form/index";
@@ -16,9 +18,9 @@ export const App = () => {
   // const [state, setState] = React.useState(0);
   const [formRef, setFormRef] = React.useState<FormRef>(null);
 
-  const getFormRef = (current) => {
-    setFormRef(current);
-  };
+  // const getFormRef = (current) => {
+  //   setFormRef(current);
+  // };
 
   const handleClick = () => {
     // formRef?.controls.setError({ fieldName: "firstName", value: "This was required" });
@@ -52,6 +54,7 @@ export const App = () => {
       email: values.email ? undefined : "Required",
       select: values.select ? undefined : "Required",
       textarea: values.textarea ? undefined : "Required",
+      radio: values.radio ? undefined : "Required",
     };
   };
 
@@ -69,11 +72,17 @@ export const App = () => {
     console.log("external ========");
   }, [formRef]);
 
-  const options = [
+  const selectOptions = [
     { value: "", label: "--Please choose an option--" },
     { value: "cow", label: "cow" },
     { value: "cat", label: "cat" },
     { value: "dog", label: "dog" },
+  ];
+
+  const radioOptions = [
+    { value: "cow", label: "cow", name: "cow" },
+    { value: "cat", label: "cat", name: "cat" },
+    { value: "dog", label: "dog", name: "dog" },
   ];
 
   return (
@@ -101,7 +110,10 @@ export const App = () => {
             <InputPassword />
           </Field>
           <Field fieldName={"select"} label="Select">
-            <Select options={options} />
+            <Select options={selectOptions} />
+          </Field>
+          <Field fieldName={"radio"} label="Radio">
+            <Radio options={radioOptions} />
           </Field>
           <Field fieldName={"textarea"} label="Text Area">
             <TextArea />
@@ -109,7 +121,7 @@ export const App = () => {
         </Form>
         {/* <p>{state.toString()}</p> */}
         <Element as="button" onClick={handleClick}>
-          Click
+          Click to test stuff
         </Element>
         <FormButton formRef={formRef}>Submit</FormButton>
       </main>

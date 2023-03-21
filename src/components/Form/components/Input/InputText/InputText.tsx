@@ -1,21 +1,23 @@
 import * as React from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import { Error, useFormStateActionContext, useFormStateContext } from "@components/Form/index";
 
-import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
+import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/Element/Element";
 
 import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputTextProps = {
+  classes?: string | string[];
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const InputText: React.FC<InputTextProps> = React.forwardRef(
-  ({ defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
+  ({ classes, defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -24,8 +26,9 @@ export const InputText: React.FC<InputTextProps> = React.forwardRef(
     const displatch = useFormStateActionContext();
 
     const value = values[fieldName] as string;
-
     const error = errors[fieldName] && touched[fieldName];
+
+    const _classes = classNames(classes && classes);
 
     /**
      * Handlers
@@ -67,10 +70,11 @@ export const InputText: React.FC<InputTextProps> = React.forwardRef(
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
           as={ELEMENT_OPTION_TYPE.INPUT}
+          classes={_classes || undefined}
           disabled={disabled}
           placeholder={placeholder}
           ref={ref}
-          type="text"
+          type={INPUT_TYPE.TEXT}
           value={value || ""}
           /** Handlers */
           onBlur={handleBlur}
@@ -83,6 +87,7 @@ export const InputText: React.FC<InputTextProps> = React.forwardRef(
 );
 
 InputText.propTypes = {
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,

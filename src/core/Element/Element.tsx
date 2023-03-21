@@ -24,6 +24,11 @@ export const enum ELEMENT_OPTION_TYPE {
   TEXT_AREA = "textarea",
 }
 
+export const enum INPUT_TYPE {
+  RADIO = "radio",
+  TEXT = "text",
+}
+
 type ElementProps = {
   classes?: string | string[];
 

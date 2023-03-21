@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import { Error, useFormStateActionContext, useFormStateContext } from "@components/Form/index";
@@ -10,13 +11,17 @@ import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputProps = {
   asType?: string;
+  classes?: string | string[];
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const Input: React.FC<InputProps> = React.forwardRef(
-  ({ asType = "text", defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLInputElement>) => {
+  (
+    { asType = "text", classes, defaultValue, disabled, placeholder },
+    ref?: React.Ref<HTMLInputElement>
+  ) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -25,8 +30,9 @@ export const Input: React.FC<InputProps> = React.forwardRef(
     const displatch = useFormStateActionContext();
 
     const value = values[fieldName] as string;
-
     const error = errors[fieldName] && touched[fieldName];
+
+    const _classes = classNames(classes && classes);
 
     /**
      * Handlers
@@ -68,6 +74,7 @@ export const Input: React.FC<InputProps> = React.forwardRef(
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
           as={ELEMENT_OPTION_TYPE.INPUT}
+          classes={_classes || undefined}
           disabled={disabled}
           placeholder={placeholder}
           ref={ref}
@@ -84,6 +91,8 @@ export const Input: React.FC<InputProps> = React.forwardRef(
 );
 
 Input.propTypes = {
+  asType: PropTypes.string,
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,

@@ -44,6 +44,7 @@ NOTE:
 TODO: 
 1. The `Label` for attribute should be the same as the input id. 
 2. The `Label` should be clickable and set focus to the associated input 
+3. CSS class name assignment fit according to style guied MSN.
 
 TODO Maybe:
 1. FieldSet
@@ -58,3 +59,7 @@ LEARNING:
 https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 
+
+CURRENT GIT:
+1. added class support to form fields
+2. developed radio form elements

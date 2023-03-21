@@ -1,5 +1,8 @@
 import * as React from "react";
 
+import classNames from "classnames";
+import PropTypes from "prop-types";
+
 import {
   Error,
   Option,
@@ -11,20 +14,16 @@ import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 
 import { getGuid } from "@utils/getGuid";
 
-import { STATE_ACTION_TYPE } from "../../../types";
+import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
 
-type Options<O = unknown> = { value: any; label: string };
-
-type SelectProps<T> = {
+type SelectProps = {
+  classes?: string | string[];
   disabled?: boolean;
-  options: T[];
+  options: SelectOption[];
 };
 
-export const Select = React.forwardRef(
-  <T extends Options>(
-    { disabled, options }: SelectProps<T>,
-    ref?: React.Ref<HTMLSelectElement>
-  ) => {
+export const Select: React.FC<SelectProps> = React.forwardRef(
+  ({ classes, disabled, options }, ref?: React.Ref<HTMLSelectElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -33,8 +32,9 @@ export const Select = React.forwardRef(
     const displatch = useFormStateActionContext();
 
     const value = values[fieldName] as string;
-
     const error = errors[fieldName] && touched[fieldName];
+
+    const _classes = classNames(classes && classes);
 
     /**
      * Handlers
@@ -65,6 +65,7 @@ export const Select = React.forwardRef(
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
           as={ELEMENT_OPTION_TYPE.SELECT}
+          classes={_classes || undefined}
           disabled={disabled}
           ref={ref}
           value={value || ""}
@@ -72,13 +73,17 @@ export const Select = React.forwardRef(
           onBlur={handleBlur}
           onChange={handleChange}
         >
-          {options &&
-            options.map((option: any) => {
-              return <Option option={option} key={getGuid()} />;
-            })}
+          {options?.map((option: SelectOption) => {
+            return <Option option={option} key={getGuid()} />;
+          })}
         </Element>
         {error && <Error />}
       </Element>
     );
   }
 );
+
+Select.propTypes = {
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  disabled: PropTypes.bool,
+};

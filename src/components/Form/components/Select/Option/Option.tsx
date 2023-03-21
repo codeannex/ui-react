@@ -2,8 +2,10 @@ import * as React from "react";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/Element/Element";
 
+import { SelectOption } from "../../../types";
+
 type OptionProps = {
-  option: { value: any; label: string };
+  option: SelectOption;
 };
 
 export const Option: React.FC<OptionProps> = ({ option }) => {
