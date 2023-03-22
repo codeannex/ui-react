@@ -20,6 +20,7 @@ export const FormProvider: React.FC<Props> = ({ children }) => {
   const [formState, setFormState] = React.useReducer(formStateReducer, {
     preSubmit: "",
     submit: false,
+    postSubmit: false,
     errors: {},
     touched: {},
     values: {},

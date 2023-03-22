@@ -58,6 +58,12 @@ export const App = () => {
     };
   };
 
+  const handlePostSubmit = (form) => {
+    console.log("post submit ========");
+    console.log(form);
+    console.log("post submit ========");
+  };
+
   // React.useEffect(() => {
   //   let value = 0;
   //   setInterval(() => {
@@ -94,6 +100,7 @@ export const App = () => {
           onChange={handleChange}
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
+          onPostSubmit={handlePostSubmit}
           validateOnSubmitOnly
           autoFocus
         >
