@@ -7,6 +7,7 @@ import { STATE_ACTION_TYPE, State, StateAction, StateReducerActionContext } from
 export const FormStateContext = React.createContext<State>({
   preSubmit: "",
   submit: false,
+  postSubmit: false,
   errors: {},
   touched: {},
   values: {},
@@ -55,15 +56,20 @@ export const formStateReducer = (state: State, action: StateAction) => {
         ...state,
         touched: { ...touched, ...action.payload },
       };
-    case STATE_ACTION_TYPE.SET_SUBMIT:
+    case STATE_ACTION_TYPE.SET_PRE_SUBMIT:
       return {
         ...state,
         preSubmit: getGuid(),
       };
-    case STATE_ACTION_TYPE.SET_VALID:
+    case STATE_ACTION_TYPE.SET_SUBMIT:
       return {
         ...state,
         submit: true,
+      };
+    case STATE_ACTION_TYPE.SET_POST_SUBMIT:
+      return {
+        ...state,
+        postSubmit: true,
       };
     case STATE_ACTION_TYPE.UPDATE_VALUE:
       return {

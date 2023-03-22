@@ -5,8 +5,9 @@ export const enum STATE_ACTION_TYPE {
   SET_ERROR,
   SET_ERRORS,
   SET_TOUCHED,
+  SET_PRE_SUBMIT,
   SET_SUBMIT,
-  SET_VALID,
+  SET_POST_SUBMIT,
   UNSET_TOUCHED,
   UPDATE_VALUE,
 }
@@ -79,6 +80,7 @@ export type Values = {
 export type State = {
   preSubmit?: string;
   submit?: boolean;
+  postSubmit?: boolean;
   errors?: Errors;
   touched?: Touched;
   values?: Values;

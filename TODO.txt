@@ -12,7 +12,7 @@ defaultValues: user can add defaultValues to all the fields in the form. The val
 onValidationFail: called when validation fails
 onPreValidate: ?
 
-onPostSubmit: ?
+* onPostSubmit: ?
 * onPreSubmit: ?
 
 

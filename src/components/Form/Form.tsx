@@ -29,18 +29,59 @@ import {
 import { Errors, FormRef, STATE_ACTION_TYPE, Values } from "./types";
 
 type FormProps = {
+  /**
+   * Enables auto focus to be set on the first form field in DOM order
+   * containing an error following form submission.
+   */
   autoFocus?: boolean;
   children: React.ReactNode;
 
+  /**
+   * Allows a reference to be set externally containing form state and
+   * controls giving the caller components access to make modifications
+   * to state and respond to changes.
+   */
   proxyRef?: (ref: FormRef) => void;
-  validateOnSubmitOnly?: boolean;
 
   /**
-   * Hanlders
+   * Disallows the occurrence of validation when form state changes are
+   * detected which typically happens subsequent to any change event, and
+   * restricts validation to occur only during form submission.
+   */
+  validateOnSubmitOnly?: boolean;
+
+  /** Hanlders **/
+
+  /**
+   * Called upon any change event passing the updated form state as
+   * a paramter.
    */
   onChange?: (values: Values) => void;
+
+  /**
+   * Called upon form submission.
+   *
+   * TODO: Incomplete
+   */
   onPreSubmit?: (values: Values) => void;
+
+  /**
+   * Called subsequent to a successful form submission. The means validation
+   * was passed and the submission of the form completed.
+   */
+  onPostSubmit?: (ref: FormRef) => void;
+
+  /**
+   * Called upon form submission.
+   */
   onSubmit: (values: Values) => void;
+
+  /**
+   * Called upon any change event passing the updated form state as
+   * a paramter. The form state can be used to validate any field. A
+   * return object must contain either `undefined` or a `string value`
+   * of the validation error rendered with the form field.
+   */
   onValidate?: (values: Values) => Errors;
 };
 
@@ -57,6 +98,7 @@ type FormProps = {
  *
  * @tutorial
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
+ *
  */
 const _Form: React.FC<FormProps> = ({
   autoFocus,
@@ -66,6 +108,7 @@ const _Form: React.FC<FormProps> = ({
 
   onChange,
   onPreSubmit,
+  onPostSubmit,
   onSubmit,
   onValidate,
 }): JSX.Element => {
@@ -88,7 +131,7 @@ const _Form: React.FC<FormProps> = ({
     _updateValue,
   });
 
-  const { preSubmit, submit, values = {} } = state;
+  const { preSubmit, submit, postSubmit, values = {} } = state;
 
   /**
    * Set and update external ref.
@@ -98,25 +141,33 @@ const _Form: React.FC<FormProps> = ({
   }, [state]);
 
   /**
-   * Handles validation calling prop validation function. The prop
-   * validation function must return the expected object and key
-   * values to update the form state `errors` object. The process
-   * is triggered by state changes occurring with the `values` form
-   * state object. If validateOnSubmitOnly is enabled and validation
+   * Handles validation during change events triggered by user input
+   * field changes. The process is triggered by state changes occurring
+   * with the `values` form state object. The prop validation function must
+   * return the expected object and key values to update the form state
+   * `errors` object.
+   *
+   * If validateOnSubmitOnly is enabled and validation
    * fails during pre-submit, error handlding will take place until
    * errors are cleared and pr-submit is successful.
+   *
    */
   React.useEffect(() => {
     const errors = (onValidate && onValidate(values)) || {};
 
-    if (!validateOnSubmitOnly && Object.entries(errors).length) {
+    /**
+     * Handles validation before pre-submit
+     */
+    if (!validateOnSubmitOnly && !preSubmit && Object.entries(errors).length) {
       displatch({
         type: STATE_ACTION_TYPE.SET_ERRORS,
         payload: errors,
       });
     }
 
-    /** Executes after pre-submit **/
+    /**
+     * Handles validation after pre-submit
+     */
     if (preSubmit && !submit && Object.entries(errors).length) {
       displatch({
         type: STATE_ACTION_TYPE.SET_ERRORS,
@@ -135,8 +186,8 @@ const _Form: React.FC<FormProps> = ({
   }, [values]);
 
   /**
-   * Handles pre-submission logic, including validation during
-   * preSubmit.
+   * Handles validation during form submission and is triggerd by
+   * user selecting the submit button.
    */
   useUpdateEffect(() => {
     if (preSubmit && !submit) {
@@ -186,7 +237,7 @@ const _Form: React.FC<FormProps> = ({
         }
       } else {
         displatch({
-          type: STATE_ACTION_TYPE.SET_VALID,
+          type: STATE_ACTION_TYPE.SET_SUBMIT,
           payload: null,
         });
 
@@ -201,10 +252,24 @@ const _Form: React.FC<FormProps> = ({
    * Handles form submission.
    */
   useUpdateEffect(() => {
-    if (submit) {
+    if (submit && !postSubmit) {
       onSubmit(values);
+
+      displatch({
+        type: STATE_ACTION_TYPE.SET_POST_SUBMIT,
+        payload: null,
+      });
     }
-  }, [onSubmit, submit]);
+  }, [onSubmit, submit, postSubmit]);
+
+  /**
+   * Handles post submission.
+   */
+  useUpdateEffect(() => {
+    if (postSubmit) {
+      onPostSubmit && isFunction(onPostSubmit) && onPostSubmit({ controls, state });
+    }
+  }, [postSubmit]);
 
   return <form>{children}</form>;
 };

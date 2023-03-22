@@ -9,7 +9,7 @@ export const _submit = ({ dispatch }: _Submit) => {
   }
 
   dispatch({
-    type: STATE_ACTION_TYPE.SET_SUBMIT,
+    type: STATE_ACTION_TYPE.SET_PRE_SUBMIT,
     payload: {},
   });
 };
