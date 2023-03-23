@@ -61,5 +61,8 @@ https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 
 CURRENT GIT:
-1. added class support to form fields
-2. developed radio form elements
+1. developed basic storybook for Error component.
+2. added class support to error component.
+3. added message prop to error component.
+4. updated error component callers with changes.
+5. updated InputText component with classes prop for error component.

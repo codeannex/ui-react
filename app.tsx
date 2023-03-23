@@ -101,7 +101,7 @@ export const App = () => {
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
           onPostSubmit={handlePostSubmit}
-          validateOnSubmitOnly
+          // validateOnSubmitOnly
           autoFocus
         >
           <Field fieldName={"firstName"} label="First Name">
