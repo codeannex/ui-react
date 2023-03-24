@@ -61,8 +61,18 @@ https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 
 CURRENT GIT:
+BRANCH: dev/develop_basic_svg_component
 1. developed basic storybook for Error component.
 2. added class support to error component.
 3. added message prop to error component.
 4. updated error component callers with changes.
 5. updated InputText component with classes prop for error component.
+
+
+CURRENT GIT:
+BRANCH: dev/develop_basic_svg_component
+1. updated npm repository pointer to the none experimental repo.
+2. included library exposing exports for the form component.
+3. updated typescript to support svg file imports.
+4. developed recursive field search for adding references.
+5. updated form fields with error classes and reference.

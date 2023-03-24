@@ -15,12 +15,14 @@ import {
 export const enum ELEMENT_OPTION_TYPE {
   BUTTON = "button",
   DIV = "div",
+  IMAGE = "image",
   INPUT = "input",
   LABEL = "label",
   OPTION = "option",
   SELECT = "select",
   SPAN = "span",
   STRONG = "strong",
+  SVG = "svg",
   TEXT_AREA = "textarea",
 }
 

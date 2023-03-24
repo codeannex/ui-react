@@ -17,13 +17,25 @@ import { getGuid } from "@utils/getGuid";
 import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
 
 type SelectProps = {
+  /**
+   * Add CSS class/classes to the component for styling.
+   */
   classes?: string | string[];
+  classesError?: string | string[];
+
+  /**
+   * A boolean value used to disable the select box.
+   */
   disabled?: boolean;
+
+  /**
+   * Array of options used to build the select options.
+   */
   options: SelectOption[];
 };
 
 export const Select: React.FC<SelectProps> = React.forwardRef(
-  ({ classes, disabled, options }, ref?: React.Ref<HTMLSelectElement>) => {
+  ({ classes, classesError, disabled, options }, ref?: React.Ref<HTMLSelectElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -35,6 +47,7 @@ export const Select: React.FC<SelectProps> = React.forwardRef(
     const error = errors[fieldName] && touched[fieldName];
 
     const _classes = classNames(classes && classes);
+    const _classesError = classNames(classesError && classesError);
 
     /**
      * Handlers
@@ -77,7 +90,9 @@ export const Select: React.FC<SelectProps> = React.forwardRef(
             return <Option option={option} key={getGuid()} />;
           })}
         </Element>
-        {error && <Error />}
+        {error && (
+          <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
+        )}
       </Element>
     );
   }
@@ -85,5 +100,7 @@ export const Select: React.FC<SelectProps> = React.forwardRef(
 
 Select.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   disabled: PropTypes.bool,
+  options: PropTypes.array.isRequired,
 };

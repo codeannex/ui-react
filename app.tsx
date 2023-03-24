@@ -17,6 +17,7 @@ import { Element } from "./src/core/Element/Element";
 export const App = () => {
   // const [state, setState] = React.useState(0);
   const [formRef, setFormRef] = React.useState<FormRef>(null);
+  const svgRef = React.useRef<SVGElement | null>(null);
 
   // const getFormRef = (current) => {
   //   setFormRef(current);
@@ -101,13 +102,16 @@ export const App = () => {
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
           onPostSubmit={handlePostSubmit}
-          // validateOnSubmitOnly
+          validateOnSubmitOnly
           autoFocus
         >
           <Field fieldName={"firstName"} label="First Name">
-            <InputText />
+            <InputText classes="poopster" />
           </Field>
           <Field fieldName={"lastName"} label="Last Name">
+            <InputText />
+          </Field>
+          <Field fieldName={"some"} label="Some">
             <InputText />
           </Field>
           <Field fieldName={"email"} label="Email">
@@ -126,7 +130,6 @@ export const App = () => {
             <TextArea />
           </Field>
         </Form>
-        {/* <p>{state.toString()}</p> */}
         <Element as="button" onClick={handleClick}>
           Click to test stuff
         </Element>

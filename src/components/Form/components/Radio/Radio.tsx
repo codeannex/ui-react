@@ -3,26 +3,29 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-import {
-  Error,
-  Label,
-  useFormStateActionContext,
-  useFormStateContext,
-} from "@components/Form/index";
+import { Error, useFormStateActionContext, useFormStateContext } from "@components/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/Element/Element";
 
 import { getGuid } from "@utils/getGuid";
 
-import { RadioOption, STATE_ACTION_TYPE, SelectOption } from "../../types";
+import { RadioOption, STATE_ACTION_TYPE } from "../../types";
 
 export type RadioProps = {
+  /**
+   * Add CSS class/classes to the component for styling.
+   */
   classes?: string | string[];
+  classesError?: string | string[];
+
+  /**
+   * Array of options used to build the radio group buttons.
+   */
   options: RadioOption[];
 };
 
 export const Radio: React.FC<RadioProps> = React.forwardRef(
-  ({ classes, options }, ref?: React.Ref<HTMLInputElement>) => {
+  ({ classes, classesError, options }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -34,6 +37,7 @@ export const Radio: React.FC<RadioProps> = React.forwardRef(
     const error = errors[fieldName] && touched[fieldName];
 
     const _classes = classNames(classes && classes);
+    const _classesError = classNames(classesError && classesError);
 
     /**
      * Handlers
@@ -84,8 +88,16 @@ export const Radio: React.FC<RadioProps> = React.forwardRef(
             </Element>
           );
         })}
-        {error && <Error />}
+        {error && (
+          <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
+        )}
       </Element>
     );
   }
 );
+
+Radio.propTypes = {
+  classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  options: PropTypes.array.isRequired,
+};
