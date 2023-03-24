@@ -96,7 +96,7 @@ type FormProps = {
  * Currently the form component/components take on a declarative approach, however
  * development of a use as hook option is underway.
  *
- * @tutorial
+ * @rules
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
  *
  */
@@ -227,7 +227,7 @@ const _Form: React.FC<FormProps> = ({
 
           /** Set focus on first error found **/
           // @ts-ignore
-          for (let [key, value] of refs.entries()) {
+          for (const [key, value] of refs.entries()) {
             if (errors[key]) {
               value.current.focus();
 
@@ -284,7 +284,7 @@ export const Form: React.FC<FormProps> = (props) => {
 
 Form.propTypes = {
   autoFocus: PropTypes.bool,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.node,
   proxyRef: PropTypes.func,
   validateOnSubmitOnly: PropTypes.bool,
 

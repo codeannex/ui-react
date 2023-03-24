@@ -11,13 +11,17 @@ import { STATE_ACTION_TYPE } from "../../types";
 
 type TextAreaProps = {
   classes?: string | string[];
+  classesError?: string | string[];
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
 };
 
 export const TextArea: React.FC<TextAreaProps> = React.forwardRef(
-  ({ classes, defaultValue, disabled, placeholder }, ref?: React.Ref<HTMLTextAreaElement>) => {
+  (
+    { classes, classesError, defaultValue, disabled, placeholder },
+    ref?: React.Ref<HTMLTextAreaElement>
+  ) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
     // @ts-ignore
@@ -29,6 +33,7 @@ export const TextArea: React.FC<TextAreaProps> = React.forwardRef(
     const error = errors[fieldName] && touched[fieldName];
 
     const _classes = classNames(classes && classes);
+    const _classesError = classNames(classesError && classesError);
 
     /**
      * Handlers
@@ -79,7 +84,9 @@ export const TextArea: React.FC<TextAreaProps> = React.forwardRef(
           onBlur={handleBlur}
           onChange={handleChange}
         />
-        {error && <Error />}
+        {error && (
+          <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
+        )}
       </Element>
     );
   }
@@ -87,6 +94,7 @@ export const TextArea: React.FC<TextAreaProps> = React.forwardRef(
 
 TextArea.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,

@@ -31,6 +31,6 @@
       "@styles/*": ["styles/*"]
     }
   },
-  "include": ["example", "src", "__tests__"],
+  "include": ["example", "src", "__tests__", "custom.d.ts"],
   "exclude": ["dist", "node_modules", "src/stories", "webpack", ".vscode"]
 }
