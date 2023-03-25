@@ -102,16 +102,16 @@ export const App = () => {
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
           onPostSubmit={handlePostSubmit}
-          validateOnSubmitOnly
+          // validateOnSubmitOnly
           autoFocus
         >
-          <Field fieldName={"firstName"} label="First Name">
-            <InputText classes="poopster" />
+          <Field fieldName={"firstName"} label="First Name" classes="poopster">
+            <InputText />
           </Field>
           <Field fieldName={"lastName"} label="Last Name">
             <InputText />
           </Field>
-          <Field fieldName={"some"} label="Some">
+          {/* <Field fieldName={"some"} label="Some">
             <InputText />
           </Field>
           <Field fieldName={"email"} label="Email">
@@ -128,7 +128,7 @@ export const App = () => {
           </Field>
           <Field fieldName={"textarea"} label="Text Area">
             <TextArea />
-          </Field>
+          </Field> */}
         </Form>
         <Element as="button" onClick={handleClick}>
           Click to test stuff

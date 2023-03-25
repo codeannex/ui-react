@@ -4,14 +4,16 @@ import { getGuid } from "@utils/getGuid";
 
 import { STATE_ACTION_TYPE, State, StateAction, StateReducerActionContext } from "../types";
 
-export const FormStateContext = React.createContext<State>({
+export const DEFAULT_FORM_STATE = {
   preSubmit: "",
   submit: false,
   postSubmit: false,
   errors: {},
   touched: {},
   values: {},
-});
+};
+
+export const FormStateContext = React.createContext<State>(DEFAULT_FORM_STATE);
 
 export const FormStateActionContext = React.createContext<StateReducerActionContext>(
   () => undefined
@@ -75,6 +77,10 @@ export const formStateReducer = (state: State, action: StateAction) => {
       return {
         ...state,
         values: { ...values, ...action.payload },
+      };
+    case STATE_ACTION_TYPE.RESET_FORM_STATE:
+      return {
+        ...DEFAULT_FORM_STATE,
       };
     default:
       return state;
