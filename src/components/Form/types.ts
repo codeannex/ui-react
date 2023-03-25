@@ -2,6 +2,7 @@
  * Actions
  */
 export const enum STATE_ACTION_TYPE {
+  RESET_FORM_STATE,
   SET_ERROR,
   SET_ERRORS,
   SET_TOUCHED,

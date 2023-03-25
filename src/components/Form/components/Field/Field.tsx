@@ -109,7 +109,7 @@ export const Field: React.FC<FieldProps> = ({
   }, [ref?.current]);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV} className={_classes || undefined}>
+    <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
       {label && <Label label={label} classes={_labelClasses} form={labelForm} htmlFor={labelFor} />}
       {recursiveMap(children)}
     </Element>

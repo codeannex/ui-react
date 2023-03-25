@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import {
   FormProvider,
   hasError,
+  sanitizeErrors,
+  sanitizeTouched,
   useFormControls,
   useFormFieldRefContext,
   useFormStateActionContext,
@@ -41,7 +43,7 @@ type FormProps = {
    * controls giving the caller components access to make modifications
    * to state and respond to changes.
    */
-  proxyRef?: (ref: FormRef) => void;
+  proxyRef: (ref: FormRef) => void;
 
   /**
    * Disallows the occurrence of validation when form state changes are
@@ -115,10 +117,10 @@ const _Form: React.FC<FormProps> = ({
   const state = useFormStateContext();
   const displatch = useFormStateActionContext();
 
+  const fieldRefs = useFormFieldRefContext();
+
   // TODO: !!! EXPERIMENTAL !!! develop futher as the API must be simple and useful.
   const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
-
-  const fieldRefs = useFormFieldRefContext();
 
   const controls = useFormControls({
     _getValue,
@@ -153,28 +155,32 @@ const _Form: React.FC<FormProps> = ({
    *
    */
   React.useEffect(() => {
-    const errors = (onValidate && onValidate(values)) || {};
+    const validationErrors = (onValidate && onValidate(values)) || {};
 
-    /**
-     * Handles validation before pre-submit
-     */
-    if (!validateOnSubmitOnly && !preSubmit && Object.entries(errors).length) {
-      displatch({
-        type: STATE_ACTION_TYPE.SET_ERRORS,
-        payload: errors,
-      });
-    }
+    if (Object.keys(fieldRefs).length) {
+      const { errors } = sanitizeErrors(validationErrors, fieldRefs);
 
-    /**
-     * Handles validation after pre-submit
-     */
-    if (preSubmit && !submit && Object.entries(errors).length) {
-      displatch({
-        type: STATE_ACTION_TYPE.SET_ERRORS,
-        payload: errors,
-      });
+      /**
+       * Handles validation before pre-submit
+       */
+      if (!validateOnSubmitOnly && !preSubmit && Object.entries(errors).length) {
+        displatch({
+          type: STATE_ACTION_TYPE.SET_ERRORS,
+          payload: errors,
+        });
+      }
+
+      /**
+       * Handles validation after pre-submit
+       */
+      if (preSubmit && !submit && Object.entries(errors).length) {
+        displatch({
+          type: STATE_ACTION_TYPE.SET_ERRORS,
+          payload: errors,
+        });
+      }
     }
-  }, [preSubmit, submit, values, validateOnSubmitOnly]);
+  }, [preSubmit, submit, values, validateOnSubmitOnly, fieldRefs]);
 
   /**
    * Handles calling prop onChange function. The process is
@@ -191,7 +197,10 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (preSubmit && !submit) {
-      const errors = (onValidate && onValidate(values)) || {};
+      const validationErrors = (onValidate && onValidate(values)) || {};
+
+      const { touched } = sanitizeTouched(validationErrors, fieldRefs);
+      const { errors } = sanitizeErrors(validationErrors, fieldRefs);
 
       const errorCount = hasError(errors);
 
@@ -204,7 +213,7 @@ const _Form: React.FC<FormProps> = ({
 
         displatch({
           type: STATE_ACTION_TYPE.SET_TOUCHED,
-          payload: errors,
+          payload: touched,
         });
 
         /**
@@ -268,6 +277,11 @@ const _Form: React.FC<FormProps> = ({
   useUpdateEffect(() => {
     if (postSubmit) {
       onPostSubmit && isFunction(onPostSubmit) && onPostSubmit({ controls, state });
+
+      displatch({
+        type: STATE_ACTION_TYPE.RESET_FORM_STATE,
+        payload: null,
+      });
     }
   }, [postSubmit]);
 
@@ -285,7 +299,7 @@ export const Form: React.FC<FormProps> = (props) => {
 Form.propTypes = {
   autoFocus: PropTypes.bool,
   children: PropTypes.node,
-  proxyRef: PropTypes.func,
+  proxyRef: PropTypes.func.isRequired,
   validateOnSubmitOnly: PropTypes.bool,
 
   /** Handlers */

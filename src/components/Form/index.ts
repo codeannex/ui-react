@@ -19,5 +19,7 @@ export * from "./hooks/useFormControls";
 export * from "./hooks/usePreSubmit";
 
 export * from "./utils/hasError";
+export * from "./utils/sanititzeErrors";
+export * from "./utils/sanitizeTouched";
 
 export * from "./types";
