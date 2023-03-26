@@ -14,6 +14,7 @@ export * from "./components/TextArea/TextArea";
 
 export * from "./contexts/FormFieldRefContext";
 export * from "./contexts/FormStateContext";
+export * from "./contexts/FormStaticPropsContext";
 
 export * from "./hooks/useFormControls";
 export * from "./hooks/usePreSubmit";
@@ -21,5 +22,6 @@ export * from "./hooks/usePreSubmit";
 export * from "./utils/hasError";
 export * from "./utils/sanititzeErrors";
 export * from "./utils/sanitizeTouched";
+export * from "./utils/setInputRef";
 
 export * from "./types";

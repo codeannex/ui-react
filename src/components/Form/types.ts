@@ -44,6 +44,11 @@ export type StateAction = {
   payload: any;
 };
 
+export type StaticProps = {
+  classesError?: string | string[];
+  classesField?: string | string[];
+};
+
 export type Controls = {
   getValue: (fieldName: GetValue) => string;
   getValues: () => Values;

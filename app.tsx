@@ -74,9 +74,9 @@ export const App = () => {
   // }, []);
 
   React.useEffect(() => {
-    console.log("external ========");
-    console.log(formRef);
-    console.log("external ========");
+    // console.log("external ========");
+    // console.log(formRef);
+    // console.log("external ========");
   }, [formRef]);
 
   const selectOptions = [
@@ -96,6 +96,8 @@ export const App = () => {
     <div id="page" data-test-id="component-app">
       <main id="main">
         <Form
+          classesField="form-field"
+          classesError="errors"
           proxyRef={setFormRef}
           onSubmit={handleSubmit}
           onChange={handleChange}
@@ -105,13 +107,13 @@ export const App = () => {
           // validateOnSubmitOnly
           autoFocus
         >
-          <Field fieldName={"firstName"} label="First Name" classes="poopster">
+          <Field fieldName={"firstName"} label="First Name">
             <InputText />
           </Field>
           <Field fieldName={"lastName"} label="Last Name">
             <InputText />
           </Field>
-          {/* <Field fieldName={"some"} label="Some">
+          <Field fieldName={"some"} label="Some">
             <InputText />
           </Field>
           <Field fieldName={"email"} label="Email">
@@ -124,11 +126,11 @@ export const App = () => {
             <Select options={selectOptions} />
           </Field>
           <Field fieldName={"radio"} label="Radio">
-            <Radio options={radioOptions} />
+            <Radio options={radioOptions} classes="poopser" />
           </Field>
           <Field fieldName={"textarea"} label="Text Area">
             <TextArea />
-          </Field> */}
+          </Field>
         </Form>
         <Element as="button" onClick={handleClick}>
           Click to test stuff
