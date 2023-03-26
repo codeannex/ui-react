@@ -61,6 +61,15 @@ https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 
 CURRENT GIT:
+BRANCH: dev/develop_static_props_provider_form
+1. Added support for static props and added helper props for targeting group class names.
+2. Fixed missing error class for the radio group.
+3. Moved helper functions for form field query into file.
+4. 
+5. 
+
+
+CURRENT GIT:
 BRANCH: dev/
 1. 
 2. 
@@ -68,17 +77,11 @@ BRANCH: dev/
 4. 
 5. 
 
-
-CURRENT GIT:
-BRANCH: dev/
-1. fixed classes prop incorrect classNames
-2. fixed validation bug sending errors for unregistered fields
-3. fixed validation bug sending incorrect touch objects to form state
-4. updated code with errors and touched sanitation
-5. 
-
 ISSUES:
-1. I didn't realize proxyRef was needed.
+1. 
 2. Surrounding the Field with a p tag gives invalid markup warning
 3. Adding the error class was inconvientient since they should all look the same.
-4. Must clear form on submit
+4. 
+
+FIX:
+1. Looks like radio doesn't have an error class.

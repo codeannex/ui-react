@@ -28,7 +28,7 @@ import {
   _unsetTouched,
   _updateValue,
 } from "./controls";
-import { Errors, FormRef, STATE_ACTION_TYPE, Values } from "./types";
+import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Values } from "./types";
 
 type FormProps = {
   /**
@@ -37,6 +37,9 @@ type FormProps = {
    */
   autoFocus?: boolean;
   children: React.ReactNode;
+
+  classesError?: string | string[];
+  classesField?: string | string[];
 
   /**
    * Allows a reference to be set externally containing form state and
@@ -171,7 +174,7 @@ const _Form: React.FC<FormProps> = ({
       }
 
       /**
-       * Handles validation after pre-submit
+       * Handles validation during pre-submit
        */
       if (preSubmit && !submit && Object.entries(errors).length) {
         displatch({
@@ -289,8 +292,13 @@ const _Form: React.FC<FormProps> = ({
 };
 
 export const Form: React.FC<FormProps> = (props) => {
+  const staticProps: StaticProps = {
+    classesError: props?.classesError,
+    classesField: props?.classesField,
+  };
+
   return (
-    <FormProvider>
+    <FormProvider staticProps={staticProps}>
       <_Form {...props} />
     </FormProvider>
   );

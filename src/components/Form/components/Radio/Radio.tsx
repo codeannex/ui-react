@@ -65,7 +65,7 @@ export const Radio: React.FC<RadioProps> = React.forwardRef(
     };
 
     return (
-      <Element as={ELEMENT_OPTION_TYPE.DIV} className={_classes || undefined}>
+      <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
         {options?.map((option: RadioOption, index: number, array: any) => {
           return (
             <Element
