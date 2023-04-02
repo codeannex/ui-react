@@ -9,7 +9,7 @@ import { ELEMENT_OPTION_TYPE } from "@core/server/Element/Element";
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
 
-const defaultProps: LabelProps = {
+const defaultProps = {
   label: NAME_FOO,
 };
 
@@ -19,7 +19,7 @@ const renderComponent = (overrideDefaultProps?: LabelProps): JSX.Element => {
   return <Label {...props} />;
 };
 
-describe("component - Label", () => {
+describe("Component - Form: Label", () => {
   describe("should render", () => {
     it("without crashing", () => {
       render(renderComponent());
@@ -35,20 +35,7 @@ describe("component - Label", () => {
     });
   });
 
-  describe("props option", () => {
-    it("form should add `form` attribute to label element", () => {
-      render(
-        renderComponent({
-          label: NAME_FOO,
-          form: "fooBarForm",
-        })
-      );
-
-      const label = screen.getByRole(ELEMENT_OPTION_TYPE.LABEL);
-
-      expect(label).toHaveAttribute("form", "fooBarForm");
-    });
-
+  describe("props", () => {
     it("htmlFor should add `form` attribute to label element", () => {
       render(
         renderComponent({

@@ -7,7 +7,7 @@ import { Label, useStaticPropsContext } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-type FieldProps = {
+export type FieldProps = {
   /**
    * React child node/nodes.
    */
