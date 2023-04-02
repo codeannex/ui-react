@@ -51,22 +51,13 @@ TODO Maybe:
 2. Legend
 
 TODO: Long
-1. Fix proptype ref setup
-2. 
+1. Fix proptype ref setup.
+2. Add compound component `Option` for Select component.
 
 
 LEARNING:
 https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
-
-
-CURRENT GIT:
-BRANCH: dev/PENDING
-1. Fixed incorrect implementaion of uuid keys.
-2. 
-3. 
-4. 
-5. 
 
 
 CURRENT GIT:
@@ -81,6 +72,47 @@ ISSUES:
 1. Radio error shows up weird, markup in general needs more thought.
 2. Surrounding the Field with a p tag gives invalid markup warning.
 3. Adding the error class was inconvientient since they should all look the same.
+4. 
+
+FIX:
+1. Looks like radio doesn't have an error class.
+
+// ======== TASK ======== //
+
+// ======== TASK ======== //
+
+CURRENT GIT:
+BRANCH: dev/refactor_form_component
+1. refactored the way ref is set by removing use of react clone element.
+2. added prop docs to the components.
+3. removed uuid use in radio and select components and added required id key/value for the options.
+4. deleted setupInputRefs utils function.
+5. 
+
+IN PROGRESS:
+1. Lets get the ref working without field component sharing implementaton.
+
+NOTE:
+1. 
+2. 
+
+TODO: 
+1. 
+2. 
+3. 
+
+TODO Maybe:
+1. 
+2. 
+
+TODO: Long
+1. 
+2. 
+
+ISSUES:
+1. 
+2. 
+3. 
 4. 
 
 FIX:

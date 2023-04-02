@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { Label, LabelProps } from "@components/Form/components/Label/Label";
+import { Label, LabelProps } from "@components/client/Form/components/Label/Label";
 
-import { ELEMENT_OPTION_TYPE } from "@core/Element/Element";
+import { ELEMENT_OPTION_TYPE } from "@core/server/Element/Element";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";

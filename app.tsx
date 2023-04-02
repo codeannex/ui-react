@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { Form } from "./src/components/Form/Form";
-import { Field } from "./src/components/Form/components/Field/Field";
-import { FormButton } from "./src/components/Form/components/FormButton/FormButton";
-import { Input } from "./src/components/Form/components/Input/Input/Input";
-import { InputEmail } from "./src/components/Form/components/Input/InputEmail/InputEmail";
-import { InputPassword } from "./src/components/Form/components/Input/InputPassword/InputPassword";
-import { InputText } from "./src/components/Form/components/Input/InputText/InputText";
-import { Radio } from "./src/components/Form/components/Radio/Radio";
-import { TextArea } from "./src/components/Form/components/TextArea/TextArea";
-import { FormRef } from "./src/components/Form/index";
-import { Select } from "./src/components/Form/index";
-import { Element } from "./src/core/Element/Element";
+import { Form } from "./src/components/client/Form/Form";
+import { Field } from "./src/components/client/Form/components/Field/Field";
+import { FormButton } from "./src/components/client/Form/components/FormButton/FormButton";
+import { Input } from "./src/components/client/Form/components/Input/Input/Input";
+import { InputEmail } from "./src/components/client/Form/components/Input/InputEmail/InputEmail";
+import { InputPassword } from "./src/components/client/Form/components/Input/InputPassword/InputPassword";
+import { InputText } from "./src/components/client/Form/components/Input/InputText/InputText";
+import { Radio } from "./src/components/client/Form/components/Radio/Radio";
+import { TextArea } from "./src/components/client/Form/components/TextArea/TextArea";
+import { FormRef } from "./src/components/client/Form/index";
+import { Select } from "./src/components/client/Form/index";
+import { Element } from "./src/core/server/Element/Element";
 
 export const App = () => {
   // const [state, setState] = React.useState(0);
@@ -87,9 +87,9 @@ export const App = () => {
   ];
 
   const radioOptions = [
-    { value: "cow", label: "cow", name: "cow" },
-    { value: "cat", label: "cat", name: "cat" },
-    { value: "dog", label: "dog", name: "dog" },
+    { id: "cow", value: "cow", label: "cow", name: "cow" },
+    { id: "cat", value: "cat", label: "cat", name: "cat" },
+    { id: "dog", value: "dog", label: "dog", name: "dog" },
   ];
 
   return (
@@ -107,30 +107,24 @@ export const App = () => {
           // validateOnSubmitOnly
           autoFocus
         >
-          <Field fieldName={"firstName"} label="First Name">
-            <InputText />
+          <Field label="First Name">
+            <InputText fieldName="firstName" />
           </Field>
-          <Field fieldName={"lastName"} label="Last Name">
-            <InputText />
+          <Field label="Password">
+            <InputPassword fieldName="password" />
           </Field>
-          <Field fieldName={"some"} label="Some">
-            <InputText />
-          </Field>
-          <Field fieldName={"email"} label="Email">
-            <InputEmail />
-          </Field>
-          <Field fieldName={"password"} label="Password">
+          {/* <Field fieldName={"password"} label="Password">
             <InputPassword />
+          </Field> */}
+          {/* <Field label="Select">
+            <Select fieldName="select" options={selectOptions} />
+          </Field> */}
+          <Field label="Radio">
+            <Radio options={radioOptions} fieldName="radio" classes="poopser" />
           </Field>
-          <Field fieldName={"select"} label="Select">
-            <Select options={selectOptions} />
-          </Field>
-          <Field fieldName={"radio"} label="Radio">
-            <Radio options={radioOptions} classes="poopser" />
-          </Field>
-          <Field fieldName={"textarea"} label="Text Area">
+          {/* <Field fieldName={"textarea"} label="Text Area">
             <TextArea />
-          </Field>
+          </Field> */}
         </Form>
         <Element as="button" onClick={handleClick}>
           Click to test stuff
