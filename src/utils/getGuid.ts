@@ -7,3 +7,5 @@ export const getGuid = (): string => {
   }
   return `${pt()}${pt()}-${pt()}-${pt()}-${pt()}-${pt()}${pt()}${pt()}`;
 };
+
+export default getGuid;

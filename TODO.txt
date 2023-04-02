@@ -53,6 +53,8 @@ TODO Maybe:
 TODO: Long
 1. Fix proptype ref setup.
 2. Add compound component `Option` for Select component.
+3. Role attributes
+4. Accessibility
 
 
 LEARNING:
@@ -82,11 +84,11 @@ FIX:
 // ======== TASK ======== //
 
 CURRENT GIT:
-BRANCH: dev/refactor_form_component
-1. refactored the way ref is set by removing use of react clone element.
-2. added prop docs to the components.
-3. removed uuid use in radio and select components and added required id key/value for the options.
-4. deleted setupInputRefs utils function.
+BRANCH: dev/develop_unit_test_form_components
+1. developed unit tests for field component.
+2. updated jest configuration.
+3. developed unit tests for form button component.
+4. developed unit tests for form input components.
 5. 
 
 IN PROGRESS:
