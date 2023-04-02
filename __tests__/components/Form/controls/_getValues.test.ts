@@ -1,5 +1,5 @@
-import { CONSTANT } from "@components/Form/constants";
-import { _getValues } from "@components/Form/controls";
+import { CONSTANT } from "@components/client/Form/constants";
+import { _getValues } from "@components/client/Form/controls";
 
 describe("Component - Form - controls _getValues", () => {
   const values = {

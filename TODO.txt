@@ -51,22 +51,13 @@ TODO Maybe:
 2. Legend
 
 TODO: Long
-1. Fix proptype ref setup
-2. 
+1. Fix proptype ref setup.
+2. Add compound component `Option` for Select component.
 
 
 LEARNING:
 https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
-
-
-CURRENT GIT:
-BRANCH: dev/develop_static_props_provider_form
-1. Added support for static props and added helper props for targeting group class names.
-2. Fixed missing error class for the radio group.
-3. Moved helper functions for form field query into file.
-4. 
-5. 
 
 
 CURRENT GIT:
@@ -85,3 +76,44 @@ ISSUES:
 
 FIX:
 1. Looks like radio doesn't have an error class.
+
+// ======== TASK ======== //
+
+// ======== TASK ======== //
+
+CURRENT GIT:
+BRANCH: dev/refactor_form_component
+1. refactored the way ref is set by removing use of react clone element.
+2. added prop docs to the components.
+3. removed uuid use in radio and select components and added required id key/value for the options.
+4. deleted setupInputRefs utils function.
+5. 
+
+IN PROGRESS:
+1. Lets get the ref working without field component sharing implementaton.
+
+NOTE:
+1. 
+2. 
+
+TODO: 
+1. 
+2. 
+3. 
+
+TODO Maybe:
+1. 
+2. 
+
+TODO: Long
+1. 
+2. 
+
+ISSUES:
+1. 
+2. 
+3. 
+4. 
+
+FIX:
+1. 
