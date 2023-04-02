@@ -11,6 +11,8 @@ import { getGuid } from "@utils/getGuid";
 
 import { RadioOption, STATE_ACTION_TYPE } from "../../types";
 
+export type RadioOptionWithId = RadioOption & { id: string };
+
 export type RadioProps = {
   /**
    * Add CSS class/classes to the component for styling.
@@ -27,6 +29,8 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = React.forwardRef(
   ({ classes, classesError, options }, ref?: React.Ref<HTMLInputElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+
+    const [_options, setOptions] = React.useState<RadioOptionWithId[]>([]);
 
     // @ts-ignore
     const fieldName = ref?.fieldName;
@@ -64,12 +68,24 @@ export const Radio: React.FC<RadioProps> = React.forwardRef(
       }
     };
 
+    /** Initialize unique id for option key **/
+    React.useEffect(() => {
+      setOptions(
+        options.map((option: RadioOption) => {
+          return {
+            ...option,
+            id: getGuid(),
+          };
+        })
+      );
+    }, []);
+
     return (
       <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
-        {options?.map((option: RadioOption, index: number, array: any) => {
+        {_options?.map((option: RadioOptionWithId, index: number, array: any) => {
           return (
             <Element
-              key={getGuid()}
+              key={option.id}
               as={ELEMENT_OPTION_TYPE.DIV}
               ref={ref}
               /** set onBlur on the last radio button container **/

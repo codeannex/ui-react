@@ -16,7 +16,9 @@ import { getGuid } from "@utils/getGuid";
 
 import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
 
-type SelectProps = {
+export type SelectOptionWithId = SelectOption & { id: string };
+
+export type SelectProps = {
   /**
    * Add CSS class/classes to the component for styling.
    */
@@ -37,6 +39,8 @@ type SelectProps = {
 export const Select: React.FC<SelectProps> = React.forwardRef(
   ({ classes, classesError, disabled, options }, ref?: React.Ref<HTMLSelectElement>) => {
     const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+
+    const [_options, setOptions] = React.useState<SelectOptionWithId[]>([]);
 
     // @ts-ignore
     const fieldName = ref?.fieldName;
@@ -74,6 +78,18 @@ export const Select: React.FC<SelectProps> = React.forwardRef(
       }
     };
 
+    /** Initialize unique id for option key **/
+    React.useEffect(() => {
+      setOptions(
+        options.map((option: SelectOption) => {
+          return {
+            ...option,
+            id: getGuid(),
+          };
+        })
+      );
+    }, []);
+
     return (
       <Element as={ELEMENT_OPTION_TYPE.DIV}>
         <Element
@@ -86,8 +102,8 @@ export const Select: React.FC<SelectProps> = React.forwardRef(
           onBlur={handleBlur}
           onChange={handleChange}
         >
-          {options?.map((option: SelectOption) => {
-            return <Option option={option} key={getGuid()} />;
+          {_options?.map((option: SelectOptionWithId) => {
+            return <Option option={option} key={option.id} />;
           })}
         </Element>
         {error && (
