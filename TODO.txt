@@ -69,8 +69,8 @@ BRANCH: dev/
 5. 
 
 ISSUES:
-1. 
-2. Surrounding the Field with a p tag gives invalid markup warning
+1. Radio error shows up weird, markup in general needs more thought.
+2. Surrounding the Field with a p tag gives invalid markup warning.
 3. Adding the error class was inconvientient since they should all look the same.
 4. 
 
