@@ -14,7 +14,7 @@ import { StaticProps } from "./types";
 
 interface Props {
   children: React.ReactElement;
-  staticProps: StaticProps;
+  staticProps?: StaticProps;
 }
 
 export const FormProvider: React.FC<Props> = ({ children, staticProps }) => {
@@ -49,7 +49,7 @@ export const FormProvider: React.FC<Props> = ({ children, staticProps }) => {
   }, [setFormState]);
 
   return (
-    <FormStaticPropsContext.Provider value={memoizedStaticProps}>
+    <FormStaticPropsContext.Provider value={memoizedStaticProps || {}}>
       <FieldRefContext.Provider value={memoizedFieldRefs}>
         <FieldRefActionContext.Provider value={memoizedregisterFieldRef}>
           <FormStateContext.Provider value={memoizedFormState}>
