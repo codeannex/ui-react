@@ -3,18 +3,20 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 import {
+  FieldRefState,
   FormProvider,
+  entriesToFieldRefs,
   hasError,
-  sanitizeErrors,
   sanitizeTouched,
+  sanitizeValidators,
+  useFieldRefsContext,
   useFormControls,
-  useFormFieldRefContext,
   useFormStateActionContext,
   useFormStateContext,
   usePreSubmit,
 } from "@components/client/Form/index";
 
-import { isFunction } from "@utils/index";
+import { Store, deepEqual, isFunction } from "@utils/index";
 
 import { useUpdateEffect } from "@hooks/index";
 
@@ -87,7 +89,7 @@ type FormProps = {
    * Called subsequent to a successful form submission. The means validation
    * was passed and the submission of the form completed.
    */
-  onPostSubmit?: (ref: FormRef) => void;
+  onPostSubmit?: (values: Values) => void;
 
   /**
    * Called upon form submission.
@@ -133,7 +135,11 @@ const _Form: React.FC<FormProps> = ({
   const state = useFormStateContext();
   const displatch = useFormStateActionContext();
 
-  const fieldRefs = useFormFieldRefContext();
+  /** Field refs controller **/
+  const fieldRefsCtr = useFieldRefsContext();
+  const fieldRefs = fieldRefsCtr.mapEntries((entries: IterableIterator<[string, unknown]>) => {
+    return fieldRefsCtr.rawDate().size ? entriesToFieldRefs(entries) : {};
+  });
 
   // TODO: !!! EXPERIMENTAL !!! develop futher as the API must be simple and useful.
   const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
@@ -149,7 +155,17 @@ const _Form: React.FC<FormProps> = ({
     _updateValue,
   });
 
-  const { preSubmit, submit, postSubmit, values = {} } = state;
+  const {
+    preSubmit,
+    submit,
+    postSubmit,
+    values = {},
+    validators = {},
+    touched = {},
+    errors = {},
+  } = state;
+
+  const [cachedPreSubmitId, setCachedPreSubmitId] = React.useState<any>("");
 
   /**
    * Set and update external ref.
@@ -159,108 +175,130 @@ const _Form: React.FC<FormProps> = ({
   }, [state]);
 
   /**
-   * Handles validation during change events triggered by user input
-   * field changes. The process is triggered by state changes occurring
-   * with the `values` form state object. The prop validation function must
-   * return the expected object and key values to update the form state
-   * `errors` object.
-   *
-   * If validateOnSubmitOnly is enabled and validation
-   * fails during pre-submit, error handlding will take place until
-   * errors are cleared and pr-submit is successful.
-   *
+   * Handles validation when validateOnSubmitOnly is enabled.
    */
   React.useEffect(() => {
-    const validationErrors = (onValidate && onValidate(values)) || {};
+    if (validateOnSubmitOnly && preSubmit) {
+      const { validators: updatedValidators } = sanitizeValidators(
+        (onValidate && onValidate(values)) || {},
+        fieldRefs
+      );
 
-    if (Object.keys(fieldRefs).length) {
-      const { errors } = sanitizeErrors(validationErrors, fieldRefs);
-
-      /**
-       * Handles validation before pre-submit
-       */
-      if (!validateOnSubmitOnly && !preSubmit && Object.entries(errors).length) {
+      if (!deepEqual(updatedValidators, validators)) {
         displatch({
-          type: STATE_ACTION_TYPE.SET_ERRORS,
-          payload: errors,
-        });
-      }
-
-      /**
-       * Handles validation during pre-submit
-       */
-      if (preSubmit && !submit && Object.entries(errors).length) {
-        displatch({
-          type: STATE_ACTION_TYPE.SET_ERRORS,
-          payload: errors,
+          type: STATE_ACTION_TYPE.SET_VALIDATORS,
+          payload: updatedValidators,
         });
       }
     }
-  }, [preSubmit, submit, values, validateOnSubmitOnly, fieldRefs]);
+  }, [validateOnSubmitOnly, preSubmit]);
 
   /**
-   * Handles calling prop onChange function. The process is
-   * triggered by state changes occurring with the `values`
-   * form state object.
+   * Handles standard validation.
    */
-  useUpdateEffect(() => {
-    onChange && onChange(values);
-  }, [values]);
+  React.useEffect(() => {
+    if (Object.keys(fieldRefs).length) {
+      const { validators: updatedValidators } = sanitizeValidators(
+        (onValidate && onValidate(values)) || {},
+        fieldRefs
+      );
 
-  /**
-   * Handles validation during form submission and is triggerd by
-   * user selecting the submit button.
-   */
-  useUpdateEffect(() => {
-    if (preSubmit && !submit) {
-      const validationErrors = (onValidate && onValidate(values)) || {};
-
-      const { touched } = sanitizeTouched(validationErrors, fieldRefs);
-      const { errors } = sanitizeErrors(validationErrors, fieldRefs);
-
-      const errorCount = hasError(errors);
-
-      /** Executes after pre-submit **/
-      if (errorCount) {
+      if (!deepEqual(updatedValidators, validators)) {
         displatch({
-          type: STATE_ACTION_TYPE.SET_ERRORS,
-          payload: errors,
+          type: STATE_ACTION_TYPE.SET_VALIDATORS,
+          payload: updatedValidators,
         });
+      }
+    }
+  }, [values, fieldRefs]);
 
+  /**
+   * Handles setting errors in response to changes in the
+   * validators.
+   */
+  React.useEffect(() => {
+    const updatedErrors = Object.entries(validators)
+      .filter((validator) => touched[validator[0]] && validator[1])
+      .reduce((accumulator, key) => Object.assign(accumulator, { [key[0]]: key[1] }), {});
+
+    if (!deepEqual(updatedErrors, errors)) {
+      displatch({
+        type: !Object.keys(updatedErrors).length
+          ? STATE_ACTION_TYPE.RESET_ERRORS
+          : STATE_ACTION_TYPE.SET_ERRORS,
+        payload: updatedErrors,
+      });
+    }
+  }, [validators, touched]);
+
+  /**
+   * Handles validation during form submission triggered by the
+   * selection of the submit function and presubmit flag.
+   */
+  useUpdateEffect(() => {
+    if (preSubmit) {
+      const { validators: updatedValidators } = sanitizeValidators(
+        (onValidate && onValidate(values)) || {},
+        fieldRefs
+      );
+
+      const { touched: updatedTouched } = sanitizeTouched(updatedValidators, fieldRefs);
+
+      if (!deepEqual(updatedTouched, touched)) {
         displatch({
           type: STATE_ACTION_TYPE.SET_TOUCHED,
-          payload: touched,
+          payload: updatedTouched,
         });
+      }
+    }
+  }, [preSubmit]);
 
-        /**
-         * Auto focus enables the form to set focus on the first error found
-         * in the form. If enabled the form determines field order based on
-         * DOM position and maps the associated errors to the first field in
-         * the DOM setting focus.
-         */
-        if (autoFocus) {
-          /** Sorts field refs according to position in the DOM. **/
-          const refs = new Map(
-            [...Object.entries(fieldRefs)].sort((a, b) => {
-              // @ts-ignore
-              return a[1].current.compareDocumentPosition(b[1].current) &
-                Node.DOCUMENT_POSITION_FOLLOWING
-                ? -1
-                : 1;
-            })
-          );
+  /**
+   * Handles validation during form submission triggered by the
+   * selection of the submit function and presubmit flag and sets
+   * the focus on the first error found in the form. If enabled
+   * the form determines field order based on DOM position and maps the
+   * associated errors to the first field in the DOM setting focus. If
+   * validation passes the submit flag.
+   */
+  useUpdateEffect(() => {
+    if (!autoFocus) {
+      return;
+    }
 
-          /** Set focus on first error found **/
+    if (preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
+      setCachedPreSubmitId(preSubmit);
+
+      /** Sorts field refs according to position in the DOM. **/
+      const refs = new Map(
+        [...Object.entries(fieldRefs)].sort((a, b) => {
           // @ts-ignore
-          for (const [key, value] of refs.entries()) {
-            if (errors[key]) {
-              value.current.focus();
+          return a[1].current.compareDocumentPosition(b[1].current) &
+            Node.DOCUMENT_POSITION_FOLLOWING
+            ? -1
+            : 1;
+        })
+      );
 
-              break;
-            }
-          }
+      /** Set focus on first error found **/
+      // @ts-ignore
+      for (const [key, value] of refs.entries()) {
+        if (errors[key]) {
+          value.current.focus();
+          break;
         }
-      } else {
+      }
+    }
+
+    if (preSubmit !== cachedPreSubmitId && !Object.keys(errors).length && !submit) {
+      const { validators: updatedValidators } = sanitizeValidators(
+        (onValidate && onValidate(values)) || {},
+        fieldRefs
+      );
+
+      const errorCount = hasError(updatedValidators);
+
+      if (!errorCount) {
         displatch({
           type: STATE_ACTION_TYPE.SET_SUBMIT,
           payload: null,
@@ -271,7 +309,16 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [fieldRefs, preSubmit, submit]);
+  }, [preSubmit, errors, autoFocus]);
+
+  /**
+   * Handles calling prop onChange function. The process is
+   * triggered by state changes occurring with the `values`
+   * form state object.
+   */
+  useUpdateEffect(() => {
+    onChange && onChange(values);
+  }, [values]);
 
   /**
    * Handles form submission.
@@ -292,26 +339,43 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (postSubmit) {
-      onPostSubmit && isFunction(onPostSubmit) && onPostSubmit({ controls, state });
+      onPostSubmit && isFunction(onPostSubmit) && onPostSubmit(values);
 
       displatch({
         type: STATE_ACTION_TYPE.RESET_FORM_STATE,
         payload: null,
       });
+
+      setCachedPreSubmitId("");
     }
   }, [postSubmit]);
+
+  /**
+   * Component mount and un-mount.
+   */
+  React.useEffect(() => {
+    const subscribe = fieldRefsCtr.subscribe("register", () => {
+      // code...
+    });
+
+    return () => {};
+  }, []);
 
   return <form>{children}</form>;
 };
 
 export const Form: React.FC<FormProps> = (props) => {
+  const fieldRefsContoller = React.useMemo(() => {
+    return new Store<FieldRefState>();
+  }, []);
+
   const staticProps: StaticProps = {
     classesError: props?.classesError,
     classesField: props?.classesField,
   };
 
   return (
-    <FormProvider staticProps={staticProps}>
+    <FormProvider staticProps={staticProps} fieldRefController={fieldRefsContoller}>
       <_Form {...props} />
     </FormProvider>
   );

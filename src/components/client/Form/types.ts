@@ -2,6 +2,7 @@
  * Actions
  */
 export const enum STATE_ACTION_TYPE {
+  RESET_ERRORS,
   RESET_FORM_STATE,
   SET_ERROR,
   SET_ERRORS,
@@ -9,6 +10,7 @@ export const enum STATE_ACTION_TYPE {
   SET_PRE_SUBMIT,
   SET_SUBMIT,
   SET_POST_SUBMIT,
+  SET_VALIDATORS,
   UNSET_TOUCHED,
   UPDATE_VALUE,
 }
@@ -58,6 +60,7 @@ export type Controls = {
   submit: () => void;
   unsetTouched: ({ fieldName, value }: UnsetTouched) => void;
   updateValue: ({ fieldName, value }: UpdateValue) => void;
+  register: (fieldName: string) => any;
 };
 
 export type _Controls = {
@@ -79,6 +82,10 @@ export type Touched = {
   [fieldName: string]: boolean;
 };
 
+export type Validators = {
+  [fieldName: string]: string;
+};
+
 export type Values = {
   [fieldName: string]: string;
 };
@@ -89,6 +96,7 @@ export type State = {
   postSubmit?: boolean;
   errors?: Errors;
   touched?: Touched;
+  validators?: Validators;
   values?: Values;
 };
 
@@ -102,19 +110,21 @@ export type StateReducerActionContext = React.Dispatch<StateAction>;
 /**
  * Refs
  */
-export type FieldRefType = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+export type FieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-export type FieldRefAction = {
-  type: FIELD_REF_ACTION_TYPE;
-  payload: FieldRefState;
+export type FieldRef = FieldElement;
+export type RegistrationOptions = any;
+
+export type FieldDetail = {
+  _field: {
+    ref: FieldRef;
+    name: string;
+  };
 };
 
 export type FieldRefState = {
-  [key: string]: FieldRef;
+  [x: string]: FieldDetail;
 };
-
-export type FieldRef = React.RefObject<FieldRefType>;
-export type FieldRefReducerActionContext = React.Dispatch<FieldRefAction>;
 
 /**
  * Common

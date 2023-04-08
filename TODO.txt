@@ -95,8 +95,8 @@ IN PROGRESS:
 1. Lets get the ref working without field component sharing implementaton.
 
 NOTE:
-1. 
-2. 
+1. dev/dev_1: after adding support for validators.
+2. dev/dev_2: after adding new fieldRefs model and store
 
 TODO: 
 1. 

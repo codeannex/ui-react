@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 
 import {
   Error,
-  useFormFieldRefActionContext,
+  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { FIELD_REF_ACTION_TYPE, STATE_ACTION_TYPE } from "../../../types";
+import { STATE_ACTION_TYPE } from "../../../types";
 
 export type InputProps = {
   /**
@@ -63,13 +63,13 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const registerFieldRef = useFormFieldRefActionContext();
+  const fieldRefsController = useFieldRefsContext();
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
+  const error = errors[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -113,10 +113,12 @@ export const Input: React.FC<InputProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    registerFieldRef({
-      type: FIELD_REF_ACTION_TYPE.REGISTER,
-      payload: {
-        [fieldName]: ref,
+    fieldRefsController.set({
+      [fieldName]: {
+        _field: {
+          ref: ref?.current,
+          name: fieldName,
+        },
       },
     });
   }, []);

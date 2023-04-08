@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 
 import {
   Error,
-  useFormFieldRefActionContext,
+  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/server/Element/Element";
 
-import { FIELD_REF_ACTION_TYPE, RadioOption, STATE_ACTION_TYPE } from "../../types";
+import { RadioOption, STATE_ACTION_TYPE } from "../../types";
 
 export type RadioProps = {
   /**
@@ -39,13 +39,13 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, options }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const registerFieldRef = useFormFieldRefActionContext();
+  const fieldRefsController = useFieldRefsContext();
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
+  const error = errors[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -77,10 +77,12 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
 
   /** Init field ref **/
   React.useEffect(() => {
-    registerFieldRef({
-      type: FIELD_REF_ACTION_TYPE.REGISTER,
-      payload: {
-        [fieldName]: ref,
+    fieldRefsController.set({
+      [fieldName]: {
+        _field: {
+          ref: ref?.current,
+          name: fieldName,
+        },
       },
     });
   }, []);
