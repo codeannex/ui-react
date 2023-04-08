@@ -190,10 +190,6 @@ const _Form: React.FC<FormProps> = ({
           payload: updatedValidators,
         });
       }
-
-      console.log("+++++++++++++++++++++");
-      console.log(updatedValidators);
-      console.log("+++++++++++++++++++++");
     }
   }, [validateOnSubmitOnly, preSubmit]);
 
@@ -202,14 +198,12 @@ const _Form: React.FC<FormProps> = ({
    */
   React.useEffect(() => {
     if (Object.keys(fieldRefs).length) {
-      console.log("1 ******************");
       const { validators: updatedValidators } = sanitizeValidators(
         (onValidate && onValidate(values)) || {},
         fieldRefs
       );
 
       if (!deepEqual(updatedValidators, validators)) {
-        console.log("1 in ******************");
         displatch({
           type: STATE_ACTION_TYPE.SET_VALIDATORS,
           payload: updatedValidators,
@@ -223,13 +217,11 @@ const _Form: React.FC<FormProps> = ({
    * validators.
    */
   React.useEffect(() => {
-    console.log("2 ******************");
     const updatedErrors = Object.entries(validators)
       .filter((validator) => touched[validator[0]] && validator[1])
       .reduce((accumulator, key) => Object.assign(accumulator, { [key[0]]: key[1] }), {});
 
     if (!deepEqual(updatedErrors, errors)) {
-      console.log("2 in ******************");
       displatch({
         type: !Object.keys(updatedErrors).length
           ? STATE_ACTION_TYPE.RESET_ERRORS
@@ -245,7 +237,6 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (preSubmit) {
-      console.log("3 ******************");
       const { validators: updatedValidators } = sanitizeValidators(
         (onValidate && onValidate(values)) || {},
         fieldRefs
@@ -254,7 +245,6 @@ const _Form: React.FC<FormProps> = ({
       const { touched: updatedTouched } = sanitizeTouched(updatedValidators, fieldRefs);
 
       if (!deepEqual(updatedTouched, touched)) {
-        console.log("3 in ******************");
         displatch({
           type: STATE_ACTION_TYPE.SET_TOUCHED,
           payload: updatedTouched,
@@ -276,13 +266,7 @@ const _Form: React.FC<FormProps> = ({
       return;
     }
 
-    console.log("@@@@@@@@@@@@@@@@@@@@@");
-    console.log(preSubmit);
-    console.log(cachedPreSubmitId);
-    console.log("@@@@@@@@@@@@@@@@@@@@@");
-
     if (preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
-      console.log("4.1 ******************");
       setCachedPreSubmitId(preSubmit);
 
       /** Sorts field refs according to position in the DOM. **/
@@ -307,7 +291,6 @@ const _Form: React.FC<FormProps> = ({
     }
 
     if (preSubmit !== cachedPreSubmitId && !Object.keys(errors).length && !submit) {
-      console.log("4.2 ******************");
       const { validators: updatedValidators } = sanitizeValidators(
         (onValidate && onValidate(values)) || {},
         fieldRefs
@@ -316,7 +299,6 @@ const _Form: React.FC<FormProps> = ({
       const errorCount = hasError(updatedValidators);
 
       if (!errorCount) {
-        console.log("4.2 in ******************");
         displatch({
           type: STATE_ACTION_TYPE.SET_SUBMIT,
           payload: null,
@@ -343,7 +325,6 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (submit && !postSubmit) {
-      console.log("5 ******************");
       onSubmit(values);
 
       displatch({
@@ -358,7 +339,6 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (postSubmit) {
-      console.log("6 ******************");
       onPostSubmit && isFunction(onPostSubmit) && onPostSubmit(values);
 
       displatch({
@@ -375,7 +355,7 @@ const _Form: React.FC<FormProps> = ({
    */
   React.useEffect(() => {
     const subscribe = fieldRefsCtr.subscribe("register", () => {
-      console.log("adfjadjk");
+      // code...
     });
 
     return () => {};
