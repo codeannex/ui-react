@@ -6,14 +6,14 @@ import PropTypes from "prop-types";
 import {
   Error,
   Option,
-  useFormFieldRefActionContext,
+  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { FIELD_REF_ACTION_TYPE, STATE_ACTION_TYPE, SelectOption } from "../../../types";
+import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
 
 type SelectProps = {
   /**
@@ -51,13 +51,13 @@ export const Select: React.FC<SelectProps> = ({
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const registerFieldRef = useFormFieldRefActionContext();
+  const fieldRefsController = useFieldRefsContext();
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLSelectElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
+  const error = errors[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -89,10 +89,12 @@ export const Select: React.FC<SelectProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    registerFieldRef({
-      type: FIELD_REF_ACTION_TYPE.REGISTER,
-      payload: {
-        [fieldName]: ref,
+    fieldRefsController.set({
+      [fieldName]: {
+        _field: {
+          ref: ref?.current,
+          name: fieldName,
+        },
       },
     });
   }, []);

@@ -1,11 +1,11 @@
-import { DependencyList, EffectCallback, useEffect } from "react";
+import * as React from "react";
 
 import { useIsFirstRender } from "@hooks/index";
 
-export const useUpdateEffect = (effect: EffectCallback, deps?: DependencyList) => {
+export const useUpdateEffect = (effect: React.EffectCallback, deps?: React.DependencyList) => {
   const isFirst = useIsFirstRender();
 
-  useEffect(() => {
+  React.useEffect(() => {
     !isFirst && effect();
   }, deps);
 };

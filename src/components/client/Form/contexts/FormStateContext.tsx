@@ -10,6 +10,7 @@ export const DEFAULT_FORM_STATE = {
   postSubmit: false,
   errors: {},
   touched: {},
+  validators: {},
   values: {},
 };
 
@@ -51,7 +52,7 @@ export const formStateReducer = (state: State, action: StateAction) => {
     case STATE_ACTION_TYPE.SET_ERRORS:
       return {
         ...state,
-        errors: { ...errors, ...action.payload },
+        errors: { ...action.payload },
       };
     case STATE_ACTION_TYPE.SET_TOUCHED:
       return {
@@ -73,10 +74,20 @@ export const formStateReducer = (state: State, action: StateAction) => {
         ...state,
         postSubmit: true,
       };
+    case STATE_ACTION_TYPE.SET_VALIDATORS:
+      return {
+        ...state,
+        validators: { ...values, ...action.payload },
+      };
     case STATE_ACTION_TYPE.UPDATE_VALUE:
       return {
         ...state,
         values: { ...values, ...action.payload },
+      };
+    case STATE_ACTION_TYPE.RESET_ERRORS:
+      return {
+        ...state,
+        errors: {},
       };
     case STATE_ACTION_TYPE.RESET_FORM_STATE:
       return {

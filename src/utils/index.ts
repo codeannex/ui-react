@@ -1,4 +1,7 @@
+export * from "./classes/store";
+
 export * from "./cloneObject";
+export * from "./deepEqaul";
 export * from "./deleteUndefinedProps";
 export * from "./getGuid";
 export * from "./isBrowser";

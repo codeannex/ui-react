@@ -34,8 +34,8 @@ export const App = () => {
   const asyncTest = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        // resolve("Submitted successfully 🙌");
-        reject();
+        resolve("Submitted successfully 🙌");
+        // reject();
       }, 2000);
     });
   };
@@ -52,6 +52,7 @@ export const App = () => {
     return {
       firstName: values.firstName ? undefined : "Required",
       lastName: values.lastName ? undefined : "Required",
+      middleName: values.middleName ? undefined : "Required",
       email: values.email ? undefined : "Required",
       select: values.select ? undefined : "Required",
       textarea: values.textarea ? undefined : "Required",
@@ -74,9 +75,12 @@ export const App = () => {
   // }, []);
 
   React.useEffect(() => {
-    // console.log("external ========");
-    // console.log(formRef);
-    // console.log("external ========");
+    console.log("external ========");
+    console.log("values", formRef?.state.values);
+    console.log("errors", formRef?.state.errors);
+    console.log("touched", formRef?.state.touched);
+    console.log("validators", formRef?.state.validators);
+    console.log("external ========");
   }, [formRef]);
 
   const selectOptions = [
@@ -104,24 +108,30 @@ export const App = () => {
           onValidate={handleValidate}
           onPreSubmit={asyncTest}
           onPostSubmit={handlePostSubmit}
-          // validateOnSubmitOnly
+          validateOnSubmitOnly
           autoFocus
         >
-          <Field label="First Name">
+          <input className="1" type="text" {...formRef?.controls?.register("firstName")} />
+          <input className="2" type="text" {...formRef?.controls?.register("lastName")} />
+          <input className="3" type="text" {...formRef?.controls?.register("middleName")} />
+          {/* <Field label="First Name">
             <InputText fieldName="firstName" />
           </Field>
-          <Field label="Password">
-            <InputPassword fieldName="password" />
+          <Field label="Last Name">
+            <InputText fieldName="lastName" />
           </Field>
+          <Field label="Middle Name">
+            <InputText fieldName="middleName" />
+          </Field> */}
           {/* <Field fieldName={"password"} label="Password">
             <InputPassword />
           </Field> */}
           {/* <Field label="Select">
             <Select fieldName="select" options={selectOptions} />
           </Field> */}
-          <Field label="Radio">
+          {/* <Field label="Radio">
             <Radio options={radioOptions} fieldName="radio" classes="poopser" />
-          </Field>
+          </Field> */}
           {/* <Field fieldName={"textarea"} label="Text Area">
             <TextArea />
           </Field> */}
