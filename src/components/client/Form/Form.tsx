@@ -107,7 +107,6 @@ type FormProps = {
 
 /**
  * @Codeannex UI React: Form Component
- *
  * A React form component. The form component and associated components follow
  * the principles found in Mozilla documentation which are linked below in the
  * tutorial tag.
@@ -119,6 +118,27 @@ type FormProps = {
  * @rules
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
  *
+ * @validation
+ * Validation process:
+ *
+ * 1. Form component immediately checks for the existence of validators. Validators
+ * are set to the internal form state. User interactions are tracked and checked
+ * against the conditions defined within the validators. Anytime a field is
+ * determined to be `invalid`, the validator is updated expressing the change of
+ * state and the process of adding an error to the forms error object is
+ * permissible.
+ *
+ * 2. Form component will only add the error to form state if the field associated
+ *  validator indicates the field is `invalid`, and if the fields `touched' state
+ * has been set to true. The form constantly tracks these updates and anytime these
+ * two conditions are met for validation enabled fields, the error object is
+ * added to form state allowing the form field to display the associated error.
+ *
+ * Exception:
+ * Validation differs slightly when validateOnSubmitOnly is enabled. Although the
+ * process is the same, the form does not check for validators when the form loads.
+ * Instead it performs the above process only after form submission occurs and
+ * executes the sequence of checks during the forms presubmit phase.
  */
 const _Form: React.FC<FormProps> = ({
   autoFocus,
@@ -262,11 +282,7 @@ const _Form: React.FC<FormProps> = ({
    * validation passes the submit flag.
    */
   useUpdateEffect(() => {
-    if (!autoFocus) {
-      return;
-    }
-
-    if (preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
+    if (autoFocus && preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
       setCachedPreSubmitId(preSubmit);
 
       /** Sorts field refs according to position in the DOM. **/
@@ -358,7 +374,9 @@ const _Form: React.FC<FormProps> = ({
       // code...
     });
 
-    return () => {};
+    return () => {
+      // code...
+    };
   }, []);
 
   return <form>{children}</form>;

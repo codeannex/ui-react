@@ -4,6 +4,7 @@ export * from "./FormProvider";
 export * from "./components/Error/Error";
 export * from "./components/Field/Field";
 export * from "./components/FormButton/FormButton";
+export * from "./components/Input/Input/Input";
 export * from "./components/Input/InputEmail/InputEmail";
 export * from "./components/Input/InputPassword/InputPassword";
 export * from "./components/Input/InputText/InputText";

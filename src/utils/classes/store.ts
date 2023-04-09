@@ -1,4 +1,4 @@
-export class Store<T extends I> {
+export class Store<T> {
   private data: Map<string, T>;
   private events: any;
 
@@ -66,7 +66,9 @@ export class Store<T extends I> {
     return this.data.get(name);
   }
 
-  public mapGet() {}
+  public mapGet() {
+    // code...
+  }
 
   public values() {
     return this.data.values();

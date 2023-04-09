@@ -113,7 +113,7 @@ export const useFormControls = ({
 
     return {
       name: fieldName,
-      value: (values[fieldName] as string) || "",
+      value: values[fieldName || ""] as string,
       ref: (ref: any): void => {
         register(fieldName);
 

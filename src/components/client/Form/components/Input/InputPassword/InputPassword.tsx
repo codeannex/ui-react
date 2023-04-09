@@ -106,7 +106,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set({
+    fieldRefsController.set([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

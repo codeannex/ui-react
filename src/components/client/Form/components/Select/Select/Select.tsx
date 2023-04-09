@@ -89,7 +89,7 @@ export const Select: React.FC<SelectProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set({
+    fieldRefsController.set([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

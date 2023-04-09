@@ -84,22 +84,22 @@ FIX:
 // ======== TASK ======== //
 
 CURRENT GIT:
-BRANCH: dev/develop_unit_test_form_components
-1. developed unit tests for field component.
-2. updated jest configuration.
-3. developed unit tests for form button component.
-4. developed unit tests for form input components.
+BRANCH: dev/develop
+1. added doc to form component.
+2. fixed broken tests.
+3. fixed broken inputs incorrect set params.
+4. 
 5. 
 
 IN PROGRESS:
-1. Lets get the ref working without field component sharing implementaton.
+1. 
 
 NOTE:
-1. dev/dev_1: after adding support for validators.
-2. dev/dev_2: after adding new fieldRefs model and store
+1. 
+2. 
 
 TODO: 
-1. 
+1. complete the subscribe and unsubscibe code.
 2. 
 3. 
 
