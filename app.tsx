@@ -112,9 +112,6 @@ export const App = () => {
           // validateOnSubmitOnly
           autoFocus
         >
-          <input className="1" type="text" {...formRef?.controls?.register("firstName")} />
-          <input className="2" type="text" {...formRef?.controls?.register("lastName")} />
-          <input className="3" type="text" {...formRef?.controls?.register("middleName")} />
           {/* <Field label="First Name">
             <InputText fieldName="firstName" />
           </Field> */}

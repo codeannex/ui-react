@@ -41,13 +41,6 @@ export type _UpdateValue = { fieldName: string; value: any; dispatch: StateReduc
 /**
  * Form
  */
-export type RegOptions = {
-  classes?: string | string[];
-  defaultValue?: string;
-  disabled?: boolean;
-  placeholder?: string;
-};
-
 export type StateAction = {
   type: STATE_ACTION_TYPE;
   payload: any;
@@ -67,7 +60,6 @@ export type Controls = {
   submit: () => void;
   unsetTouched: ({ fieldName, value }: UnsetTouched) => void;
   updateValue: ({ fieldName, value }: UpdateValue) => void;
-  register: (fieldName: string, options?: RegOptions) => any;
 };
 
 export type _Controls = {

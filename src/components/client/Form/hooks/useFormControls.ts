@@ -1,11 +1,6 @@
 import * as React from "react";
 
-import {
-  STATE_ACTION_TYPE,
-  useFieldRefsContext,
-  useFormStateActionContext,
-  useFormStateContext,
-} from "@components/client/Form/index";
+import { useFormStateActionContext, useFormStateContext } from "@components/client/Form/index";
 
 import {
   Controls,
@@ -30,9 +25,7 @@ export const useFormControls = ({
 }: _Controls): Controls => {
   const controls = React.useRef<any>();
 
-  const { values = {}, touched = {} } = useFormStateContext();
-
-  const fieldRefsCtr = useFieldRefsContext();
+  const { values = {} } = useFormStateContext();
   const dispatch = useFormStateActionContext();
 
   const getValue = React.useCallback(
@@ -70,75 +63,6 @@ export const useFormControls = ({
     _submit({ dispatch });
   };
 
-  /** register inputs **/
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e?.target.value;
-    const fieldName = e?.target.name;
-
-    dispatch({
-      type: STATE_ACTION_TYPE.UPDATE_VALUE,
-      payload: {
-        [fieldName]: value,
-      },
-    });
-  };
-
-  const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fieldName = e?.target.name;
-
-    if (!touched[fieldName]) {
-      dispatch({
-        type: STATE_ACTION_TYPE.SET_TOUCHED,
-        payload: {
-          [fieldName]: true,
-        },
-      });
-    }
-  };
-
-  const register = (fieldName: string): any => {
-    fieldRefsCtr.operationalSet(fieldName, ({ item, setter }: any) => {
-      if (!item) {
-        setter(fieldName, {
-          [fieldName]: {
-            _field: {
-              ref: null,
-              name: fieldName,
-            },
-          },
-        });
-      }
-    });
-
-    return {
-      name: fieldName,
-      value: values[fieldName || ""] as string,
-      ref: (ref: any): void => {
-        register(fieldName);
-
-        fieldRefsCtr.operationalSet(fieldName, ({ item, setter, publisher }: any) => {
-          if (item[fieldName]._field.ref === null) {
-            setter(fieldName, {
-              [fieldName]: {
-                _field: {
-                  ref: ref,
-                  name: fieldName,
-                },
-              },
-            });
-
-            publisher("register", item);
-          }
-        });
-      },
-
-      // Methods.
-      onChange: handleChange,
-      onBlur: handleBlur,
-    };
-  };
-
   controls.current = {
     getValue,
     getValues,
@@ -148,7 +72,6 @@ export const useFormControls = ({
     submit,
     unsetTouched,
     updateValue,
-    register,
   };
 
   return { ...controls?.current };
