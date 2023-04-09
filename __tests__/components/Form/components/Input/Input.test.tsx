@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render } from "@testing-library/react";
 
-import { Input } from "@components/client/Form/components/Input/Input/Input";
+import { FormProvider, Input } from "@components/client/Form/index";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
@@ -14,7 +14,11 @@ const defaultProps = {
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
-  return <Input {...props} />;
+  return (
+    <FormProvider fieldRefController={{ set: () => {} }}>
+      <Input {...props} />
+    </FormProvider>
+  );
 };
 
 describe("Component - Form: Input", () => {

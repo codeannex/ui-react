@@ -60,7 +60,6 @@ export type Controls = {
   submit: () => void;
   unsetTouched: ({ fieldName, value }: UnsetTouched) => void;
   updateValue: ({ fieldName, value }: UpdateValue) => void;
-  register: (fieldName: string) => any;
 };
 
 export type _Controls = {

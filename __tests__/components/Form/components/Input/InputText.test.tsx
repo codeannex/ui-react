@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render } from "@testing-library/react";
 
-import { InputText } from "@components/client/Form/components/Input/InputText/InputText";
+import { FormProvider, InputText } from "@components/client/Form/index";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
@@ -14,7 +14,11 @@ const defaultProps = {
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
-  return <InputText {...props} />;
+  return (
+    <FormProvider fieldRefController={{ set: () => {} }}>
+      <InputText {...props} />
+    </FormProvider>
+  );
 };
 
 describe("Component - Form: InputText", () => {
@@ -23,7 +27,7 @@ describe("Component - Form: InputText", () => {
       render(renderComponent());
     });
 
-    it("as `email` type input", () => {
+    it("as `text` type input", () => {
       const { container } = render(renderComponent());
 
       const input = container.querySelector("input");

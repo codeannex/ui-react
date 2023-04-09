@@ -1,4 +1,4 @@
-export class Store<T extends I> {
+export class Store<T> {
   private data: Map<string, T>;
   private events: any;
 
@@ -17,9 +17,21 @@ export class Store<T extends I> {
     }
   }
 
-  public subscribe<X>(eventName: string, fn: X) {
+  public subscribe<F>(eventName: string, fn: F) {
     this.events[eventName] = this.events[eventName] || [];
     this.events[eventName].push(fn);
+  }
+
+  public unsubscribe<F>(eventName: string, fn: F) {
+    if (this.events[eventName]) {
+      for (var i = 0; i < this.events[eventName].length; i++) {
+        if (this.events[eventName][i] === fn) {
+          this.events[eventName].splice(i, 1);
+
+          break;
+        }
+      }
+    }
   }
 
   /**
@@ -66,7 +78,9 @@ export class Store<T extends I> {
     return this.data.get(name);
   }
 
-  public mapGet() {}
+  public mapGet() {
+    // code...
+  }
 
   public values() {
     return this.data.values();

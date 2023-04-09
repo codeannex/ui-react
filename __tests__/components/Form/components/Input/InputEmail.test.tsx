@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render } from "@testing-library/react";
 
-import { InputEmail } from "@components/client/Form/components/Input/InputEmail/InputEmail";
+import { FormProvider, InputEmail } from "@components/client/Form/index";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
@@ -14,7 +14,11 @@ const defaultProps = {
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
-  return <InputEmail {...props} />;
+  return (
+    <FormProvider fieldRefController={{ set: () => {} }}>
+      <InputEmail {...props} />
+    </FormProvider>
+  );
 };
 
 describe("Component - Form: InputEmail", () => {

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render } from "@testing-library/react";
 
-import { InputPassword } from "@components/client/Form/components/Input/InputPassword/InputPassword";
+import { FormProvider, InputPassword } from "@components/client/Form/index";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
@@ -14,7 +14,11 @@ const defaultProps = {
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
-  return <InputPassword {...props} />;
+  return (
+    <FormProvider fieldRefController={{ set: () => {} }}>
+      <InputPassword {...props} />
+    </FormProvider>
+  );
 };
 
 describe("Component - Form: InputPassword", () => {

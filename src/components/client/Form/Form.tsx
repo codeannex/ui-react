@@ -3,6 +3,8 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 import {
+  Control,
+  ControlProps,
   FieldRefState,
   FormProvider,
   entriesToFieldRefs,
@@ -32,7 +34,11 @@ import {
 } from "./controls";
 import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Values } from "./types";
 
-type FormProps = {
+export interface FormPropComposition {
+  Controller?: React.FC<ControlProps>;
+}
+
+export interface FormProps extends FormPropComposition {
   /**
    * Enables auto focus to be set on the first form field in DOM order
    * containing an error following form submission.
@@ -57,11 +63,11 @@ type FormProps = {
   classesField?: string | string[];
 
   /**
-   * Allows a reference to be set externally containing form state and
-   * controls giving the caller components access to make modifications
-   * to state and respond to changes.
+   * Sets a reference externally containing form state and controls
+   * giving the caller components access to make modifications to
+   * state and respond to changes.
    */
-  proxyRef: (ref: FormRef) => void;
+  formRef: (ref: FormRef) => void;
 
   /**
    * Disallows the occurrence of validation when form state changes are
@@ -103,11 +109,10 @@ type FormProps = {
    * of the validation error rendered with the form field.
    */
   onValidate?: (values: Values) => Errors;
-};
+}
 
 /**
  * @Codeannex UI React: Form Component
- *
  * A React form component. The form component and associated components follow
  * the principles found in Mozilla documentation which are linked below in the
  * tutorial tag.
@@ -119,11 +124,32 @@ type FormProps = {
  * @rules
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
  *
+ * @validation
+ * Validation process:
+ *
+ * 1. Form component immediately checks for the existence of validators. Validators
+ * are set to the internal form state. User interactions are tracked and checked
+ * against the conditions defined within the validators. Anytime a field is
+ * determined to be `invalid`, the validator is updated expressing the change of
+ * state and the process of adding an error to the forms error object is
+ * permissible.
+ *
+ * 2. Form component will only add the error to form state if the field associated
+ * validator indicates the field is `invalid`, and if the fields `touched' state
+ * has been set to true. The form constantly tracks these updates and anytime these
+ * two conditions are met for validation enabled fields, the error object is
+ * added to form state allowing the form field to display the associated error.
+ *
+ * Exception:
+ * Validation differs slightly when validateOnSubmitOnly is enabled. Although the
+ * process is the same, the form does not check for validators when the form loads.
+ * Instead it performs the above process only after form submission occurs and
+ * executes the sequence of checks during the forms presubmit phase.
  */
 const _Form: React.FC<FormProps> = ({
   autoFocus,
   children,
-  proxyRef,
+  formRef,
   validateOnSubmitOnly,
 
   onChange,
@@ -171,7 +197,7 @@ const _Form: React.FC<FormProps> = ({
    * Set and update external ref.
    */
   React.useEffect(() => {
-    proxyRef && isFunction(proxyRef) && proxyRef({ controls, state });
+    formRef && isFunction(formRef) && formRef({ controls, state });
   }, [state]);
 
   /**
@@ -262,11 +288,7 @@ const _Form: React.FC<FormProps> = ({
    * validation passes the submit flag.
    */
   useUpdateEffect(() => {
-    if (!autoFocus) {
-      return;
-    }
-
-    if (preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
+    if (autoFocus && preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
       setCachedPreSubmitId(preSubmit);
 
       /** Sorts field refs according to position in the DOM. **/
@@ -350,41 +372,35 @@ const _Form: React.FC<FormProps> = ({
     }
   }, [postSubmit]);
 
-  /**
-   * Component mount and un-mount.
-   */
-  React.useEffect(() => {
-    const subscribe = fieldRefsCtr.subscribe("register", () => {
-      // code...
-    });
-
-    return () => {};
-  }, []);
-
   return <form>{children}</form>;
 };
 
-export const Form: React.FC<FormProps> = (props) => {
-  const fieldRefsContoller = React.useMemo(() => {
-    return new Store<FieldRefState>();
-  }, []);
+export const Form = Object.assign(
+  React.forwardRef((props: FormProps, ref: React.Ref<FormRef>): JSX.Element => {
+    const fieldRefsContoller = React.useMemo(() => {
+      return new Store<FieldRefState>();
+    }, []);
 
-  const staticProps: StaticProps = {
-    classesError: props?.classesError,
-    classesField: props?.classesField,
-  };
+    const staticProps: StaticProps = {
+      classesError: props?.classesError,
+      classesField: props?.classesField,
+    };
 
-  return (
-    <FormProvider staticProps={staticProps} fieldRefController={fieldRefsContoller}>
-      <_Form {...props} />
-    </FormProvider>
-  );
-};
+    return (
+      <FormProvider staticProps={staticProps} fieldRefController={fieldRefsContoller}>
+        <_Form {...props} formRef={props.formRef} />
+      </FormProvider>
+    );
+  }),
+  {
+    Control: Control,
+  }
+);
 
 Form.propTypes = {
   autoFocus: PropTypes.bool,
   children: PropTypes.node,
-  proxyRef: PropTypes.func.isRequired,
+  formRef: PropTypes.func.isRequired,
   validateOnSubmitOnly: PropTypes.bool,
 
   /** Handlers */
