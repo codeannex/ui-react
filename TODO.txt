@@ -85,10 +85,10 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. added doc to form component.
+1. removed registration related code (abandoned).
 2. fixed broken tests.
-3. fixed broken inputs incorrect set params.
-4. 
+3. fixed broken inputs and incorrect set params.
+4. added controller compound component
 5. 
 
 IN PROGRESS:

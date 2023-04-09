@@ -17,9 +17,21 @@ export class Store<T> {
     }
   }
 
-  public subscribe<X>(eventName: string, fn: X) {
+  public subscribe<F>(eventName: string, fn: F) {
     this.events[eventName] = this.events[eventName] || [];
     this.events[eventName].push(fn);
+  }
+
+  public unsubscribe<F>(eventName: string, fn: F) {
+    if (this.events[eventName]) {
+      for (var i = 0; i < this.events[eventName].length; i++) {
+        if (this.events[eventName][i] === fn) {
+          this.events[eventName].splice(i, 1);
+
+          break;
+        }
+      }
+    }
   }
 
   /**

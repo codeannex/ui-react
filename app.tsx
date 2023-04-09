@@ -12,9 +12,15 @@ import { Radio } from "./src/components/client/Form/components/Radio/Radio";
 import { TextArea } from "./src/components/client/Form/components/TextArea/TextArea";
 import { FormRef } from "./src/components/client/Form/index";
 import { Select } from "./src/components/client/Form/index";
+import { Control } from "./src/components/client/Form/index";
 import { Element } from "./src/core/server/Element/Element";
 
 export const App = () => {
+  const FIELD = {
+    FIRST_NAME: "firstName",
+    LAST_NAME: "lastName",
+    EMAIL: "email",
+  };
   // const [state, setState] = React.useState(0);
   const [formRef, setFormRef] = React.useState<FormRef>(null);
   const svgRef = React.useRef<SVGElement | null>(null);
@@ -76,12 +82,12 @@ export const App = () => {
   // }, []);
 
   React.useEffect(() => {
-    console.log("external ========");
-    console.log("values", formRef?.state.values);
-    console.log("errors", formRef?.state.errors);
-    console.log("touched", formRef?.state.touched);
-    console.log("validators", formRef?.state.validators);
-    console.log("external ========");
+    // console.log("external ========");
+    // console.log("values", formRef?.state.values);
+    // console.log("errors", formRef?.state.errors);
+    // console.log("touched", formRef?.state.touched);
+    // console.log("validators", formRef?.state.validators);
+    // console.log("external ========");
   }, [formRef]);
 
   const selectOptions = [
@@ -103,7 +109,7 @@ export const App = () => {
         <Form
           classesField="form-field"
           classesError="errors"
-          proxyRef={setFormRef}
+          formRef={setFormRef}
           onSubmit={handleSubmit}
           onChange={handleChange}
           onValidate={handleValidate}
@@ -112,6 +118,36 @@ export const App = () => {
           // validateOnSubmitOnly
           autoFocus
         >
+          <Form.Control
+            fieldName={FIELD.FIRST_NAME}
+            render={({ ref, error, value, onChange, onBlur }) => (
+              <div>
+                <label>First Name</label>
+                <input type="text" value={value} ref={ref} onChange={onChange} onBlur={onBlur} />
+                {error && <p>{error}</p>}
+              </div>
+            )}
+          />
+          <Form.Control
+            fieldName={FIELD.LAST_NAME}
+            render={({ ref, error, value, onChange, onBlur }) => (
+              <div>
+                <label>Last Name</label>
+                <input type="text" value={value} ref={ref} onChange={onChange} onBlur={onBlur} />
+                {error && <p>{error}</p>}
+              </div>
+            )}
+          />
+          <Form.Control
+            fieldName={FIELD.EMAIL}
+            render={({ ref, error, value, onChange, onBlur }) => (
+              <div>
+                <label>Email</label>
+                <input type="text" value={value} ref={ref} onChange={onChange} onBlur={onBlur} />
+                {error && <p>{error}</p>}
+              </div>
+            )}
+          />
           {/* <Field label="First Name">
             <InputText fieldName="firstName" />
           </Field> */}
