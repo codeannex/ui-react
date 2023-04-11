@@ -8,7 +8,7 @@ import url from "rollup-plugin-url";
 const packageJson = require("./package.json");
 
 export default {
-  input: "src/index.tsx",
+  input: "src/main.tsx",
   output: [
     {
       file: packageJson.main,

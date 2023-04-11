@@ -201,7 +201,12 @@ const _Form: React.FC<FormProps> = ({
   }, [state]);
 
   /**
+   * @name Validator_Tracker
+   *
    * Handles validation when validateOnSubmitOnly is enabled.
+   * Validators are tracked in the validator object and updated
+   * when a field is identified as invalid. When a change occurs
+   * the <Error_Setter> handles setting or removing the error.
    */
   React.useEffect(() => {
     if (validateOnSubmitOnly && preSubmit) {
@@ -220,7 +225,13 @@ const _Form: React.FC<FormProps> = ({
   }, [validateOnSubmitOnly, preSubmit]);
 
   /**
-   * Handles standard validation.
+   * @name Validator_Tracker
+   *
+   * Handles standard validation. Validators are initially retrieved from
+   * the onValidate response and set to form state. Validators are tracked
+   * in the validator object and updated when a field is identified as
+   * invalid. When a change occurs the <Error_Setter> handles setting or
+   * removing the error.
    */
   React.useEffect(() => {
     if (Object.keys(fieldRefs).length) {
@@ -239,10 +250,14 @@ const _Form: React.FC<FormProps> = ({
   }, [values, fieldRefs]);
 
   /**
-   * Handles setting errors in response to changes in the
-   * validators.
+   * @name Error_Setter
+   *
+   * Handles setting or unsetting errors in response to changes with
+   * validators. A validator is either added or removed via filtering
+   * based on the state of the validator and the error object is
+   * subsequently updated to reflect the change.
    */
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     const updatedErrors = Object.entries(validators)
       .filter((validator) => touched[validator[0]] && validator[1])
       .reduce((accumulator, key) => Object.assign(accumulator, { [key[0]]: key[1] }), {});
@@ -258,8 +273,13 @@ const _Form: React.FC<FormProps> = ({
   }, [validators, touched]);
 
   /**
-   * Handles validation during form submission triggered by the
-   * selection of the submit function and presubmit flag.
+   * @name Pre_Submit_Touched_Handler
+   *
+   * Validates that all validators have associated field refs. This
+   * ensures that form submission cannot be halted due to validators
+   * with missing form fields.
+   *
+   * Validates all touched values are set to true against field refs.
    */
   useUpdateEffect(() => {
     if (preSubmit) {
@@ -280,12 +300,17 @@ const _Form: React.FC<FormProps> = ({
   }, [preSubmit]);
 
   /**
-   * Handles validation during form submission triggered by the
-   * selection of the submit function and presubmit flag and sets
-   * the focus on the first error found in the form. If enabled
-   * the form determines field order based on DOM position and maps the
-   * associated errors to the first field in the DOM setting focus. If
-   * validation passes the submit flag.
+   * @name Pre_Submit_Flow_Handler
+   *
+   * Controls the direction of pre-submit.
+   *
+   * If errors were found during pre-submit and `autoFocus` was
+   * enabled, flow is regulated to handling the error. The form
+   * determines field order based on DOM position and maps the
+   * associated errors to the first field in the DOM setting focus.
+   *
+   * If no errors are found `submit` flag is set allowing the form
+   * to complete form submission.
    */
   useUpdateEffect(() => {
     if (autoFocus && preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
@@ -307,6 +332,7 @@ const _Form: React.FC<FormProps> = ({
       for (const [key, value] of refs.entries()) {
         if (errors[key]) {
           value.current.focus();
+
           break;
         }
       }
@@ -331,9 +357,11 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [preSubmit, errors, autoFocus]);
+  }, [preSubmit, autoFocus]);
 
   /**
+   * @name Change_Handler
+   *
    * Handles calling prop onChange function. The process is
    * triggered by state changes occurring with the `values`
    * form state object.
@@ -343,7 +371,10 @@ const _Form: React.FC<FormProps> = ({
   }, [values]);
 
   /**
-   * Handles form submission.
+   * @name Submit_Handler
+   *
+   * Handles form submission provided pre-submit was successful
+   * calling submit handler and setting the post-submit flag.
    */
   useUpdateEffect(() => {
     if (submit && !postSubmit) {
@@ -357,7 +388,10 @@ const _Form: React.FC<FormProps> = ({
   }, [onSubmit, submit, postSubmit]);
 
   /**
-   * Handles post submission.
+   * @name Post_Submit_Handler
+   *
+   * Handles post submission calling post-submit callback and
+   * reseting internal form state.
    */
   useUpdateEffect(() => {
     if (postSubmit) {
