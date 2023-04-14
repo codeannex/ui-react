@@ -41,6 +41,11 @@ type TextAreaProps = {
   fieldName: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Sets the placeholder value on the form field.
    */
   placeholder?: string;
@@ -52,6 +57,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
   defaultValue,
   disabled,
   fieldName,
+  id,
   placeholder,
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
@@ -62,7 +68,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
   const ref = React.useRef<HTMLTextAreaElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName];
+  const error = errors[fieldName] && touched[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -122,6 +128,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
         as={ELEMENT_OPTION_TYPE.TEXT_AREA}
         classes={_classes || undefined}
         disabled={disabled}
+        id={id || undefined}
         placeholder={placeholder}
         ref={ref}
         value={value || ""}

@@ -1,6 +1,6 @@
 {
   "name": "@codeannex/ui-react",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "",
   "author": "Aaron Balthaser",
   "private": false,
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run prettier && npm run ts && npm run lint",
+    "prepublishOnly": "npm run prettier && npm run ts && npm run lint && npm run test && npm run cy-test",
     "clean": "npx rimraf dist",
     "dev": "webpack serve --config webpack.dev.config.js --env env=development",
     "build": "npm run clean && rollup -c",
@@ -27,7 +27,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "cy:open": "cypress open",
-    "cy-test": "start-server-and-test dev http://localhost:3001 cy:open"
+    "cy:run": "npx cypress run --browser chrome --headless",
+    "cy-test": "start-server-and-test dev http://localhost:3001 cy:run"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

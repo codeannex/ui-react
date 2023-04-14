@@ -41,6 +41,11 @@ export type InputTextProps = {
   fieldName: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Sets the placeholder value on the form field.
    */
   placeholder?: string;
@@ -52,6 +57,7 @@ export const InputText: React.FC<InputTextProps> = ({
   defaultValue,
   disabled,
   fieldName,
+  id,
   placeholder,
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
@@ -62,7 +68,7 @@ export const InputText: React.FC<InputTextProps> = ({
   const ref = React.useRef<HTMLInputElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName];
+  const error = errors[fieldName] && touched[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -122,6 +128,7 @@ export const InputText: React.FC<InputTextProps> = ({
         as={ELEMENT_OPTION_TYPE.INPUT}
         classes={_classes || undefined}
         disabled={disabled}
+        id={id || undefined}
         placeholder={placeholder}
         ref={ref}
         type={INPUT_TYPE.TEXT}

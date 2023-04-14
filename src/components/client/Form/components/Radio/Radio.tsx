@@ -31,12 +31,17 @@ export type RadioProps = {
   fieldName: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Array of options used to build the radio group buttons.
    */
   options: RadioOption[];
 };
 
-export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, options }) => {
+export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, id, options }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
   const fieldRefsController = useFieldRefsContext();
@@ -45,7 +50,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
   const ref = React.useRef<HTMLInputElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName];
+  const error = errors[fieldName] && touched[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -88,7 +93,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
+    <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined} id={id || undefined}>
       {options?.map((option: RadioOption, index: number, array: any) => {
         return (
           <Element
@@ -100,9 +105,9 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
           >
             <Element
               as={ELEMENT_OPTION_TYPE.INPUT}
-              type={INPUT_TYPE.RADIO}
               checked={value === option?.value}
               name={option?.name}
+              type={INPUT_TYPE.RADIO}
               value={option?.value}
               /** Handlers */
               onChange={handleChange}

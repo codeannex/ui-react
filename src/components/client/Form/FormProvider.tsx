@@ -23,7 +23,6 @@ export const FormProvider: React.FC<Props> = ({ children, staticProps, fieldRefC
     postSubmit: false,
     errors: {},
     touched: {},
-    validators: {},
     values: {},
   });
 

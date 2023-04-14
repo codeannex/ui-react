@@ -9,6 +9,7 @@ import {
   FormProvider,
   entriesToFieldRefs,
   hasError,
+  sanitizeErrors,
   sanitizeTouched,
   sanitizeValidators,
   useFieldRefsContext,
@@ -181,19 +182,13 @@ const _Form: React.FC<FormProps> = ({
     _updateValue,
   });
 
-  const {
-    preSubmit,
-    submit,
-    postSubmit,
-    values = {},
-    validators = {},
-    touched = {},
-    errors = {},
-  } = state;
+  const { preSubmit, submit, postSubmit, values = {}, touched = {}, errors = {} } = state;
 
   const [cachedPreSubmitId, setCachedPreSubmitId] = React.useState<any>("");
 
   /**
+   * @name Form_Ref_Setter
+   *
    * Set and update external ref.
    */
   React.useEffect(() => {
@@ -203,150 +198,121 @@ const _Form: React.FC<FormProps> = ({
   /**
    * @name Validator_Tracker
    *
-   * Handles validation when validateOnSubmitOnly is enabled.
-   * Validators are tracked in the validator object and updated
-   * when a field is identified as invalid. When a change occurs
-   * the <Error_Setter> handles setting or removing the error.
+   * Tracks validator changes updating the form state errors object by
+   * either adding or removing the errors based on conditions determined
+   * by the validators. Validators are constantly checked against change
+   * events and updated according to the conditions defined within the
+   * validators.
    */
   React.useEffect(() => {
-    if (validateOnSubmitOnly && preSubmit) {
-      const { validators: updatedValidators } = sanitizeValidators(
-        (onValidate && onValidate(values)) || {},
-        fieldRefs
-      );
+    const validators = (onValidate && onValidate(values)) || {};
 
-      if (!deepEqual(updatedValidators, validators)) {
-        displatch({
-          type: STATE_ACTION_TYPE.SET_VALIDATORS,
-          payload: updatedValidators,
-        });
-      }
-    }
-  }, [validateOnSubmitOnly, preSubmit]);
-
-  /**
-   * @name Validator_Tracker
-   *
-   * Handles standard validation. Validators are initially retrieved from
-   * the onValidate response and set to form state. Validators are tracked
-   * in the validator object and updated when a field is identified as
-   * invalid. When a change occurs the <Error_Setter> handles setting or
-   * removing the error.
-   */
-  React.useEffect(() => {
+    /** Field refs must exist before the form is considered a valid form. **/
     if (Object.keys(fieldRefs).length) {
-      const { validators: updatedValidators } = sanitizeValidators(
-        (onValidate && onValidate(values)) || {},
-        fieldRefs
-      );
+      const { errors: updatedErrors } = sanitizeErrors(validators, fieldRefs);
 
-      if (!deepEqual(updatedValidators, validators)) {
-        displatch({
-          type: STATE_ACTION_TYPE.SET_VALIDATORS,
-          payload: updatedValidators,
-        });
+      /** <1> Handles validation before pre-submit. **/
+      if (!validateOnSubmitOnly && !preSubmit && Object.entries(updatedErrors).length) {
+        if (!deepEqual(updatedErrors, errors)) {
+          displatch({
+            type: STATE_ACTION_TYPE.SET_ERRORS,
+            payload: updatedErrors,
+          });
+        }
+      }
+
+      /** <2> Handles validation during pre-submit. **/
+      if (preSubmit && !submit && Object.entries(updatedErrors).length) {
+        if (!deepEqual(updatedErrors, errors)) {
+          displatch({
+            type: STATE_ACTION_TYPE.SET_ERRORS,
+            payload: updatedErrors,
+          });
+        }
       }
     }
-  }, [values, fieldRefs]);
+  }, [errors, fieldRefs, preSubmit, submit, validateOnSubmitOnly, values]);
 
   /**
-   * @name Error_Setter
+   * @name Change_Handler
    *
-   * Handles setting or unsetting errors in response to changes with
-   * validators. A validator is either added or removed via filtering
-   * based on the state of the validator and the error object is
-   * subsequently updated to reflect the change.
+   * Handles calling prop onChange function. The process is
+   * triggered by state changes occurring within the form
+   * state `values` object.
    */
   useUpdateEffect(() => {
-    const updatedErrors = Object.entries(validators)
-      .filter((validator) => touched[validator[0]] && validator[1])
-      .reduce((accumulator, key) => Object.assign(accumulator, { [key[0]]: key[1] }), {});
-
-    if (!deepEqual(updatedErrors, errors)) {
-      displatch({
-        type: !Object.keys(updatedErrors).length
-          ? STATE_ACTION_TYPE.RESET_ERRORS
-          : STATE_ACTION_TYPE.SET_ERRORS,
-        payload: updatedErrors,
-      });
-    }
-  }, [validators, touched]);
-
-  /**
-   * @name Pre_Submit_Touched_Handler
-   *
-   * Validates that all validators have associated field refs. This
-   * ensures that form submission cannot be halted due to validators
-   * with missing form fields.
-   *
-   * Validates all touched values are set to true against field refs.
-   */
-  useUpdateEffect(() => {
-    if (preSubmit) {
-      const { validators: updatedValidators } = sanitizeValidators(
-        (onValidate && onValidate(values)) || {},
-        fieldRefs
-      );
-
-      const { touched: updatedTouched } = sanitizeTouched(updatedValidators, fieldRefs);
-
-      if (!deepEqual(updatedTouched, touched)) {
-        displatch({
-          type: STATE_ACTION_TYPE.SET_TOUCHED,
-          payload: updatedTouched,
-        });
-      }
-    }
-  }, [preSubmit]);
+    onChange && onChange(values);
+  }, [values]);
 
   /**
    * @name Pre_Submit_Flow_Handler
    *
-   * Controls the direction of pre-submit.
-   *
-   * If errors were found during pre-submit and `autoFocus` was
-   * enabled, flow is regulated to handling the error. The form
-   * determines field order based on DOM position and maps the
-   * associated errors to the first field in the DOM setting focus.
-   *
-   * If no errors are found `submit` flag is set allowing the form
-   * to complete form submission.
+   * Handles validation during pre-submit in union with
+   * Validator_Tracker<2>. The flow is triggerd by the user
+   * selecting the submit button. Aytime the submit button
+   * is selected the pre-submit id is updated causing this
+   * code to run. If errors are found the associated code
+   * will execute updating the errors and touched objects
+   * and allowing the optional auto focus code to run. If
+   * errors are not found the submit flag is set allowing
+   * the form to move into the next submit phase.
    */
   useUpdateEffect(() => {
-    if (autoFocus && preSubmit !== cachedPreSubmitId && Object.keys(errors).length && !submit) {
+    if (preSubmit && !submit && preSubmit !== cachedPreSubmitId) {
       setCachedPreSubmitId(preSubmit);
 
-      /** Sorts field refs according to position in the DOM. **/
-      const refs = new Map(
-        [...Object.entries(fieldRefs)].sort((a, b) => {
+      const validators = (onValidate && onValidate(values)) || {};
+
+      const { touched } = sanitizeTouched(validators, fieldRefs);
+      const { errors: updatedErrors } = sanitizeErrors(validators, fieldRefs);
+
+      const errorCount = hasError(errors);
+
+      /** Errors found */
+      if (errorCount) {
+        displatch({
+          type: STATE_ACTION_TYPE.SET_ERRORS,
+          payload: errors,
+        });
+
+        displatch({
+          type: STATE_ACTION_TYPE.SET_TOUCHED,
+          payload: touched,
+        });
+
+        /**
+         * Auto focus enables the form to set focus on the first error found
+         * in the form. If enabled the form determines field order based on
+         * DOM position and maps the associated errors to the first field in
+         * the DOM setting focus.
+         */
+        if (autoFocus) {
+          /** Sorts field refs according to position in the DOM. **/
+          const refs = new Map(
+            [...Object.entries(fieldRefs)].sort((a, b) => {
+              // @ts-ignore
+              return a[1].current.compareDocumentPosition(b[1].current) &
+                Node.DOCUMENT_POSITION_FOLLOWING
+                ? -1
+                : 1;
+            })
+          );
+
+          /** Set focus on first error found **/
           // @ts-ignore
-          return a[1].current.compareDocumentPosition(b[1].current) &
-            Node.DOCUMENT_POSITION_FOLLOWING
-            ? -1
-            : 1;
-        })
-      );
+          for (const [key, value] of refs.entries()) {
+            if (updatedErrors[key]) {
+              value.current.focus();
 
-      /** Set focus on first error found **/
-      // @ts-ignore
-      for (const [key, value] of refs.entries()) {
-        if (errors[key]) {
-          value.current.focus();
-
-          break;
+              break;
+            }
+          }
         }
-      }
-    }
-
-    if (preSubmit !== cachedPreSubmitId && !Object.keys(errors).length && !submit) {
-      const { validators: updatedValidators } = sanitizeValidators(
-        (onValidate && onValidate(values)) || {},
-        fieldRefs
-      );
-
-      const errorCount = hasError(updatedValidators);
-
-      if (!errorCount) {
+      } else {
+        /**
+         * Form errors have been cleared permitting the form to move
+         * into the next `submit` phase.
+         */
         displatch({
           type: STATE_ACTION_TYPE.SET_SUBMIT,
           payload: null,
@@ -357,18 +323,7 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [preSubmit, autoFocus]);
-
-  /**
-   * @name Change_Handler
-   *
-   * Handles calling prop onChange function. The process is
-   * triggered by state changes occurring with the `values`
-   * form state object.
-   */
-  useUpdateEffect(() => {
-    onChange && onChange(values);
-  }, [values]);
+  }, [errors, fieldRefs, preSubmit, submit]);
 
   /**
    * @name Submit_Handler

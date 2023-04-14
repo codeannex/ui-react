@@ -23,9 +23,14 @@ type FormButtonProps = {
    * submit function.
    */
   formRef: FormRef;
+
+  /**
+   * Sets the id attribute.
+   */
+  id?: string;
 };
 
-export const FormButton: React.FC<FormButtonProps> = ({ children, classes, formRef }) => {
+export const FormButton: React.FC<FormButtonProps> = ({ children, classes, formRef, id }) => {
   const _classes = classNames(classes && classes);
 
   const handleSubmit = () => {
@@ -33,7 +38,12 @@ export const FormButton: React.FC<FormButtonProps> = ({ children, classes, formR
   };
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.BUTTON} classes={_classes || undefined} onClick={handleSubmit}>
+    <Element
+      as={ELEMENT_OPTION_TYPE.BUTTON}
+      classes={_classes || undefined}
+      id={id || undefined}
+      onClick={handleSubmit}
+    >
       {children}
     </Element>
   );
