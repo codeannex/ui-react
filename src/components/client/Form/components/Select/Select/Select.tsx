@@ -37,6 +37,11 @@ type SelectProps = {
   fieldName: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Array of options used to build the select options.
    */
   options: SelectOption[];
@@ -47,6 +52,7 @@ export const Select: React.FC<SelectProps> = ({
   classesError,
   disabled,
   fieldName,
+  id,
   options,
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
@@ -57,7 +63,7 @@ export const Select: React.FC<SelectProps> = ({
   const ref = React.useRef<HTMLSelectElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName];
+  const error = errors[fieldName] && touched[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -105,6 +111,7 @@ export const Select: React.FC<SelectProps> = ({
         as={ELEMENT_OPTION_TYPE.SELECT}
         classes={_classes || undefined}
         disabled={disabled}
+        id={id || undefined}
         ref={ref}
         value={value || ""}
         /** Handlers */

@@ -95,7 +95,6 @@ export type State = {
   postSubmit?: boolean;
   errors?: Errors;
   touched?: Touched;
-  validators?: Validators;
   values?: Values;
 };
 

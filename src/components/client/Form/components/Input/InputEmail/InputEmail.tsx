@@ -41,6 +41,11 @@ export type InputEmailProps = {
   fieldName: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Sets the placeholder value on the form field.
    */
   placeholder?: string;
@@ -51,6 +56,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({
   classesError,
   defaultValue,
   disabled,
+  id,
   fieldName,
   placeholder,
 }) => {
@@ -62,7 +68,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({
   const ref = React.useRef<HTMLInputElement>(null);
 
   const value = values[fieldName] as string;
-  const error = errors[fieldName];
+  const error = errors[fieldName] && touched[fieldName];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -122,6 +128,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({
         as={ELEMENT_OPTION_TYPE.INPUT}
         classes={_classes || undefined}
         disabled={disabled}
+        id={id || undefined}
         placeholder={placeholder}
         value={value || ""}
         ref={ref}
