@@ -23,10 +23,17 @@ const radioOptions = [
   { id: "bjj", value: "bjj", label: "BJJ", name: "bjj" },
 ];
 
+const FIELD = {
+  FIRST_NAME: "firstName",
+  EMAIL: "email",
+  PASSWORD: "password",
+};
+
 export const FormPage = () => {
   const [formRef1, setFormRef1] = React.useState<FormRef>(null);
   const [formRef2, setFormRef2] = React.useState<FormRef>(null);
   const [formRef3, setFormRef3] = React.useState<FormRef>(null);
+  const [formRef4, setFormRef4] = React.useState<FormRef>(null);
 
   const handleSubmit = () => {};
 
@@ -55,6 +62,18 @@ export const FormPage = () => {
   };
 
   const handleValidate3 = (values: Values) => {
+    return {
+      firstName: values.firstName ? undefined : "Required",
+      lastName: values.lastName ? undefined : "Required",
+      email: values.email ? undefined : "Required",
+      password: values.password ? undefined : "Required",
+      class: values.class ? undefined : "Required",
+      classType: values.classType ? undefined : "Required",
+      comment: values.comment ? undefined : "Required",
+    };
+  };
+
+  const handleValidate4 = (values: Values) => {
     return {
       firstName: values.firstName ? undefined : "Required",
       lastName: values.lastName ? undefined : "Required",
@@ -157,6 +176,64 @@ export const FormPage = () => {
             </Field>
           </Form>
           <FormButton id="submit-btn-validate-submit" formRef={formRef3}>
+            Clicker
+          </FormButton>
+        </div>
+        <div id="control-basic">
+          <Form formRef={setFormRef4} onSubmit={handleSubmit} onValidate={handleValidate4}>
+            <Form.Control
+              fieldName={FIELD.FIRST_NAME}
+              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+                <div>
+                  <label>First Name</label>
+                  <input
+                    id={fieldName}
+                    type="text"
+                    value={value}
+                    ref={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                  {error && <p>{error}</p>}
+                </div>
+              )}
+            />
+            <Form.Control
+              fieldName={FIELD.EMAIL}
+              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+                <div>
+                  <label>Email</label>
+                  <input
+                    id={fieldName}
+                    type="email"
+                    value={value}
+                    ref={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                  {error && <p>{error}</p>}
+                </div>
+              )}
+            />
+            <Form.Control
+              fieldName={FIELD.PASSWORD}
+              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+                <div>
+                  <label>Email</label>
+                  <input
+                    id={fieldName}
+                    type="password"
+                    value={value}
+                    ref={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                  {error && <p>{error}</p>}
+                </div>
+              )}
+            />
+          </Form>
+          <FormButton id="control-submit-btn-validate-submit" formRef={formRef4}>
             Clicker
           </FormButton>
         </div>

@@ -26,6 +26,5 @@ export * from "./utils/entriesToFieldRefs";
 export * from "./utils/hasError";
 export * from "./utils/sanititzeErrors";
 export * from "./utils/sanitizeTouched";
-export * from "./utils/sanitizeValidators";
 
 export * from "./types";

@@ -193,7 +193,17 @@ describe("component - Form", () => {
       cy.visit("http://localhost:3001/form");
     });
 
-    it(" should not render errors on any input type on blur", () => {
+    it("should render errors on empty form submission", () => {
+      cy.get("#validate-submit").within(() => {
+        cy.get("button").click();
+
+        cy.get('span:contains("Required")').should(($p) => {
+          expect($p).to.have.length(6);
+        });
+      });
+    });
+
+    it("should not render errors on any input type on blur", () => {
       cy.get("#validate-submit").within(() => {
         /** should not render error on text input type */
         cy.get("#first-name-validate-submit").focus().blur();

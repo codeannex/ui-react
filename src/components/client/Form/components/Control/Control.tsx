@@ -10,6 +10,7 @@ import {
 } from "@components/client/Form/index";
 
 export type RenderArgs = {
+  fieldName: string;
   error: string;
   value: string;
   ref: any;
@@ -32,7 +33,7 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
   const ref = React.useRef<any>(null);
 
   const value = values[fieldName] || "";
-  const error = errors[fieldName] || "";
+  const error = errors[fieldName] && touched[fieldName] ? (errors[fieldName] as string) : "";
 
   /**
    * Handlers
@@ -71,7 +72,7 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
     });
   }, []);
 
-  return render({ ref, error, value, onBlur: handleBlur, onChange: handleChange });
+  return render({ fieldName, ref, error, value, onBlur: handleBlur, onChange: handleChange });
 };
 
 export default Control;

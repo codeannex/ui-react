@@ -47,6 +47,7 @@ export const formStateReducer = (state: State, action: StateAction) => {
       return {
         ...state,
         errors: { ...errors, ...action.payload },
+        touched: { ...touched, ...{ [Object.keys(action.payload)[0]]: true } },
       };
     case STATE_ACTION_TYPE.SET_ERRORS:
       return {

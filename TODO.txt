@@ -1,43 +1,6 @@
 Form:
 
-touched: if any field in the form was focused on and then focuse on something else 
-dirty: if any field has a value added or changed
-
-defaultValues: user can add defaultValues to all the fields in the form. The values will only be added if they are matched to a fieldName
-
-* onChange: called when any change occurs in the form
-* onSubmit: called on submit 
-
-* onValidate: called for validation
-onValidationFail: called when validation fails
-onPreValidate: ?
-
-* onPostSubmit: ?
-* onPreSubmit: ?
-
-
-Fields:
-
-* touched: if field was focused on and then focuse on something else (probably activated by blur)
-* dirty: if field has a value added or changed
-
-* defaultValue: user can add a defaultValue
-* disabled: disables the field based on boolean value
-
-* placeholder: really
-
-* error: display error.
-
-* validateOnSubmitOnly: ???
-* validateOnTouched: ???
-
-
-LEFT 
-1. 
-
-
 NOTE:
-
 1. Might be a good idea to allow field component to be returned as a `li` for list markup.
 2. Error handle duplicate field names.
 
@@ -85,11 +48,11 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. added support for id attributes on inputs.
-2. 
-3. 
-4. 
-5. 
+1. fixed validateOnSubmitOnly failing validation bug.
+2. added cypress e2e tests for control component form.
+3. organized constants into root directory.
+4. relocated tests into associated directories and deleted tests root directory.
+5. added unit and component tests to various utils and components.
 
 IN PROGRESS:
 1. 

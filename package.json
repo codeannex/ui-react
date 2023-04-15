@@ -28,7 +28,8 @@
     "build-storybook": "build-storybook",
     "cy:open": "cypress open",
     "cy:run": "npx cypress run --browser chrome --headless",
-    "cy-test": "start-server-and-test dev http://localhost:3001 cy:run"
+    "cy-test": "start-server-and-test dev http://localhost:3001 cy:run",
+    "check": "npm run prettier && npm run ts && npm run lint && npm run test && npm run cy-test"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

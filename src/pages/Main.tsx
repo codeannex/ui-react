@@ -23,8 +23,18 @@ const radioOptions = [
   { id: "bjj", value: "bjj", label: "BJJ", name: "bjj" },
 ];
 
+const FIELD = {
+  FIRST_NAME: "firstName",
+  LAST_NAME: "lastName",
+  EMAIL: "email",
+};
+
 export const MainPage = () => {
   const [formRef, setFormRef] = React.useState<FormRef>(null);
+
+  const handleClick = () => {
+    formRef?.controls.setError({ fieldName: "firstName", value: "This was required" });
+  };
 
   const handleSubmit = () => {};
 
@@ -51,7 +61,7 @@ export const MainPage = () => {
     <div id="page" data-test-id="component-app">
       <main id="main">
         <Form
-          validateOnSubmitOnly
+          // validateOnSubmitOnly
           formRef={setFormRef}
           onSubmit={handleSubmit}
           onValidate={handleValidate}
@@ -77,8 +87,29 @@ export const MainPage = () => {
           <Field label="Comment">
             <TextArea fieldName="comment" />
           </Field>
+          {/* <Form.Control
+            fieldName={FIELD.FIRST_NAME}
+            render={({ ref, error, value, onChange, onBlur }) => (
+              <div>
+                <label>First Name</label>
+                <input type="text" value={value} ref={ref} onChange={onChange} onBlur={onBlur} />
+                {error && <p>{error}</p>}
+              </div>
+            )}
+          />
+          <Form.Control
+            fieldName={FIELD.LAST_NAME}
+            render={({ ref, error, value, onChange, onBlur }) => (
+              <div>
+                <label>Last Name</label>
+                <input type="text" value={value} ref={ref} onChange={onChange} onBlur={onBlur} />
+                {error && <p>{error}</p>}
+              </div>
+            )}
+          /> */}
         </Form>
-        <FormButton formRef={formRef}>Clicker</FormButton>
+        <FormButton formRef={formRef}>Submit</FormButton>
+        <button onClick={handleClick}>Click</button>
       </main>
     </div>
   );
