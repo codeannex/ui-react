@@ -11,7 +11,6 @@ import {
   hasError,
   sanitizeErrors,
   sanitizeTouched,
-  sanitizeValidators,
   useFieldRefsContext,
   useFormControls,
   useFormStateActionContext,
@@ -182,7 +181,7 @@ const _Form: React.FC<FormProps> = ({
     _updateValue,
   });
 
-  const { preSubmit, submit, postSubmit, values = {}, touched = {}, errors = {} } = state;
+  const { preSubmit, submit, postSubmit, values = {}, errors = {} } = state;
 
   const [cachedPreSubmitId, setCachedPreSubmitId] = React.useState<any>("");
 
@@ -266,13 +265,13 @@ const _Form: React.FC<FormProps> = ({
       const { touched } = sanitizeTouched(validators, fieldRefs);
       const { errors: updatedErrors } = sanitizeErrors(validators, fieldRefs);
 
-      const errorCount = hasError(errors);
+      const errorCount = hasError(updatedErrors);
 
       /** Errors found */
       if (errorCount) {
         displatch({
           type: STATE_ACTION_TYPE.SET_ERRORS,
-          payload: errors,
+          payload: updatedErrors,
         });
 
         displatch({
@@ -323,7 +322,7 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [errors, fieldRefs, preSubmit, submit]);
+  }, [fieldRefs, preSubmit, submit]);
 
   /**
    * @name Submit_Handler

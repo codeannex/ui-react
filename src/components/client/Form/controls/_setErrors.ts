@@ -1,11 +1,16 @@
-import { CONSTANT } from "@components/client/Form/constants";
 import { STATE_ACTION_TYPE } from "@components/client/Form/index";
+
+import { ERROR } from "@constants/error";
 
 import { _SetErrors } from "../types";
 
 export const _setErrors = ({ errors, dispatch }: _SetErrors) => {
   if (!errors) {
-    throw new Error(`errors ${CONSTANT.ERROR.MISSING_PARAM}`);
+    throw new Error(`_setErrors ${ERROR.MISSING_PARAM} errors`);
+  }
+
+  if (!dispatch) {
+    throw new Error(`_setErrors ${ERROR.MISSING_PARAM} dispatch`);
   }
 
   dispatch({

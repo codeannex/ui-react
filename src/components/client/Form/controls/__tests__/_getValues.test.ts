@@ -1,5 +1,8 @@
-import { CONSTANT } from "@components/client/Form/constants";
 import { _getValues } from "@components/client/Form/controls";
+
+import { ERROR } from "@constants/error";
+
+import { _SetError } from "../../types";
 
 describe("Component - Form - controls _getValues", () => {
   const values = {
@@ -13,7 +16,14 @@ describe("Component - Form - controls _getValues", () => {
   });
 
   test("should return `error` if missing `values` param", () => {
-    // @ts-ignore
-    expect(() => _getValues()).toThrow(CONSTANT.ERROR.MISSING_VALUES_PARAM);
+    expect.assertions(2);
+
+    try {
+      // @ts-ignore
+      _getValues();
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty("message", `_getValues ${ERROR.MISSING_PARAM} values`);
+    }
   });
 });
