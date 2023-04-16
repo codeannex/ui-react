@@ -48,9 +48,9 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. updates store class.
-2. created tests for store class.
-3. created validator clase extension.
+1. 
+2. 
+3. 
 4. 
 5. 
 
