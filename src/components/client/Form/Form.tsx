@@ -213,7 +213,7 @@ const _Form: React.FC<FormProps> = ({
       /** <1> Handles validation before pre-submit. **/
       if (!validateOnSubmitOnly && !preSubmit && Object.entries(updatedErrors).length) {
         if (!deepEqual(updatedErrors, errors)) {
-          validator.operationalSet(({ setter }: any) => {
+          validator.mapSet(({ setter }: any) => {
             Object.entries(validatorsUpdate).map((validator) => {
               setter(validator[0], { [validator[0]]: validator[1] });
             });
@@ -229,7 +229,7 @@ const _Form: React.FC<FormProps> = ({
       /** <2> Handles validation during pre-submit. **/
       if (preSubmit && !submit && Object.entries(updatedErrors).length) {
         if (!deepEqual(updatedErrors, errors)) {
-          validator.operationalSet(({ setter }: any) => {
+          validator.mapSet(({ setter }: any) => {
             Object.entries(validatorsUpdate).map((validator) => {
               setter(validator[0], { [validator[0]]: validator[1] });
             });
@@ -283,7 +283,7 @@ const _Form: React.FC<FormProps> = ({
 
       /** Errors found */
       if (errorCount) {
-        validator.operationalSet(({ setter }: any) => {
+        validator.mapSet(({ setter }: any) => {
           Object.entries(validatorsUpdate).map((validator) => {
             setter(validator[0], { [validator[0]]: validator[1] });
           });
@@ -393,7 +393,7 @@ const _Form: React.FC<FormProps> = ({
 
       const { errors } = sanitizeErrors(validators, fieldRefs);
 
-      validator.operationalSet(({ setter }: any) => {
+      validator.mapSet(({ setter }: any) => {
         Object.entries(validators).map((validator) => {
           setter(validator[0], { [validator[0]]: validator[1] });
         });
