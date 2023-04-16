@@ -48,11 +48,11 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. fixed validateOnSubmitOnly failing validation bug.
-2. added cypress e2e tests for control component form.
-3. organized constants into root directory.
-4. relocated tests into associated directories and deleted tests root directory.
-5. added unit and component tests to various utils and components.
+1. updates store class.
+2. created tests for store class.
+3. created validator clase extension.
+4. 
+5. 
 
 IN PROGRESS:
 1. 

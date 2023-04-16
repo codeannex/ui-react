@@ -1,3 +1,5 @@
+import { FieldRef, Validator } from "@components/client/Form";
+
 /**
  * Actions
  */
@@ -49,6 +51,8 @@ export type StateAction = {
 export type StaticProps = {
   classesError?: string | string[];
   classesField?: string | string[];
+  fieldRef: FieldRef<FieldRefState>;
+  validator: Validator<Validators>;
 };
 
 export type Controls = {
@@ -110,12 +114,12 @@ export type StateReducerActionContext = React.Dispatch<StateAction>;
  */
 export type FieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-export type FieldRef = FieldElement;
+export type IFieldRef = FieldElement;
 export type RegistrationOptions = any;
 
 export type FieldDetail = {
   _field: {
-    ref: FieldRef;
+    ref: IFieldRef;
     name: string;
   };
 };

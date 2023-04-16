@@ -5,20 +5,21 @@ import PropTypes from "prop-types";
 import {
   Control,
   ControlProps,
+  FieldRef,
   FieldRefState,
   FormProvider,
-  entriesToFieldRefs,
+  Validator,
   hasError,
   sanitizeErrors,
   sanitizeTouched,
-  useFieldRefsContext,
   useFormControls,
   useFormStateActionContext,
   useFormStateContext,
   usePreSubmit,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
-import { Store, deepEqual, isFunction } from "@utils/index";
+import { deepEqual, isFunction } from "@utils/index";
 
 import { useUpdateEffect } from "@hooks/index";
 
@@ -32,7 +33,7 @@ import {
   _unsetTouched,
   _updateValue,
 } from "./controls";
-import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Values } from "./types";
+import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Validators, Values } from "./types";
 
 export interface FormPropComposition {
   Controller?: React.FC<ControlProps>;
@@ -161,11 +162,7 @@ const _Form: React.FC<FormProps> = ({
   const state = useFormStateContext();
   const displatch = useFormStateActionContext();
 
-  /** Field refs controller **/
-  const fieldRefsCtr = useFieldRefsContext();
-  const fieldRefs = fieldRefsCtr.mapEntries((entries: IterableIterator<[string, unknown]>) => {
-    return fieldRefsCtr.rawDate().size ? entriesToFieldRefs(entries) : {};
-  });
+  const { validator, fieldRef } = useStaticPropsContext();
 
   // TODO: !!! EXPERIMENTAL !!! develop futher as the API must be simple and useful.
   const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
@@ -204,15 +201,24 @@ const _Form: React.FC<FormProps> = ({
    * validators.
    */
   React.useEffect(() => {
-    const validators = (onValidate && onValidate(values)) || {};
+    const fieldRefs = fieldRef.getFieldRefs();
+    const validators = validator.getValidators();
+
+    const validatorsUpdate = (onValidate && onValidate(values)) || {};
 
     /** Field refs must exist before the form is considered a valid form. **/
-    if (Object.keys(fieldRefs).length) {
-      const { errors: updatedErrors } = sanitizeErrors(validators, fieldRefs);
+    if (Object.keys(fieldRefs).length && !deepEqual(validatorsUpdate, validators)) {
+      const { errors: updatedErrors } = sanitizeErrors(validatorsUpdate, fieldRefs);
 
       /** <1> Handles validation before pre-submit. **/
       if (!validateOnSubmitOnly && !preSubmit && Object.entries(updatedErrors).length) {
         if (!deepEqual(updatedErrors, errors)) {
+          validator.operationalSet(({ setter }: any) => {
+            Object.entries(validatorsUpdate).map((validator) => {
+              setter(validator[0], { [validator[0]]: validator[1] });
+            });
+          });
+
           displatch({
             type: STATE_ACTION_TYPE.SET_ERRORS,
             payload: updatedErrors,
@@ -223,6 +229,12 @@ const _Form: React.FC<FormProps> = ({
       /** <2> Handles validation during pre-submit. **/
       if (preSubmit && !submit && Object.entries(updatedErrors).length) {
         if (!deepEqual(updatedErrors, errors)) {
+          validator.operationalSet(({ setter }: any) => {
+            Object.entries(validatorsUpdate).map((validator) => {
+              setter(validator[0], { [validator[0]]: validator[1] });
+            });
+          });
+
           displatch({
             type: STATE_ACTION_TYPE.SET_ERRORS,
             payload: updatedErrors,
@@ -230,7 +242,7 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [errors, fieldRefs, preSubmit, submit, validateOnSubmitOnly, values]);
+  }, [errors, preSubmit, submit, validateOnSubmitOnly, values]);
 
   /**
    * @name Change_Handler
@@ -258,17 +270,25 @@ const _Form: React.FC<FormProps> = ({
    */
   useUpdateEffect(() => {
     if (preSubmit && !submit && preSubmit !== cachedPreSubmitId) {
+      const fieldRefs = fieldRef.getFieldRefs();
+
       setCachedPreSubmitId(preSubmit);
 
-      const validators = (onValidate && onValidate(values)) || {};
+      const validatorsUpdate = (onValidate && onValidate(values)) || {};
 
-      const { touched } = sanitizeTouched(validators, fieldRefs);
-      const { errors: updatedErrors } = sanitizeErrors(validators, fieldRefs);
+      const { touched } = sanitizeTouched(validatorsUpdate, fieldRefs);
+      const { errors: updatedErrors } = sanitizeErrors(validatorsUpdate, fieldRefs);
 
       const errorCount = hasError(updatedErrors);
 
       /** Errors found */
       if (errorCount) {
+        validator.operationalSet(({ setter }: any) => {
+          Object.entries(validatorsUpdate).map((validator) => {
+            setter(validator[0], { [validator[0]]: validator[1] });
+          });
+        });
+
         displatch({
           type: STATE_ACTION_TYPE.SET_ERRORS,
           payload: updatedErrors,
@@ -322,7 +342,7 @@ const _Form: React.FC<FormProps> = ({
         }
       }
     }
-  }, [fieldRefs, preSubmit, submit]);
+  }, [preSubmit, submit]);
 
   /**
    * @name Submit_Handler
@@ -360,22 +380,50 @@ const _Form: React.FC<FormProps> = ({
     }
   }, [postSubmit]);
 
+  /**
+   * @name Mount_Unmount_Init
+   *
+   * Initialize any code that must run once and/or require
+   * cleanup.
+   */
+  React.useEffect(() => {
+    if (!validateOnSubmitOnly) {
+      const fieldRefs = fieldRef.getFieldRefs();
+      const validators = (onValidate && onValidate(values)) || {};
+
+      const { errors } = sanitizeErrors(validators, fieldRefs);
+
+      validator.operationalSet(({ setter }: any) => {
+        Object.entries(validators).map((validator) => {
+          setter(validator[0], { [validator[0]]: validator[1] });
+        });
+      });
+
+      displatch({
+        type: STATE_ACTION_TYPE.SET_ERRORS,
+        payload: errors,
+      });
+    }
+
+    return () => {};
+  }, []);
+
   return <form>{children}</form>;
 };
 
 export const Form = Object.assign(
   React.forwardRef((props: FormProps, ref: React.Ref<FormRef>): JSX.Element => {
-    const fieldRefsContoller = React.useMemo(() => {
-      return new Store<FieldRefState>();
+    const staticProps = React.useMemo((): StaticProps => {
+      return {
+        classesError: props?.classesError,
+        classesField: props?.classesField,
+        fieldRef: new FieldRef<FieldRefState>(),
+        validator: new Validator<Validators>(),
+      };
     }, []);
 
-    const staticProps: StaticProps = {
-      classesError: props?.classesError,
-      classesField: props?.classesField,
-    };
-
     return (
-      <FormProvider staticProps={staticProps} fieldRefController={fieldRefsContoller}>
+      <FormProvider staticProps={staticProps}>
         <_Form {...props} formRef={props.formRef} />
       </FormProvider>
     );

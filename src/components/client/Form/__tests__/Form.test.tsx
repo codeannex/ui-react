@@ -13,7 +13,7 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
   return (
-    <FormProvider fieldRefController={{ set: () => {} }}>
+    <FormProvider>
       <Form {...props}>
         <div data-testid="child" />
         <div />

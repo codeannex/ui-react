@@ -39,6 +39,9 @@ export const MainPage = () => {
   const handleSubmit = () => {};
 
   const handleValidate = (values: Values) => {
+    console.log("handleValidate ========");
+    console.log(values);
+    console.log("handleValidate ========");
     return {
       firstName: values.firstName ? undefined : "Required",
       lastName: values.lastName ? undefined : "Required",
@@ -62,12 +65,13 @@ export const MainPage = () => {
       <main id="main">
         <Form
           // validateOnSubmitOnly
+          autoFocus
           formRef={setFormRef}
           onSubmit={handleSubmit}
           onValidate={handleValidate}
         >
           <Field label="First Name">
-            <InputText fieldName="firstName" />
+            <InputText fieldName="firstName" placeholder="poop" />
           </Field>
           <Field label="Last Name">
             <InputText fieldName="lastName" />

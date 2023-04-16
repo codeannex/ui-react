@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 
 import {
   Error,
-  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/server/Element/Element";
@@ -44,7 +44,8 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, id, options }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const fieldRefsController = useFieldRefsContext();
+  const { fieldRef } = useStaticPropsContext();
+
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
@@ -82,7 +83,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set([fieldName], {
+    fieldRef?.safeSet([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

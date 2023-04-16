@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 import {
   Error,
   Option,
-  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
@@ -57,7 +57,8 @@ export const Select: React.FC<SelectProps> = ({
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const fieldRefsController = useFieldRefsContext();
+  const { fieldRef } = useStaticPropsContext();
+
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLSelectElement>(null);
@@ -95,7 +96,7 @@ export const Select: React.FC<SelectProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set([fieldName], {
+    fieldRef?.safeSet([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

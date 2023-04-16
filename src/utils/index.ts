@@ -1,5 +1,4 @@
-export * from "./classes/store";
-
+export * from "./store/store";
 export * from "./cloneObject";
 export * from "./deepEqaul";
 export * from "./deleteUndefinedProps";

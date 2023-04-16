@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 import {
   STATE_ACTION_TYPE,
-  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
 export type RenderArgs = {
@@ -27,7 +27,8 @@ export interface ControlProps {
 export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const fieldRefsController = useFieldRefsContext();
+  const { fieldRef } = useStaticPropsContext();
+
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<any>(null);
@@ -62,7 +63,7 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set([fieldName], {
+    fieldRef?.safeSet([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,
