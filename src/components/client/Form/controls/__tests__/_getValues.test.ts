@@ -2,8 +2,6 @@ import { _getValues } from "@components/client/Form/controls";
 
 import { ERROR } from "@constants/error";
 
-import { _SetError } from "../../types";
-
 describe("Component - Form - controls _getValues", () => {
   const values = {
     email: "foo@bar.com",

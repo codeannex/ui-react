@@ -15,7 +15,7 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
   const props = { ...defaultProps, ...overrideDefaultProps };
 
   return (
-    <FormProvider fieldRefController={{ set: () => {} }}>
+    <FormProvider>
       <InputPassword {...props} />
     </FormProvider>
   );

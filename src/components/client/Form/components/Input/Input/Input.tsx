@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 
 import {
   Error,
-  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
@@ -69,7 +69,8 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const fieldRefsController = useFieldRefsContext();
+  const { fieldRef } = useStaticPropsContext();
+
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLInputElement>(null);
@@ -119,7 +120,7 @@ export const Input: React.FC<InputProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set([fieldName], {
+    fieldRef?.safeSet([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

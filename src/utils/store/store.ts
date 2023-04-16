@@ -1,5 +1,10 @@
+import { STORE_CONSTANT } from "@utils/store/constants";
+
+import { ERROR } from "@constants/error";
+
 export class Store<T> {
-  private data: Map<string, T>;
+  public data: Map<string, T>;
+
   private events: any;
 
   constructor() {
@@ -10,7 +15,7 @@ export class Store<T> {
   }
 
   /**
-   * Pub / Sub
+   * Pub/Sub
    */
   public publish<T>(eventName: string, data: T) {
     if (this.events[eventName]) {
@@ -37,38 +42,58 @@ export class Store<T> {
     }
   }
 
+  /** Setters **/
+
   /**
-   * Setters
+   * Map setter sets the key/value heedless of any
+   * preexisting value.
    */
   public set(name: string, item: T) {
-    this.data.set(name, item);
-  }
-
-  public safeSet(name: string, item: T) {
-    if (this.data.get(name)) {
-      return;
+    if (arguments.length !== 2) {
+      throw new Error(`set ${ERROR.REQUIRES_PARAMS} ${STORE_CONSTANT.SET_PARAMS}`);
     }
 
     this.data.set(name, item);
   }
 
+  /**
+   * Map setter sets the key/value provided it does
+   * not already exist.
+   */
+  public safeSet(name: string, item: T) {
+    if (arguments.length !== 2) {
+      throw new Error(`safeSet ${ERROR.REQUIRES_PARAMS} ${STORE_CONSTANT.SET_PARAMS}`);
+    }
+
+    if (this.data.get(name)) {
+      throw new Error(`safeSet ${ERROR.CANNOT_OVERRIDE} ${STORE_CONSTANT.OVERRIDE_OPTION}`);
+    }
+
+    this.data.set(name, item);
+  }
+
+  /**
+   * Setter exposes various members to a callback
+   * allowing flexibility to run operations before
+   * setting the key/keys.
+   */
   public operationalSet(
-    name: string,
     cb: ({
-      item,
+      data,
+      getter,
       setter,
       publisher,
     }: {
-      item: T | undefined;
+      data: Map<string, T>;
+      getter: (name: string) => T | undefined;
       setter: (name: string, item: T) => void;
       publisher: (eventName: string, data: T) => void;
     }) => void
   ) {
-    const current = this.data.get(name);
-
     cb &&
       cb({
-        item: current,
+        data: this.data,
+        getter: this.get.bind(this),
         setter: this.set.bind(this),
         publisher: this.publish.bind(this),
       });
@@ -77,7 +102,7 @@ export class Store<T> {
   /**
    * Getters
    */
-  public get(name: string) {
+  public get(name: string): T | undefined {
     return this.data.get(name);
   }
 
@@ -130,6 +155,10 @@ export class Store<T> {
    */
   public has(name: string) {
     return this.data.has(name);
+  }
+
+  public size() {
+    return this.data.size;
   }
 
   public clear() {

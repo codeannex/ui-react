@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 
 import {
   Error,
-  useFieldRefsContext,
   useFormStateActionContext,
   useFormStateContext,
+  useStaticPropsContext,
 } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
@@ -62,7 +62,8 @@ export const TextArea: React.FC<TextAreaProps> = ({
 }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
-  const fieldRefsController = useFieldRefsContext();
+  const { fieldRef } = useStaticPropsContext();
+
   const displatch = useFormStateActionContext();
 
   const ref = React.useRef<HTMLTextAreaElement>(null);
@@ -112,7 +113,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRefsController.set([fieldName], {
+    fieldRef?.safeSet([fieldName], {
       [fieldName]: {
         _field: {
           ref: ref?.current,

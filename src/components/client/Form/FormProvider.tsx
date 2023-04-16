@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {
-  FieldRefsContext,
   FormStateActionContext,
   FormStateContext,
   FormStaticPropsContext,
@@ -13,10 +12,9 @@ import { StaticProps } from "./types";
 interface Props {
   children: React.ReactElement;
   staticProps?: StaticProps;
-  fieldRefController: any;
 }
 
-export const FormProvider: React.FC<Props> = ({ children, staticProps, fieldRefController }) => {
+export const FormProvider: React.FC<Props> = ({ children, staticProps }) => {
   const [formState, setFormState] = React.useReducer(formStateReducer, {
     preSubmit: "",
     submit: false,
@@ -25,10 +23,6 @@ export const FormProvider: React.FC<Props> = ({ children, staticProps, fieldRefC
     touched: {},
     values: {},
   });
-
-  const memoizedStaticProps = React.useMemo(() => {
-    return staticProps;
-  }, [staticProps]);
 
   const memoizedFormState = React.useMemo(() => {
     return formState;
@@ -39,14 +33,12 @@ export const FormProvider: React.FC<Props> = ({ children, staticProps, fieldRefC
   }, [setFormState]);
 
   return (
-    <FormStaticPropsContext.Provider value={memoizedStaticProps || {}}>
-      <FieldRefsContext.Provider value={fieldRefController}>
-        <FormStateContext.Provider value={memoizedFormState}>
-          <FormStateActionContext.Provider value={memoizedSetFormState}>
-            {children}
-          </FormStateActionContext.Provider>
-        </FormStateContext.Provider>
-      </FieldRefsContext.Provider>
+    <FormStaticPropsContext.Provider value={staticProps || {}}>
+      <FormStateContext.Provider value={memoizedFormState}>
+        <FormStateActionContext.Provider value={memoizedSetFormState}>
+          {children}
+        </FormStateActionContext.Provider>
+      </FormStateContext.Provider>
     </FormStaticPropsContext.Provider>
   );
 };

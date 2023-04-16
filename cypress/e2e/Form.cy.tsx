@@ -13,6 +13,8 @@ describe("component - Form", () => {
       cy.get("#basic").within(() => {
         cy.get("button").click();
 
+        cy.wait(50);
+
         cy.get('span:contains("Required")').should(($p) => {
           expect($p).to.have.length(7);
         });
