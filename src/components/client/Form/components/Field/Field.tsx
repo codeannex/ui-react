@@ -47,11 +47,18 @@ export const Field: React.FC<FieldProps> = ({
   const _labelClasses = classNames(labelClasses && labelClasses);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
+    <>
       {label && <Label label={label} classes={_labelClasses} htmlFor={labelFor} />}
       {children}
-    </Element>
+    </>
   );
+
+  // return (
+  //   <Element as={ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
+  //     {label && <Label label={label} classes={_labelClasses} htmlFor={labelFor} />}
+  //     {children}
+  //   </Element>
+  // );
 };
 
 Field.propTypes = {

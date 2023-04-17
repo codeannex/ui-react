@@ -24,7 +24,9 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
 describe("Component - Form: InputEmail", () => {
   describe("renders", () => {
     it("without crashing", () => {
-      render(renderComponent());
+      const { container } = render(renderComponent());
+
+      expect(container).toBeDefined();
     });
 
     it("as `email` type input", () => {

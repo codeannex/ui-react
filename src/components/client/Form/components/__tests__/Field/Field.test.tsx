@@ -25,7 +25,9 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
 describe("Component - Form: Field", () => {
   describe("renders", () => {
     it("without crashing", () => {
-      render(renderComponent());
+      const { container } = render(renderComponent());
+
+      expect(container).toBeDefined();
     });
 
     it("with class name/names attribute added to container (string)", () => {
