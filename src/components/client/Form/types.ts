@@ -25,20 +25,20 @@ export const enum FIELD_REF_ACTION_TYPE {
  * Controls
  */
 export type GetValue = string;
-export type SetError = { fieldName: string; value: any };
+export type SetError = { field: string; value: any };
 export type SetErrors = Errors;
-export type SetTouched = { fieldName: string; value: any };
-export type UnsetTouched = { fieldName: string; value: any };
-export type UpdateValue = { fieldName: string; value: any };
+export type SetTouched = { field: string; value: any };
+export type UnsetTouched = { field: string; value: any };
+export type UpdateValue = { field: string; value: any };
 
-export type _GetValue = { fieldName: string; values: Values };
+export type _GetValue = { field: string; values: Values };
 export type _GetValues = Values;
-export type _SetError = { fieldName: string; value: any; dispatch: StateReducerActionContext };
+export type _SetError = { field: string; value: any; dispatch: StateReducerActionContext };
 export type _SetErrors = { errors: Errors; dispatch: StateReducerActionContext };
-export type _SetTouched = { fieldName: string; value: any; dispatch: StateReducerActionContext };
+export type _SetTouched = { field: string; value: any; dispatch: StateReducerActionContext };
 export type _Submit = { dispatch: StateReducerActionContext };
-export type _UnsetTouched = { fieldName: string; value: any; dispatch: StateReducerActionContext };
-export type _UpdateValue = { fieldName: string; value: any; dispatch: StateReducerActionContext };
+export type _UnsetTouched = { field: string; value: any; dispatch: StateReducerActionContext };
+export type _UpdateValue = { field: string; value: any; dispatch: StateReducerActionContext };
 
 /**
  * Form
@@ -56,41 +56,41 @@ export type StaticProps = {
 };
 
 export type Controls = {
-  getValue: (fieldName: GetValue) => string;
+  getValue: (field: GetValue) => string;
   getValues: () => Values;
-  setError: ({ fieldName, value }: SetError) => void;
+  setError: ({ field, value }: SetError) => void;
   setErrors: (errors: SetErrors) => void;
-  setTouched: ({ fieldName, value }: SetTouched) => void;
+  setTouched: ({ field, value }: SetTouched) => void;
   submit: () => void;
-  unsetTouched: ({ fieldName, value }: UnsetTouched) => void;
-  updateValue: ({ fieldName, value }: UpdateValue) => void;
+  unsetTouched: ({ field, value }: UnsetTouched) => void;
+  updateValue: ({ field, value }: UpdateValue) => void;
 };
 
 export type _Controls = {
-  _getValue: ({ fieldName, values }: _GetValue) => string;
+  _getValue: ({ field, values }: _GetValue) => string;
   _getValues: (values: _GetValues) => Values;
-  _setError: ({ fieldName, value, dispatch }: _SetError) => void;
+  _setError: ({ field, value, dispatch }: _SetError) => void;
   _setErrors: ({ errors, dispatch }: _SetErrors) => void;
-  _setTouched: ({ fieldName, value, dispatch }: _SetTouched) => void;
+  _setTouched: ({ field, value, dispatch }: _SetTouched) => void;
   _submit: ({ dispatch }: _Submit) => void;
-  _unsetTouched: ({ fieldName, value, dispatch }: _UnsetTouched) => void;
-  _updateValue: ({ fieldName, value, dispatch }: _UpdateValue) => void;
+  _unsetTouched: ({ field, value, dispatch }: _UnsetTouched) => void;
+  _updateValue: ({ field, value, dispatch }: _UpdateValue) => void;
 };
 
 export type Errors = {
-  [fieldName: string]: string | undefined;
+  [field: string]: string | undefined;
 };
 
 export type Touched = {
-  [fieldName: string]: boolean;
+  [field: string]: boolean;
 };
 
 export type Validators = {
-  [fieldName: string]: string;
+  [field: string]: string;
 };
 
 export type Values = {
-  [fieldName: string]: string;
+  [field: string]: string;
 };
 
 export type State = {

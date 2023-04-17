@@ -34,7 +34,7 @@ type SelectProps = {
   /**
    * Required prop used to track form field state.
    */
-  fieldName: string;
+  field: string;
 
   /**
    * Sets the id attribute.
@@ -51,7 +51,7 @@ export const Select: React.FC<SelectProps> = ({
   classes,
   classesError,
   disabled,
-  fieldName,
+  field,
   id,
   options,
 }) => {
@@ -63,8 +63,8 @@ export const Select: React.FC<SelectProps> = ({
 
   const ref = React.useRef<HTMLSelectElement>(null);
 
-  const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
+  const value = values[field] as string;
+  const error = errors[field] && touched[field];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -78,17 +78,17 @@ export const Select: React.FC<SelectProps> = ({
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -96,11 +96,11 @@ export const Select: React.FC<SelectProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef?.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
@@ -123,9 +123,7 @@ export const Select: React.FC<SelectProps> = ({
           return <Option option={option} key={option?.id} />;
         })}
       </Element>
-      {error && (
-        <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
-      )}
+      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
     </Element>
   );
 };
@@ -134,6 +132,6 @@ Select.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
 };

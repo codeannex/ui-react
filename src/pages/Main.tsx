@@ -33,7 +33,7 @@ export const MainPage = () => {
   const [formRef, setFormRef] = React.useState<FormRef>(null);
 
   const handleClick = () => {
-    formRef?.controls.setError({ fieldName: "firstName", value: "This was required" });
+    formRef?.controls.setError({ field: "firstName", value: "This was required" });
   };
 
   const handleSubmit = () => {};
@@ -71,28 +71,28 @@ export const MainPage = () => {
           onValidate={handleValidate}
         >
           <Field label="First Name">
-            <InputText fieldName="firstName" placeholder="poop" />
+            <InputText field="firstName" placeholder="poop" />
           </Field>
           {/* <Field label="Last Name">
-            <InputText fieldName="lastName" />
+            <InputText field="lastName" />
           </Field> */}
           {/* <Field label="Email">
-            <InputEmail fieldName="email" />
+            <InputEmail field="email" />
           </Field> */}
           {/* <Field label="Password">
-            <InputPassword fieldName="password" />
+            <InputPassword field="password" />
           </Field> */}
           {/* <Field label="Class">
-            <Select fieldName="class" options={selectOptions} />
+            <Select field="class" options={selectOptions} />
           </Field> */}
           {/* <Field label="Class Type">
-            <Radio fieldName="classType" options={radioOptions} />
+            <Radio field="classType" options={radioOptions} />
           </Field> */}
           {/* <Field label="Comment">
-            <TextArea fieldName="comment" />
+            <TextArea field="comment" />
           </Field> */}
           {/* <Form.Control
-            fieldName={FIELD.FIRST_NAME}
+            field={FIELD.FIRST_NAME}
             render={({ ref, error, value, onChange, onBlur }) => (
               <div>
                 <label>First Name</label>
@@ -102,7 +102,7 @@ export const MainPage = () => {
             )}
           />
           <Form.Control
-            fieldName={FIELD.LAST_NAME}
+            field={FIELD.LAST_NAME}
             render={({ ref, error, value, onChange, onBlur }) => (
               <div>
                 <label>Last Name</label>

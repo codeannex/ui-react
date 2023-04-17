@@ -14,13 +14,13 @@ describe("Component - Form - controls _setError", () => {
   };
 
   test("should call displatch successfully", () => {
-    _setError({ fieldName: "firstName", value: "This was required", dispatch: mockDispatch });
+    _setError({ field: "firstName", value: "This was required", dispatch: mockDispatch });
 
     expect(mockDispatch).toHaveBeenCalledWith(mockAction);
   });
 
   describe("should return error", () => {
-    test("if missing `fieldName` param", () => {
+    test("if missing `field` param", () => {
       expect.assertions(2);
 
       try {
@@ -28,7 +28,7 @@ describe("Component - Form - controls _setError", () => {
         _setError({ value: "This was required", dispatch: mockDispatch });
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error).toHaveProperty("message", `_setError ${ERROR.MISSING_PARAM} fieldName`);
+        expect(error).toHaveProperty("message", `_setError ${ERROR.MISSING_PARAM} field`);
       }
     });
 
@@ -37,7 +37,7 @@ describe("Component - Form - controls _setError", () => {
 
       try {
         // @ts-ignore
-        _setError({ fieldName: "firstName", dispatch: mockDispatch });
+        _setError({ field: "firstName", dispatch: mockDispatch });
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(error).toHaveProperty("message", `_setError ${ERROR.MISSING_PARAM} value`);
@@ -49,7 +49,7 @@ describe("Component - Form - controls _setError", () => {
 
       try {
         // @ts-ignore
-        _setError({ fieldName: "firstName", value: "This was required" });
+        _setError({ field: "firstName", value: "This was required" });
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(error).toHaveProperty("message", `_setError ${ERROR.MISSING_PARAM} dispatch`);

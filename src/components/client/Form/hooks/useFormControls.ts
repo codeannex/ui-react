@@ -29,8 +29,8 @@ export const useFormControls = ({
   const dispatch = useFormStateActionContext();
 
   const getValue = React.useCallback(
-    (fieldName: GetValue) => {
-      return _getValue({ values, fieldName });
+    (field: GetValue) => {
+      return _getValue({ values, field });
     },
     [values]
   );
@@ -39,24 +39,24 @@ export const useFormControls = ({
     return _getValues(values);
   }, [values]);
 
-  const setError = ({ fieldName, value }: SetError) => {
-    _setError({ fieldName, value, dispatch });
+  const setError = ({ field, value }: SetError) => {
+    _setError({ field, value, dispatch });
   };
 
   const setErrors = (errors: SetErrors) => {
     _setErrors({ errors, dispatch });
   };
 
-  const setTouched = ({ fieldName, value }: SetTouched) => {
-    _setTouched({ fieldName, value, dispatch });
+  const setTouched = ({ field, value }: SetTouched) => {
+    _setTouched({ field, value, dispatch });
   };
 
-  const unsetTouched = ({ fieldName, value }: UnsetTouched) => {
-    _unsetTouched({ fieldName, value, dispatch });
+  const unsetTouched = ({ field, value }: UnsetTouched) => {
+    _unsetTouched({ field, value, dispatch });
   };
 
-  const updateValue = ({ fieldName, value }: UpdateValue) => {
-    _updateValue({ fieldName, value, dispatch });
+  const updateValue = ({ field, value }: UpdateValue) => {
+    _updateValue({ field, value, dispatch });
   };
 
   const submit = () => {

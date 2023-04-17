@@ -91,25 +91,25 @@ export const FormPage = () => {
         <div id="basic">
           <Form formRef={setFormRef1} onSubmit={handleSubmit} onValidate={handleValidate1}>
             <Field label="First Name">
-              <InputText id="first-name-basic" fieldName="firstName" />
+              <InputText id="first-name-basic" field="firstName" />
             </Field>
             <Field label="Last Name">
-              <InputText id="last-name-basic" fieldName="lastName" />
+              <InputText id="last-name-basic" field="lastName" />
             </Field>
             <Field label="Email">
-              <InputEmail id="email-basic" fieldName="email" />
+              <InputEmail id="email-basic" field="email" />
             </Field>
             <Field label="Password">
-              <InputPassword id="password-basic" fieldName="password" />
+              <InputPassword id="password-basic" field="password" />
             </Field>
             <Field label="Class">
-              <Select id="class-basic" fieldName="class" options={selectOptions} />
+              <Select id="class-basic" field="class" options={selectOptions} />
             </Field>
             <Field label="Class Type">
-              <Radio id="class-type-basic" fieldName="classType" options={radioOptions} />
+              <Radio id="class-type-basic" field="classType" options={radioOptions} />
             </Field>
             <Field label="Comment">
-              <TextArea id="comment-basic" fieldName="comment" />
+              <TextArea id="comment-basic" field="comment" />
             </Field>
           </Form>
           <FormButton id="submit-btn-basic" formRef={formRef1}>
@@ -124,25 +124,25 @@ export const FormPage = () => {
             onValidate={handleValidate2}
           >
             <Field label="First Name">
-              <InputText id="first-name-auto" fieldName="firstName" />
+              <InputText id="first-name-auto" field="firstName" />
             </Field>
             <Field label="Last Name">
-              <InputText id="last-name-auto" fieldName="lastName" />
+              <InputText id="last-name-auto" field="lastName" />
             </Field>
             <Field label="Email">
-              <InputEmail id="email-auto" fieldName="email" />
+              <InputEmail id="email-auto" field="email" />
             </Field>
             <Field label="Password">
-              <InputPassword id="password-auto" fieldName="password" />
+              <InputPassword id="password-auto" field="password" />
             </Field>
             <Field label="Class">
-              <Select id="class-auto" fieldName="class" options={selectOptions} />
+              <Select id="class-auto" field="class" options={selectOptions} />
             </Field>
             <Field label="Class Type">
-              <Radio id="class-type-auto" fieldName="classType" options={radioOptions} />
+              <Radio id="class-type-auto" field="classType" options={radioOptions} />
             </Field>
             <Field label="Comment">
-              <TextArea id="comment-auto" fieldName="comment" />
+              <TextArea id="comment-auto" field="comment" />
             </Field>
           </Form>
           <FormButton id="submit-btn-auto" formRef={formRef2}>
@@ -157,22 +157,22 @@ export const FormPage = () => {
             onValidate={handleValidate3}
           >
             <Field label="First Name">
-              <InputText id="first-name-validate-submit" fieldName="firstName" />
+              <InputText id="first-name-validate-submit" field="firstName" />
             </Field>
             <Field label="Email">
-              <InputEmail id="email-validate-submit" fieldName="email" />
+              <InputEmail id="email-validate-submit" field="email" />
             </Field>
             <Field label="Password">
-              <InputPassword id="password-validate-submit" fieldName="password" />
+              <InputPassword id="password-validate-submit" field="password" />
             </Field>
             <Field label="Class">
-              <Select id="class-validate-submit" fieldName="class" options={selectOptions} />
+              <Select id="class-validate-submit" field="class" options={selectOptions} />
             </Field>
             <Field label="Class Type">
-              <Radio id="class-type-validate-submit" fieldName="classType" options={radioOptions} />
+              <Radio id="class-type-validate-submit" field="classType" options={radioOptions} />
             </Field>
             <Field label="Comment">
-              <TextArea id="comment-validate-submit" fieldName="comment" />
+              <TextArea id="comment-validate-submit" field="comment" />
             </Field>
           </Form>
           <FormButton id="submit-btn-validate-submit" formRef={formRef3}>
@@ -182,12 +182,12 @@ export const FormPage = () => {
         <div id="control-basic">
           <Form formRef={setFormRef4} onSubmit={handleSubmit} onValidate={handleValidate4}>
             <Form.Control
-              fieldName={FIELD.FIRST_NAME}
-              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+              field={FIELD.FIRST_NAME}
+              render={({ field, ref, error, value, onChange, onBlur }) => (
                 <div>
                   <label>First Name</label>
                   <input
-                    id={fieldName}
+                    id={field}
                     type="text"
                     value={value}
                     ref={ref}
@@ -199,12 +199,12 @@ export const FormPage = () => {
               )}
             />
             <Form.Control
-              fieldName={FIELD.EMAIL}
-              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+              field={FIELD.EMAIL}
+              render={({ field, ref, error, value, onChange, onBlur }) => (
                 <div>
                   <label>Email</label>
                   <input
-                    id={fieldName}
+                    id={field}
                     type="email"
                     value={value}
                     ref={ref}
@@ -216,12 +216,12 @@ export const FormPage = () => {
               )}
             />
             <Form.Control
-              fieldName={FIELD.PASSWORD}
-              render={({ fieldName, ref, error, value, onChange, onBlur }) => (
+              field={FIELD.PASSWORD}
+              render={({ field, ref, error, value, onChange, onBlur }) => (
                 <div>
                   <label>Email</label>
                   <input
-                    id={fieldName}
+                    id={field}
                     type="password"
                     value={value}
                     ref={ref}

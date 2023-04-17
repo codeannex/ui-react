@@ -8,7 +8,7 @@ const NAME_FOO = "foo";
 const NAME_BAR = "bar";
 
 const defaultProps = {
-  fieldName: "firstName",
+  field: "firstName",
 };
 
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {

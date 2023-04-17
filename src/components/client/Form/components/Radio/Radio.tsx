@@ -28,7 +28,7 @@ export type RadioProps = {
   /**
    * Required prop used to track form field state.
    */
-  fieldName: string;
+  field: string;
 
   /**
    * Sets the id attribute.
@@ -41,7 +41,7 @@ export type RadioProps = {
   options: RadioOption[];
 };
 
-export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, id, options }) => {
+export const Radio: React.FC<RadioProps> = ({ classes, classesError, field, id, options }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
@@ -50,8 +50,8 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
+  const value = values[field] as string;
+  const error = errors[field] && touched[field];
 
   const _classes = classNames(classes && classes);
   const _classesError = classNames(classesError && classesError);
@@ -65,17 +65,17 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -83,11 +83,11 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef?.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
@@ -117,9 +117,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
           </Element>
         );
       })}
-      {error && (
-        <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
-      )}
+      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
     </Element>
   );
 };
@@ -127,6 +125,6 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, fieldName, 
 Radio.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
 };
