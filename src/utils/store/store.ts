@@ -1,3 +1,4 @@
+import { isString } from "@utils/index";
 import { ERROR, METHOD, METHOD_PARAM, PARAM_TYPE, STORE_CONSTANT } from "@utils/store/constants";
 
 /**
@@ -214,7 +215,7 @@ export class Store<T> {
       throw new Error(`${METHOD.MAP_GET} ${ERROR.REQUIRES_PARAMS} ${METHOD_PARAM.HAS_PARAM}`);
     }
 
-    if (typeof name !== PARAM_TYPE.STRING) {
+    if (!isString(name)) {
       throw new Error(
         `${METHOD.MAP_GET} ${ERROR.INVALID_PARAM_TYPE} ${METHOD_PARAM.HAS_PARAM} ${PARAM_TYPE.REQUIRED_STRING}`
       );

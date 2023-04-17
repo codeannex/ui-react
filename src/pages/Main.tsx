@@ -73,24 +73,24 @@ export const MainPage = () => {
           <Field label="First Name">
             <InputText fieldName="firstName" placeholder="poop" />
           </Field>
-          <Field label="Last Name">
+          {/* <Field label="Last Name">
             <InputText fieldName="lastName" />
-          </Field>
-          <Field label="Email">
+          </Field> */}
+          {/* <Field label="Email">
             <InputEmail fieldName="email" />
-          </Field>
-          <Field label="Password">
+          </Field> */}
+          {/* <Field label="Password">
             <InputPassword fieldName="password" />
-          </Field>
-          <Field label="Class">
+          </Field> */}
+          {/* <Field label="Class">
             <Select fieldName="class" options={selectOptions} />
-          </Field>
-          <Field label="Class Type">
+          </Field> */}
+          {/* <Field label="Class Type">
             <Radio fieldName="classType" options={radioOptions} />
-          </Field>
-          <Field label="Comment">
+          </Field> */}
+          {/* <Field label="Comment">
             <TextArea fieldName="comment" />
-          </Field>
+          </Field> */}
           {/* <Form.Control
             fieldName={FIELD.FIRST_NAME}
             render={({ ref, error, value, onChange, onBlur }) => (

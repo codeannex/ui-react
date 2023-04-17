@@ -22,7 +22,9 @@ const renderComponent = (overrideDefaultProps?: LabelProps): JSX.Element => {
 describe("Component - Form: Label", () => {
   describe("should render", () => {
     it("without crashing", () => {
-      render(renderComponent());
+      const { container } = render(renderComponent());
+
+      expect(container).toBeDefined();
     });
 
     it("with `label` element", () => {

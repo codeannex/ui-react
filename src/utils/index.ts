@@ -1,6 +1,6 @@
 export * from "./store/store";
 export * from "./cloneObject";
-export * from "./deepEqaul";
+export * from "./isEqual";
 export * from "./deleteUndefinedProps";
 export * from "./getGuid";
 export * from "./isBrowser";
@@ -11,3 +11,4 @@ export * from "./isNullOrUndefined";
 export * from "./isObject";
 export * from "./isPlainObject";
 export * from "./isPrimitive";
+export * from "./isString";
