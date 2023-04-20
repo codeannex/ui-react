@@ -81,7 +81,7 @@ export const Select: React.FC<SelectProps> = ({ classes, disabled, field, id, op
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([field], {
+    fieldRef?.safeSet(field, {
       [field]: {
         _field: {
           ref: ref?.current,

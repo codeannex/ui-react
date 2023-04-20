@@ -117,7 +117,7 @@ export const Input: React.FC<InputProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([field], {
+    fieldRef?.safeSet(field, {
       [field]: {
         _field: {
           ref: ref?.current,

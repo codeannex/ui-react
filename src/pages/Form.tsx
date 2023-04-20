@@ -6,6 +6,7 @@ import { FormButton } from "@components/client/Form/components/FormButton/FormBu
 import { InputEmail } from "@components/client/Form/components/Input/InputEmail/InputEmail";
 import { InputPassword } from "@components/client/Form/components/Input/InputPassword/InputPassword";
 import { InputText } from "@components/client/Form/components/Input/InputText/InputText";
+import { Label } from "@components/client/Form/components/Label/Label";
 import { Radio } from "@components/client/Form/components/Radio/Radio";
 import { Select } from "@components/client/Form/components/Select/Select/Select";
 import { TextArea } from "@components/client/Form/components/TextArea/TextArea";
@@ -93,30 +94,51 @@ export const FormPage = () => {
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="basic">
           <Form formRef={setFormRef1} onSubmit={handleSubmit} onValidate={handleValidate1}>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="firstName" htmlFor="first-name-basic" label="First Name" />
+              </Element>
               <InputText id="first-name-basic" field="firstName" />
               <Error field="firstName" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="lastName" htmlFor="last-name-basic" label="Last Name" />
+              </Element>
               <InputText id="last-name-basic" field="lastName" />
               <Error field="lastName" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="email" htmlFor="email-basic" label="Email" />
+              </Element>
               <InputEmail id="email-basic" field="email" />
               <Error field="email" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="password" htmlFor="password-basic" label="Password" />
+              </Element>
               <InputPassword id="password-basic" field="password" />
               <Error field="password" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="class" htmlFor="lass-basic" label="Class" />
+              </Element>
               <Select id="class-basic" field="class" options={selectOptions} />
               <Error field="class" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="classType" htmlFor="class-type-basic" label="Class Type" />
+              </Element>
               <Radio id="class-type-basic" field="classType" options={radioOptions} />
               <Error field="classType" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="comment" htmlFor="comment-basic" label="Comment" />
+              </Element>
               <TextArea id="comment-basic" field="comment" />
               <Error field="comment" as="span" />
             </Element>
@@ -133,30 +155,51 @@ export const FormPage = () => {
             onValidate={handleValidate2}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="firstName" htmlFor="first-name-auto" label="First Name" />
+              </Element>
               <InputText id="first-name-auto" field="firstName" />
               <Error field="firstName" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="lastName" htmlFor="last-name-auto" label="Last Name" />
+              </Element>
               <InputText id="last-name-auto" field="lastName" />
               <Error field="lastName" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="email" htmlFor="email-auto" label="Email" />
+              </Element>
               <InputEmail id="email-auto" field="email" />
               <Error field="email" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="password" htmlFor="password-auto" label="Password" />
+              </Element>
               <InputPassword id="password-auto" field="password" />
               <Error field="password" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="class" htmlFor="class-auto" label="Class" />
+              </Element>
               <Select id="class-auto" field="class" options={selectOptions} />
               <Error field="class" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="classType" htmlFor="class-type-auto" label="Class Type" />
+              </Element>
               <Radio id="class-type-auto" field="classType" options={radioOptions} />
               <Error field="classType" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="comment" htmlFor="comment-auto" label="Comment" />
+              </Element>
               <TextArea id="comment-auto" field="comment" />
               <Error field="comment" as="span" />
             </Element>
@@ -173,26 +216,44 @@ export const FormPage = () => {
             onValidate={handleValidate3}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="firstName" htmlFor="first-name-validate-submit" label="First Name" />
+              </Element>
               <InputText id="first-name-validate-submit" field="firstName" />
               <Error field="firstName" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="email" htmlFor="email-validate-submit" label="Email" />
+              </Element>
               <InputEmail id="email-validate-submit" field="email" />
               <Error field="email" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="password" htmlFor="password-validate-submit" label="Password" />
+              </Element>
               <InputPassword id="password-validate-submit" field="password" />
               <Error field="password" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="class" htmlFor="class-validate-submit" label="Class" />
+              </Element>
               <Select id="class-validate-submit" field="class" options={selectOptions} />
               <Error field="class" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="classType" htmlFor="class-type-validate-submit" label="Class Type" />
+              </Element>
               <Radio id="class-type-validate-submit" field="classType" options={radioOptions} />
               <Error field="classType" as="span" />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                <Label field="comment" htmlFor="comment-validate-submit" label="Class Type" />
+              </Element>
               <TextArea id="comment-validate-submit" field="comment" />
               <Error field="comment" as="span" />
             </Element>

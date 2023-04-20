@@ -1,4 +1,4 @@
-<!--- https://www.ionos.com/digitalguide/websites/web-development/readme-file/ -->
+<!-- https://www.ionos.com/digitalguide/websites/web-development/readme-file/ -->
 <!-- https://readme.com -->
 
 # Codeannex UI React
@@ -8,8 +8,7 @@ A React UI library built with Typescript and accessibility in mind, fully tested
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Collaboration](#collaboration)
-3. [FAQs](#faqs)
+2. [Components](#components)
 
 ## Installation
 

@@ -75,7 +75,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, field, id, options }) => 
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([field], {
+    fieldRef?.safeSet(field, {
       [field]: {
         _field: {
           ref: ref?.current,
