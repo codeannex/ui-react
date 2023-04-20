@@ -6,6 +6,6 @@ import { Error } from "@components/client/Form/components/Error/Error";
 
 describe("Component - Form: Error", () => {
   it("renders without crashing", () => {
-    render(<Error />);
+    render(<Error field="foo" />);
   });
 });

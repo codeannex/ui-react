@@ -8,7 +8,6 @@
 /** Form: client component */
 export * from "./components/client/Form/Form";
 export * from "./components/client/Form/components/Error/Error";
-export * from "./components/client/Form/components/Field/Field";
 export * from "./components/client/Form/components/FormButton/FormButton";
 export * from "./components/client/Form/components/Input/Input/Input";
 export * from "./components/client/Form/components/Input/InputEmail/InputEmail";

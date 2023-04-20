@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -27,11 +26,6 @@ export type InputProps = {
   classes?: string | string[];
 
   /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
-
-  /**
    * Sets the defualt value on the form field.
    */
   defaultValue?: string;
@@ -44,12 +38,17 @@ export type InputProps = {
   /**
    * Required prop used to track form field state.
    */
-  fieldName: string;
+  field: string;
 
   /**
    * Sets the id attribute.
    */
   id?: string;
+
+  /**
+   * Sets the name attribute.
+   */
+  name?: string;
 
   /**
    * Sets the placeholder value on the form field.
@@ -60,14 +59,14 @@ export type InputProps = {
 export const Input: React.FC<InputProps> = ({
   asType = "text",
   classes,
-  classesError,
   defaultValue,
   disabled,
-  fieldName,
+  field,
   id,
+  name,
   placeholder,
 }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -75,11 +74,9 @@ export const Input: React.FC<InputProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -90,17 +87,17 @@ export const Input: React.FC<InputProps> = ({
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -112,7 +109,7 @@ export const Input: React.FC<InputProps> = ({
       displatch({
         type: STATE_ACTION_TYPE.UPDATE_VALUE,
         payload: {
-          [fieldName]: defaultValue,
+          [field]: defaultValue,
         },
       });
     }
@@ -120,44 +117,40 @@ export const Input: React.FC<InputProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef?.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.INPUT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        placeholder={placeholder}
-        ref={ref}
-        type={asType}
-        value={value || ""}
-        /** Handlers **/
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      {error && (
-        <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
-      )}
-    </Element>
+    <Element
+      as={ELEMENT_OPTION_TYPE.INPUT}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      name={name || undefined}
+      placeholder={placeholder}
+      ref={ref}
+      required={_required}
+      type={asType}
+      value={_value || ""}
+      /** Handlers **/
+      onBlur={handleBlur}
+      onChange={handleChange}
+    />
   );
 };
 
 Input.propTypes = {
   asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
 };

@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   Option,
   useFormStateActionContext,
   useFormStateContext,
@@ -22,11 +21,6 @@ type SelectProps = {
   classes?: string | string[];
 
   /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
-
-  /**
    * Disables the form field.
    */
   disabled?: boolean;
@@ -34,7 +28,7 @@ type SelectProps = {
   /**
    * Required prop used to track form field state.
    */
-  fieldName: string;
+  field: string;
 
   /**
    * Sets the id attribute.
@@ -47,15 +41,8 @@ type SelectProps = {
   options: SelectOption[];
 };
 
-export const Select: React.FC<SelectProps> = ({
-  classes,
-  classesError,
-  disabled,
-  fieldName,
-  id,
-  options,
-}) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+export const Select: React.FC<SelectProps> = ({ classes, disabled, field, id, options }) => {
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -63,11 +50,9 @@ export const Select: React.FC<SelectProps> = ({
 
   const ref = React.useRef<HTMLSelectElement>(null);
 
-  const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -78,17 +63,17 @@ export const Select: React.FC<SelectProps> = ({
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -96,44 +81,39 @@ export const Select: React.FC<SelectProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef?.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.SELECT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        ref={ref}
-        value={value || ""}
-        /** Handlers */
-        onBlur={handleBlur}
-        onChange={handleChange}
-      >
-        {options?.map((option: SelectOption) => {
-          return <Option option={option} key={option?.id} />;
-        })}
-      </Element>
-      {error && (
-        <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
-      )}
+    <Element
+      as={ELEMENT_OPTION_TYPE.SELECT}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      ref={ref}
+      required={_required}
+      value={_value || ""}
+      /** Handlers */
+      onBlur={handleBlur}
+      onChange={handleChange}
+    >
+      {options?.map((option: SelectOption) => {
+        return <Option option={option} key={option?.id} />;
+      })}
     </Element>
   );
 };
 
 Select.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
 };

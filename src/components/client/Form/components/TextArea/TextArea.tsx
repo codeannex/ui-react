@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -21,11 +20,6 @@ type TextAreaProps = {
   classes?: string | string[];
 
   /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
-
-  /**
    * Sets the defualt value on the form field.
    */
   defaultValue?: string;
@@ -38,7 +32,7 @@ type TextAreaProps = {
   /**
    * Required prop used to track form field state.
    */
-  fieldName: string;
+  field: string;
 
   /**
    * Sets the id attribute.
@@ -53,14 +47,13 @@ type TextAreaProps = {
 
 export const TextArea: React.FC<TextAreaProps> = ({
   classes,
-  classesError,
   defaultValue,
   disabled,
-  fieldName,
+  field,
   id,
   placeholder,
 }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -68,11 +61,9 @@ export const TextArea: React.FC<TextAreaProps> = ({
 
   const ref = React.useRef<HTMLTextAreaElement>(null);
 
-  const value = values[fieldName] as string;
-  const error = errors[fieldName] && touched[fieldName];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -83,17 +74,17 @@ export const TextArea: React.FC<TextAreaProps> = ({
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -105,7 +96,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
       displatch({
         type: STATE_ACTION_TYPE.UPDATE_VALUE,
         payload: {
-          [fieldName]: defaultValue,
+          [field]: defaultValue,
         },
       });
     }
@@ -113,42 +104,37 @@ export const TextArea: React.FC<TextAreaProps> = ({
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.TEXT_AREA}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        placeholder={placeholder}
-        ref={ref}
-        value={value || ""}
-        /** Handlers **/
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      {error && (
-        <Error message={errors[fieldName] as string} classes={_classesError || undefined} />
-      )}
-    </Element>
+    <Element
+      as={ELEMENT_OPTION_TYPE.TEXT_AREA}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      placeholder={placeholder}
+      ref={ref}
+      required={_required}
+      value={_value || ""}
+      /** Handlers **/
+      onBlur={handleBlur}
+      onChange={handleChange}
+    />
   );
 };
 
 TextArea.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
 };

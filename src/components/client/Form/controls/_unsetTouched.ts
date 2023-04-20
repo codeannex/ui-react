@@ -4,9 +4,9 @@ import { ERROR } from "@constants/error";
 
 import { _UnsetTouched } from "../types";
 
-export const _unsetTouched = ({ fieldName, value, dispatch }: _UnsetTouched) => {
-  if (!fieldName) {
-    throw new Error(`${ERROR.MISSING_PARAM} fieldName`);
+export const _unsetTouched = ({ field, value, dispatch }: _UnsetTouched) => {
+  if (!field) {
+    throw new Error(`${ERROR.MISSING_PARAM} field`);
   }
 
   if (!value) {
@@ -20,7 +20,7 @@ export const _unsetTouched = ({ fieldName, value, dispatch }: _UnsetTouched) => 
   dispatch({
     type: STATE_ACTION_TYPE.UNSET_TOUCHED,
     payload: {
-      [fieldName]: value,
+      [field]: value,
     },
   });
 };

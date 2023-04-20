@@ -4,9 +4,9 @@ import { ERROR } from "@constants/error";
 
 import { _SetError } from "../types";
 
-export const _setError = ({ fieldName, value, dispatch }: _SetError) => {
-  if (!fieldName) {
-    throw new Error(`_setError ${ERROR.MISSING_PARAM} fieldName`);
+export const _setError = ({ field, value, dispatch }: _SetError) => {
+  if (!field) {
+    throw new Error(`_setError ${ERROR.MISSING_PARAM} field`);
   }
 
   if (!value) {
@@ -20,7 +20,7 @@ export const _setError = ({ fieldName, value, dispatch }: _SetError) => {
   dispatch({
     type: STATE_ACTION_TYPE.SET_ERROR,
     payload: {
-      [fieldName]: value,
+      [field]: value,
     },
   });
 };

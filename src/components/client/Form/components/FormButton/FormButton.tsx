@@ -42,6 +42,7 @@ export const FormButton: React.FC<FormButtonProps> = ({ children, classes, formR
       as={ELEMENT_OPTION_TYPE.BUTTON}
       classes={_classes || undefined}
       id={id || undefined}
+      type="submit"
       onClick={handleSubmit}
     >
       {children}

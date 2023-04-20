@@ -10,34 +10,34 @@ describe("Component - Form - controls _getValue", () => {
   };
 
   test("should return `value` from existing target", () => {
-    const fieldName = "email";
+    const field = "email";
     const result = "foo@bar.com";
 
-    expect(_getValue({ values, fieldName })).toBe(result);
+    expect(_getValue({ values, field })).toBe(result);
   });
 
   test("should return `undefined` from non-existing target", () => {
-    const fieldName = "missing";
+    const field = "missing";
 
-    expect(_getValue({ values, fieldName })).toBe(undefined);
+    expect(_getValue({ values, field })).toBe(undefined);
   });
 
   describe("should return error", () => {
     test("if missing `values` param", () => {
-      const fieldName = "email";
+      const field = "email";
 
       expect.assertions(2);
 
       try {
         // @ts-ignore
-        _getValue({ fieldName });
+        _getValue({ field });
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(error).toHaveProperty("message", `_getValue ${ERROR.MISSING_PARAM} values`);
       }
     });
 
-    test("if missing `fieldName` param", () => {
+    test("if missing `field` param", () => {
       expect.assertions(2);
 
       try {
@@ -45,7 +45,7 @@ describe("Component - Form - controls _getValue", () => {
         _getValue({ values });
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error).toHaveProperty("message", `_getValue ${ERROR.MISSING_PARAM} fieldName`);
+        expect(error).toHaveProperty("message", `_getValue ${ERROR.MISSING_PARAM} field`);
       }
     });
   });

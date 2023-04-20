@@ -2,9 +2,9 @@ import { ERROR } from "@constants/error";
 
 import { STATE_ACTION_TYPE, _UpdateValue } from "../types";
 
-export const _updateValue = ({ fieldName, value, dispatch }: _UpdateValue) => {
-  if (!fieldName) {
-    throw new Error(`${ERROR.MISSING_PARAM} fieldName`);
+export const _updateValue = ({ field, value, dispatch }: _UpdateValue) => {
+  if (!field) {
+    throw new Error(`${ERROR.MISSING_PARAM} field`);
   }
 
   if (!value) {
@@ -18,7 +18,7 @@ export const _updateValue = ({ fieldName, value, dispatch }: _UpdateValue) => {
   dispatch({
     type: STATE_ACTION_TYPE.UPDATE_VALUE,
     payload: {
-      [fieldName]: value,
+      [field]: value,
     },
   });
 };

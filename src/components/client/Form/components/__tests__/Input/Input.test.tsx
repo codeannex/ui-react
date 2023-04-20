@@ -8,7 +8,7 @@ const NAME_FOO = "foo";
 const NAME_BAR = "bar";
 
 const defaultProps = {
-  fieldName: "firstName",
+  field: "firstName",
 };
 
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
@@ -45,6 +45,15 @@ describe("Component - Form: Input", () => {
 
       expect(input).toBeInTheDocument();
       expect(input).toHaveAttribute("type", "email");
+    });
+
+    it("with `name` attribute added to input", () => {
+      const { container } = render(renderComponent({ name: NAME_FOO }));
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", NAME_FOO);
     });
 
     it("with class name/names attribute added to `input` from (string)", () => {

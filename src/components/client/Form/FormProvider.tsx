@@ -22,6 +22,7 @@ export const FormProvider: React.FC<Props> = ({ children, staticProps }) => {
     errors: {},
     touched: {},
     values: {},
+    validators: {},
   });
 
   const memoizedFormState = React.useMemo(() => {

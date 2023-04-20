@@ -10,7 +10,7 @@ import {
 } from "@components/client/Form/index";
 
 export type RenderArgs = {
-  fieldName: string;
+  field: string;
   error: string;
   value: string;
   ref: any;
@@ -20,11 +20,11 @@ export type RenderArgs = {
 };
 
 export interface ControlProps {
-  fieldName: string;
+  field: string;
   render: ({ error, value, ref, onBlur, onChange }: RenderArgs) => any;
 }
 
-export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
+export const Control: React.FC<ControlProps> = ({ field, render }) => {
   const { errors = {}, values = {}, touched = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
@@ -33,8 +33,8 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
 
   const ref = React.useRef<any>(null);
 
-  const value = values[fieldName] || "";
-  const error = errors[fieldName] && touched[fieldName] ? (errors[fieldName] as string) : "";
+  const value = values[field] || "";
+  const error = errors[field] && touched[field] ? (errors[field] as string) : "";
 
   /**
    * Handlers
@@ -45,17 +45,17 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
     displatch({
       type: STATE_ACTION_TYPE.UPDATE_VALUE,
       payload: {
-        [fieldName]: value,
+        [field]: value,
       },
     });
   };
 
   const handleBlur = () => {
-    if (!touched[fieldName]) {
+    if (!touched[field]) {
       displatch({
         type: STATE_ACTION_TYPE.SET_TOUCHED,
         payload: {
-          [fieldName]: true,
+          [field]: true,
         },
       });
     }
@@ -63,22 +63,22 @@ export const Control: React.FC<ControlProps> = ({ fieldName, render }) => {
 
   /** Init field ref **/
   React.useEffect(() => {
-    fieldRef?.safeSet([fieldName], {
-      [fieldName]: {
+    fieldRef?.safeSet([field], {
+      [field]: {
         _field: {
           ref: ref?.current,
-          name: fieldName,
+          name: field,
         },
       },
     });
   }, []);
 
-  return render({ fieldName, ref, error, value, onBlur: handleBlur, onChange: handleChange });
+  return render({ field, ref, error, value, onBlur: handleBlur, onChange: handleChange });
 };
 
 export default Control;
 
 Control.propTypes = {
   render: PropTypes.func.isRequired,
-  fieldName: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
 };
