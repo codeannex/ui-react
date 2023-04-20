@@ -1,15 +1,18 @@
 import React from "react";
 
 import { Form } from "@components/client/Form/Form";
-import { Field } from "@components/client/Form/components/Field/Field";
+import { Error } from "@components/client/Form/components/Error/Error";
 import { FormButton } from "@components/client/Form/components/FormButton/FormButton";
 import { InputEmail } from "@components/client/Form/components/Input/InputEmail/InputEmail";
 import { InputPassword } from "@components/client/Form/components/Input/InputPassword/InputPassword";
 import { InputText } from "@components/client/Form/components/Input/InputText/InputText";
+import { Label } from "@components/client/Form/components/Label/Label";
 import { Radio } from "@components/client/Form/components/Radio/Radio";
 import { Select } from "@components/client/Form/components/Select/Select/Select";
 import { TextArea } from "@components/client/Form/components/TextArea/TextArea";
 import { FormRef, Values } from "@components/client/Form/types";
+
+import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
 const selectOptions = [
   { id: "a", value: "", label: "--Please choose an option--" },
@@ -39,9 +42,9 @@ export const MainPage = () => {
   const handleSubmit = () => {};
 
   const handleValidate = (values: Values) => {
-    console.log("handleValidate ========");
-    console.log(values);
-    console.log("handleValidate ========");
+    // console.log("handleValidate ========");
+    // console.log(values);
+    // console.log("handleValidate ========");
     return {
       firstName: values.firstName ? undefined : "Required",
       lastName: values.lastName ? undefined : "Required",
@@ -70,27 +73,56 @@ export const MainPage = () => {
           onSubmit={handleSubmit}
           onValidate={handleValidate}
         >
-          <Field label="First Name">
-            <InputText field="firstName" placeholder="poop" />
-          </Field>
-          {/* <Field label="Last Name">
-            <InputText field="lastName" />
-          </Field> */}
-          {/* <Field label="Email">
-            <InputEmail field="email" />
-          </Field> */}
-          {/* <Field label="Password">
-            <InputPassword field="password" />
-          </Field> */}
-          {/* <Field label="Class">
-            <Select field="class" options={selectOptions} />
-          </Field> */}
-          {/* <Field label="Class Type">
-            <Radio field="classType" options={radioOptions} />
-          </Field> */}
-          {/* <Field label="Comment">
-            <TextArea field="comment" />
-          </Field> */}
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="firstName" htmlFor="first-name" label="First Name" />
+            </Element>
+            <InputText field="firstName" id="first-name" />
+            <Error field="firstName" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="lastName" htmlFor="last-name" label="Last Name" />
+            </Element>
+            <InputText field="lastName" id="last-name" />
+            <Error field="lastName" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="email" htmlFor="email" label="Email" />
+            </Element>
+            <InputEmail field="email" id="email" />
+            <Error field="email" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="password" htmlFor="password" label="Password" />
+            </Element>
+            <InputPassword field="password" id="password" />
+            <Error field="password" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="class" htmlFor="class" label="Class" />
+            </Element>
+            <Select field="class" options={selectOptions} id="class" />
+            <Error field="class" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="classType" htmlFor="classType" label="Class Type" />
+            </Element>
+            <Radio field="classType" options={radioOptions} id="classType" />
+            <Error field="classType" as="div" />
+          </Element>
+          <Element as={ELEMENT_OPTION_TYPE.DIV}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
+              <Label field="comment" htmlFor="comment" label="Comment" />
+            </Element>
+            <TextArea field="comment" id="comment" />
+            <Error field="comment" as="div" />
+          </Element>
+
           {/* <Form.Control
             field={FIELD.FIRST_NAME}
             render={({ ref, error, value, onChange, onBlur }) => (

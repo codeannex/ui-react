@@ -403,6 +403,11 @@ const _Form: React.FC<FormProps> = ({
         type: STATE_ACTION_TYPE.SET_ERRORS,
         payload: errors,
       });
+
+      displatch({
+        type: STATE_ACTION_TYPE.SET_VALIDATORS,
+        payload: validators,
+      });
     }
 
     return () => {};

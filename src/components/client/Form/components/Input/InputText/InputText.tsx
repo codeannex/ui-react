@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -19,11 +18,6 @@ export type InputTextProps = {
    * Sets CSS class/classes on the component for styling.
    */
   classes?: string | string[];
-
-  /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
 
   /**
    * Sets the defualt value on the form field.
@@ -46,6 +40,11 @@ export type InputTextProps = {
   id?: string;
 
   /**
+   * Sets the name attribute.
+   */
+  name?: string;
+
+  /**
    * Sets the placeholder value on the form field.
    */
   placeholder?: string;
@@ -53,14 +52,14 @@ export type InputTextProps = {
 
 export const InputText: React.FC<InputTextProps> = ({
   classes,
-  classesError,
   defaultValue,
   disabled,
   field,
   id,
+  name,
   placeholder,
 }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -68,11 +67,9 @@ export const InputText: React.FC<InputTextProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const value = values[field] as string;
-  const error = errors[field] && touched[field];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -124,28 +121,26 @@ export const InputText: React.FC<InputTextProps> = ({
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.INPUT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        placeholder={placeholder}
-        ref={ref}
-        type={INPUT_TYPE.TEXT}
-        value={value || ""}
-        /** Handlers */
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
-    </Element>
+    <Element
+      as={ELEMENT_OPTION_TYPE.INPUT}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      name={name || undefined}
+      placeholder={placeholder}
+      ref={ref}
+      required={_required}
+      type={INPUT_TYPE.TEXT}
+      value={_value || ""}
+      /** Handlers */
+      onBlur={handleBlur}
+      onChange={handleChange}
+    />
   );
 };
 
 InputText.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   field: PropTypes.string.isRequired,

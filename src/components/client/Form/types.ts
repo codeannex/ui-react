@@ -100,6 +100,7 @@ export type State = {
   errors?: Errors;
   touched?: Touched;
   values?: Values;
+  validators?: Validators;
 };
 
 export type FormRef = {

@@ -5,7 +5,7 @@ export class Validator<Validators> extends Store<Validators> {
     super();
   }
 
-  getValidators() {
+  public getValidators() {
     let validators = {};
 
     this.data.forEach((validator: any) => {

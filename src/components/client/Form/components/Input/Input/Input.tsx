@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -27,11 +26,6 @@ export type InputProps = {
   classes?: string | string[];
 
   /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
-
-  /**
    * Sets the defualt value on the form field.
    */
   defaultValue?: string;
@@ -52,6 +46,11 @@ export type InputProps = {
   id?: string;
 
   /**
+   * Sets the name attribute.
+   */
+  name?: string;
+
+  /**
    * Sets the placeholder value on the form field.
    */
   placeholder?: string;
@@ -60,14 +59,14 @@ export type InputProps = {
 export const Input: React.FC<InputProps> = ({
   asType = "text",
   classes,
-  classesError,
   defaultValue,
   disabled,
   field,
   id,
+  name,
   placeholder,
 }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -75,11 +74,9 @@ export const Input: React.FC<InputProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const value = values[field] as string;
-  const error = errors[field] && touched[field];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -131,29 +128,27 @@ export const Input: React.FC<InputProps> = ({
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.INPUT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        placeholder={placeholder}
-        ref={ref}
-        type={asType}
-        value={value || ""}
-        /** Handlers **/
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
-    </Element>
+    <Element
+      as={ELEMENT_OPTION_TYPE.INPUT}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      name={name || undefined}
+      placeholder={placeholder}
+      ref={ref}
+      required={_required}
+      type={asType}
+      value={_value || ""}
+      /** Handlers **/
+      onBlur={handleBlur}
+      onChange={handleChange}
+    />
   );
 };
 
 Input.propTypes = {
   asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   field: PropTypes.string.isRequired,

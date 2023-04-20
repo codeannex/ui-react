@@ -47,6 +47,15 @@ describe("Component - Form: Input", () => {
       expect(input).toHaveAttribute("type", "email");
     });
 
+    it("with `name` attribute added to input", () => {
+      const { container } = render(renderComponent({ name: NAME_FOO }));
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", NAME_FOO);
+    });
+
     it("with class name/names attribute added to `input` from (string)", () => {
       const { container } = render(renderComponent({ classes: NAME_FOO }));
 

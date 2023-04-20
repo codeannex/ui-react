@@ -19,6 +19,7 @@ export const enum ELEMENT_OPTION_TYPE {
   INPUT = "input",
   LABEL = "label",
   OPTION = "option",
+  PARAGRAPH = "p",
   SELECT = "select",
   SPAN = "span",
   STRONG = "strong",
@@ -73,7 +74,7 @@ export const Element: ElementComponent = React.forwardRef(
     }: Props<C, ElementProps>,
     ref?: PolymorphicRef<C>
   ) => {
-    const Component = as || "div";
+    const Component = as || ELEMENT_OPTION_TYPE.DIV;
 
     const _classes = classNames(classes && classes);
     const _style = { ...internalStyles, ...style };

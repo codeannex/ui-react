@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   Option,
   useFormStateActionContext,
   useFormStateContext,
@@ -20,11 +19,6 @@ type SelectProps = {
    * Sets CSS class/classes on the component for styling.
    */
   classes?: string | string[];
-
-  /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
 
   /**
    * Disables the form field.
@@ -47,15 +41,8 @@ type SelectProps = {
   options: SelectOption[];
 };
 
-export const Select: React.FC<SelectProps> = ({
-  classes,
-  classesError,
-  disabled,
-  field,
-  id,
-  options,
-}) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+export const Select: React.FC<SelectProps> = ({ classes, disabled, field, id, options }) => {
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -63,11 +50,9 @@ export const Select: React.FC<SelectProps> = ({
 
   const ref = React.useRef<HTMLSelectElement>(null);
 
-  const value = values[field] as string;
-  const error = errors[field] && touched[field];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -107,30 +92,27 @@ export const Select: React.FC<SelectProps> = ({
   }, []);
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.DIV}>
-      <Element
-        as={ELEMENT_OPTION_TYPE.SELECT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        ref={ref}
-        value={value || ""}
-        /** Handlers */
-        onBlur={handleBlur}
-        onChange={handleChange}
-      >
-        {options?.map((option: SelectOption) => {
-          return <Option option={option} key={option?.id} />;
-        })}
-      </Element>
-      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
+    <Element
+      as={ELEMENT_OPTION_TYPE.SELECT}
+      classes={_classes || undefined}
+      disabled={disabled}
+      id={id || undefined}
+      ref={ref}
+      required={_required}
+      value={_value || ""}
+      /** Handlers */
+      onBlur={handleBlur}
+      onChange={handleChange}
+    >
+      {options?.map((option: SelectOption) => {
+        return <Option option={option} key={option?.id} />;
+      })}
     </Element>
   );
 };
 
 Select.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   disabled: PropTypes.bool,
   field: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,

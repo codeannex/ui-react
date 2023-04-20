@@ -4,7 +4,6 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
-  Error,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -19,11 +18,6 @@ export type RadioProps = {
    * Sets CSS class/classes on the component for styling.
    */
   classes?: string | string[];
-
-  /**
-   * Sets CSS class/classes on the `Error` component for styling.
-   */
-  classesError?: string | string[];
 
   /**
    * Required prop used to track form field state.
@@ -41,8 +35,8 @@ export type RadioProps = {
   options: RadioOption[];
 };
 
-export const Radio: React.FC<RadioProps> = ({ classes, classesError, field, id, options }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+export const Radio: React.FC<RadioProps> = ({ classes, field, id, options }) => {
+  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -50,11 +44,9 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, field, id, 
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const value = values[field] as string;
-  const error = errors[field] && touched[field];
-
   const _classes = classNames(classes && classes);
-  const _classesError = classNames(classesError && classesError);
+  const _required = !!validators[field];
+  const _value = values[field] as string;
 
   /**
    * Handlers
@@ -106,7 +98,7 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, field, id, 
           >
             <Element
               as={ELEMENT_OPTION_TYPE.INPUT}
-              checked={value === option?.value}
+              checked={_value === option?.value}
               name={option?.name}
               type={INPUT_TYPE.RADIO}
               value={option?.value}
@@ -117,14 +109,12 @@ export const Radio: React.FC<RadioProps> = ({ classes, classesError, field, id, 
           </Element>
         );
       })}
-      {error && <Error message={errors[field] as string} classes={_classesError || undefined} />}
     </Element>
   );
 };
 
 Radio.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  classesError: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   field: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
 };

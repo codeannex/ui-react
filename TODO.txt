@@ -48,7 +48,7 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. 
+1. changed fieldName to field throughout project.
 2. 
 3. 
 4. 
@@ -82,3 +82,8 @@ ISSUES:
 
 FIX:
 1. 
+
+LEFT OFF:
+1. Document how required functionality works by using `field' declaration for using declarative
+form fields. 
+2. 

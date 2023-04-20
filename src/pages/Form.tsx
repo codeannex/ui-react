@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Form } from "@components/client/Form/Form";
-import { Field } from "@components/client/Form/components/Field/Field";
+import { Error } from "@components/client/Form/components/Error/Error";
 import { FormButton } from "@components/client/Form/components/FormButton/FormButton";
 import { InputEmail } from "@components/client/Form/components/Input/InputEmail/InputEmail";
 import { InputPassword } from "@components/client/Form/components/Input/InputPassword/InputPassword";
@@ -10,6 +10,8 @@ import { Radio } from "@components/client/Form/components/Radio/Radio";
 import { Select } from "@components/client/Form/components/Select/Select/Select";
 import { TextArea } from "@components/client/Form/components/TextArea/TextArea";
 import { FormRef, Values } from "@components/client/Form/types";
+
+import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
 const selectOptions = [
   { id: "a", value: "", label: "--Please choose an option--" },
@@ -88,105 +90,126 @@ export const FormPage = () => {
   return (
     <div id="page" data-test-id="component-app">
       <main id="main">
-        <div id="basic">
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="basic">
           <Form formRef={setFormRef1} onSubmit={handleSubmit} onValidate={handleValidate1}>
-            <Field label="First Name">
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputText id="first-name-basic" field="firstName" />
-            </Field>
-            <Field label="Last Name">
+              <Error field="firstName" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputText id="last-name-basic" field="lastName" />
-            </Field>
-            <Field label="Email">
+              <Error field="lastName" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputEmail id="email-basic" field="email" />
-            </Field>
-            <Field label="Password">
+              <Error field="email" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputPassword id="password-basic" field="password" />
-            </Field>
-            <Field label="Class">
+              <Error field="password" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Select id="class-basic" field="class" options={selectOptions} />
-            </Field>
-            <Field label="Class Type">
+              <Error field="class" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Radio id="class-type-basic" field="classType" options={radioOptions} />
-            </Field>
-            <Field label="Comment">
+              <Error field="classType" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <TextArea id="comment-basic" field="comment" />
-            </Field>
+              <Error field="comment" as="span" />
+            </Element>
           </Form>
           <FormButton id="submit-btn-basic" formRef={formRef1}>
             Clicker
           </FormButton>
-        </div>
-        <div id="auto-focus">
+        </Element>
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="auto-focus">
           <Form
             autoFocus
             formRef={setFormRef2}
             onSubmit={handleSubmit}
             onValidate={handleValidate2}
           >
-            <Field label="First Name">
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputText id="first-name-auto" field="firstName" />
-            </Field>
-            <Field label="Last Name">
+              <Error field="firstName" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputText id="last-name-auto" field="lastName" />
-            </Field>
-            <Field label="Email">
+              <Error field="lastName" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputEmail id="email-auto" field="email" />
-            </Field>
-            <Field label="Password">
+              <Error field="email" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputPassword id="password-auto" field="password" />
-            </Field>
-            <Field label="Class">
+              <Error field="password" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Select id="class-auto" field="class" options={selectOptions} />
-            </Field>
-            <Field label="Class Type">
+              <Error field="class" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Radio id="class-type-auto" field="classType" options={radioOptions} />
-            </Field>
-            <Field label="Comment">
+              <Error field="classType" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <TextArea id="comment-auto" field="comment" />
-            </Field>
+              <Error field="comment" as="span" />
+            </Element>
           </Form>
           <FormButton id="submit-btn-auto" formRef={formRef2}>
             Clicker
           </FormButton>
-        </div>
-        <div id="validate-submit">
+        </Element>
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="validate-submit">
           <Form
             validateOnSubmitOnly
             formRef={setFormRef3}
             onSubmit={handleSubmit}
             onValidate={handleValidate3}
           >
-            <Field label="First Name">
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputText id="first-name-validate-submit" field="firstName" />
-            </Field>
-            <Field label="Email">
+              <Error field="firstName" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputEmail id="email-validate-submit" field="email" />
-            </Field>
-            <Field label="Password">
+              <Error field="email" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <InputPassword id="password-validate-submit" field="password" />
-            </Field>
-            <Field label="Class">
+              <Error field="password" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Select id="class-validate-submit" field="class" options={selectOptions} />
-            </Field>
-            <Field label="Class Type">
+              <Error field="class" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <Radio id="class-type-validate-submit" field="classType" options={radioOptions} />
-            </Field>
-            <Field label="Comment">
+              <Error field="classType" as="span" />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV}>
               <TextArea id="comment-validate-submit" field="comment" />
-            </Field>
+              <Error field="comment" as="span" />
+            </Element>
           </Form>
           <FormButton id="submit-btn-validate-submit" formRef={formRef3}>
             Clicker
           </FormButton>
-        </div>
-        <div id="control-basic">
+        </Element>
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-basic">
           <Form formRef={setFormRef4} onSubmit={handleSubmit} onValidate={handleValidate4}>
             <Form.Control
               field={FIELD.FIRST_NAME}
               render={({ field, ref, error, value, onChange, onBlur }) => (
-                <div>
-                  <label>First Name</label>
-                  <input
+                <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>First Name</Element>
+                  <Element
+                    as={ELEMENT_OPTION_TYPE.INPUT}
                     id={field}
                     type="text"
                     value={value}
@@ -194,16 +217,17 @@ export const FormPage = () => {
                     onChange={onChange}
                     onBlur={onBlur}
                   />
-                  {error && <p>{error}</p>}
-                </div>
+                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
+                </Element>
               )}
             />
             <Form.Control
               field={FIELD.EMAIL}
               render={({ field, ref, error, value, onChange, onBlur }) => (
-                <div>
-                  <label>Email</label>
-                  <input
+                <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>Email</Element>
+                  <Element
+                    as={ELEMENT_OPTION_TYPE.INPUT}
                     id={field}
                     type="email"
                     value={value}
@@ -211,16 +235,17 @@ export const FormPage = () => {
                     onChange={onChange}
                     onBlur={onBlur}
                   />
-                  {error && <p>{error}</p>}
-                </div>
+                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
+                </Element>
               )}
             />
             <Form.Control
               field={FIELD.PASSWORD}
               render={({ field, ref, error, value, onChange, onBlur }) => (
-                <div>
-                  <label>Email</label>
-                  <input
+                <Element as={ELEMENT_OPTION_TYPE.DIV}>
+                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>Password</Element>
+                  <Element
+                    as={ELEMENT_OPTION_TYPE.INPUT}
                     id={field}
                     type="password"
                     value={value}
@@ -228,15 +253,15 @@ export const FormPage = () => {
                     onChange={onChange}
                     onBlur={onBlur}
                   />
-                  {error && <p>{error}</p>}
-                </div>
+                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
+                </Element>
               )}
             />
           </Form>
           <FormButton id="control-submit-btn-validate-submit" formRef={formRef4}>
             Clicker
           </FormButton>
-        </div>
+        </Element>
       </main>
     </div>
   );
