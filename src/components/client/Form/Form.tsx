@@ -58,12 +58,6 @@ export interface FormProps extends FormPropComposition {
   classesError?: string | string[];
 
   /**
-   * Sets CSS class/classes on the ALL the `Field` components for
-   * styling.
-   */
-  classesField?: string | string[];
-
-  /**
    * Sets a reference externally containing form state and controls
    * giving the caller components access to make modifications to
    * state and respond to changes.
@@ -306,26 +300,9 @@ const _Form: React.FC<FormProps> = ({
          * the DOM setting focus.
          */
         if (autoFocus) {
-          /** Sorts field refs according to position in the DOM. **/
-          const refs = new Map(
-            [...Object.entries(fieldRefs)].sort((a, b) => {
-              // @ts-ignore
-              return a[1].current.compareDocumentPosition(b[1].current) &
-                Node.DOCUMENT_POSITION_FOLLOWING
-                ? -1
-                : 1;
-            })
-          );
+          const current = fieldRef.getFeildRefCurrent(Object.keys(updatedErrors));
 
-          /** Set focus on first error found **/
-          // @ts-ignore
-          for (const [key, value] of refs.entries()) {
-            if (updatedErrors[key]) {
-              value.current.focus();
-
-              break;
-            }
-          }
+          current.focus();
         }
       } else {
         /**
@@ -421,7 +398,6 @@ export const Form = Object.assign(
     const staticProps = React.useMemo((): StaticProps => {
       return {
         classesError: props?.classesError,
-        classesField: props?.classesField,
         fieldRef: new FieldRef<FieldRefState>(),
         validator: new Validator<Validators>(),
       };

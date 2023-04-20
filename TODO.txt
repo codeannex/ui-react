@@ -48,9 +48,9 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. changed fieldName to field throughout project.
-2. 
-3. 
+1. updates made to read me files.
+2. fixed bug setting incorrect form ref maps.
+3. fixed auto focus bug.
 4. 
 5. 
 
@@ -84,6 +84,5 @@ FIX:
 1. 
 
 LEFT OFF:
-1. Document how required functionality works by using `field' declaration for using declarative
-form fields. 
-2. 
+1. Test is passing for autoFocus while it does not works
+2. Need to write test to ensure functionality for require associations doesn't break

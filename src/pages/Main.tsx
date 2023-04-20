@@ -39,7 +39,11 @@ export const MainPage = () => {
     formRef?.controls.setError({ field: "firstName", value: "This was required" });
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (values: Values) => {
+    // console.log("handleSubmit ========");
+    // console.log(values);
+    // console.log("handleSubmit ========");
+  };
 
   const handleValidate = (values: Values) => {
     // console.log("handleValidate ========");
@@ -67,7 +71,7 @@ export const MainPage = () => {
     <div id="page" data-test-id="component-app">
       <main id="main">
         <Form
-          // validateOnSubmitOnly
+          validateOnSubmitOnly
           autoFocus
           formRef={setFormRef}
           onSubmit={handleSubmit}
