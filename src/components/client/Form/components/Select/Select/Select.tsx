@@ -14,7 +14,7 @@ import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
 import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
 
-type SelectProps = {
+export type SelectProps = {
   /**
    * Sets CSS class/classes on the component for styling.
    */

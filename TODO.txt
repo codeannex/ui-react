@@ -62,7 +62,7 @@ NOTE:
 2. 
 
 TODO: 
-1. complete the subscribe and unsubscibe code.
+1. developed unit tests for option component.
 2. 
 3. 
 
@@ -86,3 +86,7 @@ FIX:
 LEFT OFF:
 1. Test is passing for autoFocus while it does not works
 2. Need to write test to ensure functionality for require associations doesn't break
+
+
+MOCKING CONTEXT:
+https://thedatalife.com/testing-and-mocking-react-contextapi-with-jest-and-react-testing-library
