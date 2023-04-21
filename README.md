@@ -9,6 +9,7 @@ A React UI library built with Typescript and accessibility in mind, fully tested
 
 1. [Installation](#installation)
 2. [Components](#components)
+3. [Examples](#examples)
 
 ## Installation
 
@@ -27,3 +28,9 @@ $ import { Form } from "@codeannex/ui-react";
 Links to the available components.
 
 [Form](https://github.com/codeannex/ui-react/tree/main/src/components/client/Form/README.md)
+
+## Examples
+
+Component example useages.
+
+[Form](https://github.com/codeannex/ui-react/blob/main/src/components/client/Form/BASIC_FORM.md)

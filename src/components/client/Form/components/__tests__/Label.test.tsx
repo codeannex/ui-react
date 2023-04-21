@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 
 import { Label, LabelProps } from "@components/client/Form/components/Label/Label";
 
-jest.mock("../../../contexts/FormStateContext", () => {
+jest.mock("../../contexts/FormStateContext", () => {
   return {
     useFormStateContext: jest.fn().mockReturnValue({
       validators: { firstName: "Required" },
