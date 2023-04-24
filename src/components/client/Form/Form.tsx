@@ -3,8 +3,8 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 import {
-  Control,
   ControlProps,
+  EVENT,
   FieldRef,
   FieldRefState,
   FormProvider,
@@ -23,7 +23,9 @@ import { deepEqual, isFunction } from "@utils/index";
 
 import { useUpdateEffect } from "@hooks/index";
 
+import { Control } from "./components/Control/Control";
 import {
+  _clearForm,
   _getValue,
   _getValues,
   _setError,
@@ -36,7 +38,7 @@ import {
 import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Validators, Values } from "./types";
 
 export interface FormPropComposition {
-  Controller?: React.FC<ControlProps>;
+  Control?: React.FC<ControlProps>;
 }
 
 export interface FormProps extends FormPropComposition {
@@ -108,9 +110,10 @@ export interface FormProps extends FormPropComposition {
 
 /**
  * @Codeannex UI React: Form Component
+ *
  * A React form component. The form component and associated components follow
  * the principles found in Mozilla documentation which are linked below in the
- * tutorial tag.
+ * tutorial tag. The components are built by design to be fully accessible.
  *
  * @description
  * Currently the form component/components take on a declarative approach, however
@@ -162,6 +165,7 @@ const _Form: React.FC<FormProps> = ({
   const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
 
   const controls = useFormControls({
+    _clearForm,
     _getValue,
     _getValues,
     _setError,
@@ -172,7 +176,14 @@ const _Form: React.FC<FormProps> = ({
     _updateValue,
   });
 
-  const { preSubmit, submit, postSubmit, values = {}, errors = {} } = state;
+  const {
+    preSubmit,
+    submit,
+    postSubmit,
+    values = {},
+    errors = {},
+    formLoadComplete = false,
+  } = state;
 
   const [cachedPreSubmitId, setCachedPreSubmitId] = React.useState<any>("");
 
@@ -252,15 +263,15 @@ const _Form: React.FC<FormProps> = ({
   /**
    * @name Pre_Submit_Flow_Handler
    *
-   * Handles validation during pre-submit in union with
-   * Validator_Tracker<2>. The flow is triggerd by the user
-   * selecting the submit button. Aytime the submit button
-   * is selected the pre-submit id is updated causing this
-   * code to run. If errors are found the associated code
-   * will execute updating the errors and touched objects
-   * and allowing the optional auto focus code to run. If
-   * errors are not found the submit flag is set allowing
-   * the form to move into the next submit phase.
+   * Handles validation during pre-submit.The flow is
+   * triggerd by the user selecting the submit button.
+   * Aytime the submit button is selected the pre-submit
+   * id is updated causing this code to run. If errors are
+   * found the associated code will execute updating the
+   * errors and touched objects and allowing the optional
+   * auto focus code to run. If errors are not found the
+   * submit flag is set allowing the form to move into
+   * the next submit phase.
    */
   useUpdateEffect(() => {
     if (preSubmit && !submit && preSubmit !== cachedPreSubmitId) {
@@ -364,30 +375,64 @@ const _Form: React.FC<FormProps> = ({
    * cleanup.
    */
   React.useEffect(() => {
-    if (!validateOnSubmitOnly) {
-      const fieldRefs = fieldRef.getFieldRefs();
-      const validators = (onValidate && onValidate(values)) || {};
+    if (!formLoadComplete) {
+      displatch({
+        type: STATE_ACTION_TYPE.SET_FORM_LOAD_COMPLETE,
+        payload: null,
+      });
 
-      const { errors } = sanitizeErrors(validators, fieldRefs);
+      if (!validateOnSubmitOnly) {
+        const fieldRefs = fieldRef.getFieldRefs();
+        const validators = (onValidate && onValidate(values)) || {};
 
-      validator.mapSet(({ setter }: any) => {
-        Object.entries(validators).map((validator) => {
-          setter(validator[0], { [validator[0]]: validator[1] });
+        const { errors } = sanitizeErrors(validators, fieldRefs);
+
+        validator.mapSet(({ setter }: any) => {
+          Object.entries(validators).map((validator) => {
+            setter(validator[0], { [validator[0]]: validator[1] });
+          });
         });
-      });
 
-      displatch({
-        type: STATE_ACTION_TYPE.SET_ERRORS,
-        payload: errors,
-      });
+        displatch({
+          type: STATE_ACTION_TYPE.SET_ERRORS,
+          payload: errors,
+        });
 
-      displatch({
-        type: STATE_ACTION_TYPE.SET_VALIDATORS,
-        payload: validators,
-      });
+        displatch({
+          type: STATE_ACTION_TYPE.SET_VALIDATORS,
+          payload: validators,
+        });
+      }
+
+      if (validateOnSubmitOnly) {
+        const validators = (onValidate && onValidate(values)) || {};
+
+        validator.mapSet(({ setter }: any) => {
+          Object.entries(validators).map((validator) => {
+            setter(validator[0], { [validator[0]]: validator[1] });
+          });
+        });
+
+        displatch({
+          type: STATE_ACTION_TYPE.SET_VALIDATORS,
+          payload: validators,
+        });
+      }
     }
+  }, [formLoadComplete]);
 
-    return () => {};
+  /**
+   * Mount/Un-mount
+   */
+  React.useEffect(() => {
+    fieldRef.subscribe(EVENT.CLEAR, () => {
+      setCachedPreSubmitId("");
+    });
+
+    return () => {
+      fieldRef.unsubscribe(EVENT.CLEAR, null);
+      fieldRef.clear();
+    };
   }, []);
 
   return <form>{children}</form>;

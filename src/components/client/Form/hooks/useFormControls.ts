@@ -1,6 +1,11 @@
 import * as React from "react";
 
-import { useFormStateActionContext, useFormStateContext } from "@components/client/Form/index";
+import {
+  EVENT,
+  useFormStateActionContext,
+  useFormStateContext,
+  useStaticPropsContext,
+} from "@components/client/Form/index";
 
 import {
   Controls,
@@ -14,6 +19,7 @@ import {
 } from "../types";
 
 export const useFormControls = ({
+  _clearForm,
   _getValue,
   _getValues,
   _setTouched,
@@ -26,7 +32,16 @@ export const useFormControls = ({
   const controls = React.useRef<any>();
 
   const { values = {} } = useFormStateContext();
+
+  const { fieldRef } = useStaticPropsContext();
+
   const dispatch = useFormStateActionContext();
+
+  const clearForm = () => {
+    _clearForm({ dispatch });
+
+    fieldRef.publish(EVENT.CLEAR, null);
+  };
 
   const getValue = React.useCallback(
     (field: GetValue) => {
@@ -64,6 +79,7 @@ export const useFormControls = ({
   };
 
   controls.current = {
+    clearForm,
     getValue,
     getValues,
     setError,

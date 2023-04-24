@@ -19,7 +19,7 @@ interface CommonProps {
    * validator exists for the associated form field, Label
    * component will add the required indicator.
    */
-  field?: string;
+  field: string;
 
   /**
    * Sets the `label` `for` attribute.
@@ -27,9 +27,14 @@ interface CommonProps {
   htmlFor?: string;
 
   /**
+   * Sets the id attribute.
+   */
+  id?: string;
+
+  /**
    * Sets the displayed text.
    */
-  label: string;
+  label: string | undefined;
 }
 
 type ConditionalProps =
@@ -60,6 +65,7 @@ export const Label: React.FC<LabelProps> = ({
   classes,
   field,
   htmlFor,
+  id,
   label,
   optional,
   required,
@@ -67,13 +73,20 @@ export const Label: React.FC<LabelProps> = ({
   const { validators = {} } = useFormStateContext();
 
   const _classes = classNames(classes && classes);
+  const _for = htmlFor || undefined;
+  const _id = id || undefined;
   const _required = !!validators[field as string] || required;
 
   return (
-    <Element as={ELEMENT_OPTION_TYPE.LABEL} classes={_classes || undefined} htmlFor={htmlFor}>
+    <Element as={ELEMENT_OPTION_TYPE.LABEL} classes={_classes || undefined} htmlFor={_for} id={_id}>
       {label}
       {_required && (
-        <Element as={ELEMENT_OPTION_TYPE.SPAN} aria-label="required">
+        <Element
+          as={ELEMENT_OPTION_TYPE.SPAN}
+          aria-hidden="true"
+          aria-required="true"
+          aria-label="required"
+        >
           {"*"}
         </Element>
       )}
@@ -90,7 +103,9 @@ export default Label;
 
 Label.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  field: PropTypes.string.isRequired,
   htmlFor: PropTypes.string,
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   required: PropTypes.bool,
 };

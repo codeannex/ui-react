@@ -1,8 +1,10 @@
+import { ERROR } from "@constants/error";
+
 import { isPlainObject } from "./isPlainObject";
 
 export const deleteUndefinedProps = (obj: any) => {
   if (!isPlainObject(obj)) {
-    throw new Error("Not a plain object");
+    throw new Error(`deleteUndefinedProps ${ERROR.NOT_PLAIN_OBJECT} parameter`);
   }
 
   for (const prop in obj) {
@@ -10,4 +12,8 @@ export const deleteUndefinedProps = (obj: any) => {
       delete obj[prop];
     }
   }
+
+  return { ...obj };
 };
+
+export default deleteUndefinedProps;

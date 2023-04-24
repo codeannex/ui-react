@@ -1,16 +1,20 @@
 import React from "react";
 
-import { Form } from "@components/client/Form/Form";
-import { Error } from "@components/client/Form/components/Error/Error";
-import { FormButton } from "@components/client/Form/components/FormButton/FormButton";
-import { InputEmail } from "@components/client/Form/components/Input/InputEmail/InputEmail";
-import { InputPassword } from "@components/client/Form/components/Input/InputPassword/InputPassword";
-import { InputText } from "@components/client/Form/components/Input/InputText/InputText";
-import { Label } from "@components/client/Form/components/Label/Label";
-import { Radio } from "@components/client/Form/components/Radio/Radio";
-import { Select } from "@components/client/Form/components/Select/Select/Select";
-import { TextArea } from "@components/client/Form/components/TextArea/TextArea";
-import { FormRef, Values } from "@components/client/Form/types";
+import {
+  Error,
+  Form,
+  FormButton,
+  FormRef,
+  InputEmail,
+  InputPassword,
+  InputText,
+  Label,
+  Radio,
+  Select,
+  SmartInput,
+  TextArea,
+  Values,
+} from "@components/client/Form";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
@@ -37,292 +41,401 @@ export const FormPage = () => {
   const [formRef2, setFormRef2] = React.useState<FormRef>(null);
   const [formRef3, setFormRef3] = React.useState<FormRef>(null);
   const [formRef4, setFormRef4] = React.useState<FormRef>(null);
+  const [formRef5, setFormRef5] = React.useState<FormRef>(null);
+  const [formRef6, setFormRef6] = React.useState<FormRef>(null);
 
   const handleSubmit = () => {};
 
   const handleValidate1 = (values: Values) => {
     return {
-      firstName: values.firstName ? undefined : "Required",
-      lastName: values.lastName ? undefined : "Required",
-      email: values.email ? undefined : "Required",
-      password: values.password ? undefined : "Required",
-      class: values.class ? undefined : "Required",
-      classType: values.classType ? undefined : "Required",
-      comment: values.comment ? undefined : "Required",
+      firstName: values.firstName ? undefined : "Required 1",
+      email: values.email ? undefined : "Required 1",
+      password: values.password ? undefined : "Required 1",
     };
   };
 
-  const handleValidate2 = (values: Values) => {
-    return {
-      firstName: values.firstName ? undefined : "Required",
-      lastName: values.lastName ? undefined : "Required",
-      email: values.email ? undefined : "Required",
-      password: values.password ? undefined : "Required",
-      class: values.class ? undefined : "Required",
-      classType: values.classType ? undefined : "Required",
-      comment: values.comment ? undefined : "Required",
-    };
-  };
+  const handleValidate2 = (values: Values) => {};
 
   const handleValidate3 = (values: Values) => {
     return {
-      firstName: values.firstName ? undefined : "Required",
-      lastName: values.lastName ? undefined : "Required",
-      email: values.email ? undefined : "Required",
-      password: values.password ? undefined : "Required",
-      class: values.class ? undefined : "Required",
-      classType: values.classType ? undefined : "Required",
-      comment: values.comment ? undefined : "Required",
+      firstName: values.firstName ? undefined : "Required 3",
+      lastName: values.lastName ? undefined : "Required 3",
+      email: values.email ? undefined : "Required 3",
+      password: values.password ? undefined : "Required 3",
     };
   };
 
   const handleValidate4 = (values: Values) => {
     return {
-      firstName: values.firstName ? undefined : "Required",
-      lastName: values.lastName ? undefined : "Required",
-      email: values.email ? undefined : "Required",
-      password: values.password ? undefined : "Required",
-      class: values.class ? undefined : "Required",
-      classType: values.classType ? undefined : "Required",
-      comment: values.comment ? undefined : "Required",
+      firstName: values.firstName ? undefined : "Required 4",
+      lastName: values.lastName ? undefined : "Required 4",
+      email: values.email ? undefined : "Required 4",
+      password: values.password ? undefined : "Required 4",
     };
+  };
+
+  const handleValidate5 = (values: Values) => {
+    return {
+      firstName: values.firstName ? undefined : "Required 5",
+      lastName: values.lastName ? undefined : "Required 5",
+      email: values.email ? undefined : "Required 5",
+      password: values.password ? undefined : "Required 5",
+    };
+  };
+
+  const handleValidate6 = (values: Values) => {
+    return {
+      firstName: values.firstName ? undefined : "Required 6",
+      lastName: values.lastName ? undefined : "Required 6",
+      email: values.email ? undefined : "Required 6",
+      password: values.password ? undefined : "Required 6",
+    };
+  };
+
+  const handleClear1 = () => {
+    formRef1?.controls.clearForm();
+  };
+
+  const handleClear2 = () => {
+    formRef2?.controls.clearForm();
+  };
+
+  const handleClear3 = () => {
+    formRef3?.controls.clearForm();
+  };
+
+  const handleClear4 = () => {
+    formRef4?.controls.clearForm();
+  };
+
+  const handleClear5 = () => {
+    formRef5?.controls.clearForm();
+  };
+
+  const handleClear6 = () => {
+    formRef6?.controls.clearForm();
   };
 
   return (
     <div id="page" data-test-id="component-app">
       <main id="main">
-        <Element as={ELEMENT_OPTION_TYPE.DIV} id="basic">
+        {/* Smart Form 1 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1">
           <Form formRef={setFormRef1} onSubmit={handleSubmit} onValidate={handleValidate1}>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="firstName" htmlFor="first-name-basic" label="First Name" />
-              </Element>
-              <InputText id="first-name-basic" field="firstName" />
-              <Error field="firstName" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-1-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="lastName" htmlFor="last-name-basic" label="Last Name" />
-              </Element>
-              <InputText id="last-name-basic" field="lastName" />
-              <Error field="lastName" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-1-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="email" htmlFor="email-basic" label="Email" />
-              </Element>
-              <InputEmail id="email-basic" field="email" />
-              <Error field="email" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-1-email"
+                info="InfoEmail"
+                label="Email"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="password" htmlFor="password-basic" label="Password" />
-              </Element>
-              <InputPassword id="password-basic" field="password" />
-              <Error field="password" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="class" htmlFor="lass-basic" label="Class" />
-              </Element>
-              <Select id="class-basic" field="class" options={selectOptions} />
-              <Error field="class" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="classType" htmlFor="class-type-basic" label="Class Type" />
-              </Element>
-              <Radio id="class-type-basic" field="classType" options={radioOptions} />
-              <Error field="classType" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="comment" htmlFor="comment-basic" label="Comment" />
-              </Element>
-              <TextArea id="comment-basic" field="comment" />
-              <Error field="comment" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-1-password"
+                info="InfoPassword."
+                label="Password"
+              />
             </Element>
           </Form>
-          <FormButton id="submit-btn-basic" formRef={formRef1}>
+          <FormButton id="smart-form-1-submit-btn" formRef={formRef1}>
             Clicker
           </FormButton>
+          <Element as="button" id="smart-form-1-clear-btn" onClick={handleClear1}>
+            Clear
+          </Element>
         </Element>
-        <Element as={ELEMENT_OPTION_TYPE.DIV} id="auto-focus">
-          <Form
-            autoFocus
-            formRef={setFormRef2}
-            onSubmit={handleSubmit}
-            onValidate={handleValidate2}
-          >
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="firstName" htmlFor="first-name-auto" label="First Name" />
-              </Element>
-              <InputText id="first-name-auto" field="firstName" />
-              <Error field="firstName" as="span" />
+        {/* Smart Form 1 ======== END */}
+
+        {/* Smart Form 2 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2">
+          <Form formRef={setFormRef2} onSubmit={handleSubmit}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-2-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="lastName" htmlFor="last-name-auto" label="Last Name" />
-              </Element>
-              <InputText id="last-name-auto" field="lastName" />
-              <Error field="lastName" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-2-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="email" htmlFor="email-auto" label="Email" />
-              </Element>
-              <InputEmail id="email-auto" field="email" />
-              <Error field="email" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-2-email"
+                info="InfoEmail"
+                label="Email"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="password" htmlFor="password-auto" label="Password" />
-              </Element>
-              <InputPassword id="password-auto" field="password" />
-              <Error field="password" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="class" htmlFor="class-auto" label="Class" />
-              </Element>
-              <Select id="class-auto" field="class" options={selectOptions} />
-              <Error field="class" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="classType" htmlFor="class-type-auto" label="Class Type" />
-              </Element>
-              <Radio id="class-type-auto" field="classType" options={radioOptions} />
-              <Error field="classType" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="comment" htmlFor="comment-auto" label="Comment" />
-              </Element>
-              <TextArea id="comment-auto" field="comment" />
-              <Error field="comment" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-2-password"
+                info="InfoPassword."
+                label="Password"
+              />
             </Element>
           </Form>
-          <FormButton id="submit-btn-auto" formRef={formRef2}>
+          <FormButton id="smart-form-2-submit-btn" formRef={formRef2}>
             Clicker
           </FormButton>
+          <Element as="button" id="smart-form-2-clear-btn" onClick={handleClear2}>
+            Clear
+          </Element>
         </Element>
-        <Element as={ELEMENT_OPTION_TYPE.DIV} id="validate-submit">
+        {/* Smart Form 2 ======== END */}
+
+        {/* Smart Form 3 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3">
           <Form
-            validateOnSubmitOnly
+            classesError={"smart-form-3-error"}
             formRef={setFormRef3}
             onSubmit={handleSubmit}
             onValidate={handleValidate3}
           >
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="firstName" htmlFor="first-name-validate-submit" label="First Name" />
-              </Element>
-              <InputText id="first-name-validate-submit" field="firstName" />
-              <Error field="firstName" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-3-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="email" htmlFor="email-validate-submit" label="Email" />
-              </Element>
-              <InputEmail id="email-validate-submit" field="email" />
-              <Error field="email" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-3-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="password" htmlFor="password-validate-submit" label="Password" />
-              </Element>
-              <InputPassword id="password-validate-submit" field="password" />
-              <Error field="password" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-3-email"
+                info="InfoEmail"
+                label="Email"
+              />
             </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="class" htmlFor="class-validate-submit" label="Class" />
-              </Element>
-              <Select id="class-validate-submit" field="class" options={selectOptions} />
-              <Error field="class" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="classType" htmlFor="class-type-validate-submit" label="Class Type" />
-              </Element>
-              <Radio id="class-type-validate-submit" field="classType" options={radioOptions} />
-              <Error field="classType" as="span" />
-            </Element>
-            <Element as={ELEMENT_OPTION_TYPE.DIV}>
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Label field="comment" htmlFor="comment-validate-submit" label="Class Type" />
-              </Element>
-              <TextArea id="comment-validate-submit" field="comment" />
-              <Error field="comment" as="span" />
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-3-password"
+                info="InfoPassword."
+                label="Password"
+              />
             </Element>
           </Form>
-          <FormButton id="submit-btn-validate-submit" formRef={formRef3}>
+          <FormButton id="smart-form-3-submit-btn" formRef={formRef3}>
             Clicker
           </FormButton>
+          <Element as="button" id="smart-form-3-clear-btn" onClick={handleClear3}>
+            Clear
+          </Element>
         </Element>
-        <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-basic">
-          <Form formRef={setFormRef4} onSubmit={handleSubmit} onValidate={handleValidate4}>
-            <Form.Control
-              field={FIELD.FIRST_NAME}
-              render={({ field, ref, error, value, onChange, onBlur }) => (
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>First Name</Element>
-                  <Element
-                    as={ELEMENT_OPTION_TYPE.INPUT}
-                    id={field}
-                    type="text"
-                    value={value}
-                    ref={ref}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
-                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
-                </Element>
-              )}
-            />
-            <Form.Control
-              field={FIELD.EMAIL}
-              render={({ field, ref, error, value, onChange, onBlur }) => (
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>Email</Element>
-                  <Element
-                    as={ELEMENT_OPTION_TYPE.INPUT}
-                    id={field}
-                    type="email"
-                    value={value}
-                    ref={ref}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
-                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
-                </Element>
-              )}
-            />
-            <Form.Control
-              field={FIELD.PASSWORD}
-              render={({ field, ref, error, value, onChange, onBlur }) => (
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Element as={ELEMENT_OPTION_TYPE.LABEL}>Password</Element>
-                  <Element
-                    as={ELEMENT_OPTION_TYPE.INPUT}
-                    id={field}
-                    type="password"
-                    value={value}
-                    ref={ref}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
-                  {error && <Element as={ELEMENT_OPTION_TYPE.PARAGRAPH}>{error}</Element>}
-                </Element>
-              )}
-            />
+        {/* Smart Form 3 ======== END */}
+
+        {/* Smart Form 4 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4">
+          <Form
+            classesError={"smart-form-4-error"}
+            validateOnSubmitOnly
+            formRef={setFormRef4}
+            onSubmit={handleSubmit}
+            onValidate={handleValidate4}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-4-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-4-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-4-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-4-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
           </Form>
-          <FormButton id="control-submit-btn-validate-submit" formRef={formRef4}>
+          <FormButton id="smart-form-4-submit-btn" formRef={formRef4}>
             Clicker
           </FormButton>
+          <Element as="button" id="smart-form-4-clear-btn" onClick={handleClear4}>
+            Clear
+          </Element>
         </Element>
+        {/* Smart Form 4 ======== END */}
+
+        {/* Smart Form 5 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5">
+          <Form
+            classesError={"smart-form-5-error"}
+            autoFocus
+            formRef={setFormRef5}
+            onSubmit={handleSubmit}
+            onValidate={handleValidate5}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-5-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-5-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-5-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-5-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-5-submit-btn" formRef={formRef5}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-5-clear-btn" onClick={handleClear5}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 5 ======== END */}
+
+        {/* Smart Form 6 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6">
+          <Form
+            classesError={"smart-form-6-error"}
+            autoFocus
+            validateOnSubmitOnly
+            formRef={setFormRef6}
+            onSubmit={handleSubmit}
+            onValidate={handleValidate6}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-6-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-6-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-6-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-6-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-6-submit-btn" formRef={formRef6}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-6-clear-btn" onClick={handleClear6}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 6 ======== END */}
       </main>
     </div>
   );

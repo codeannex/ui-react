@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { SelectOption } from "../../../types";
+import { SelectOption } from "../../types";
 
 type OptionProps = {
   /**

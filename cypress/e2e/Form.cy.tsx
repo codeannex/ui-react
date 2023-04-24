@@ -1,272 +1,701 @@
 /// <reference types="cypress" />
 
 describe("component - Form", () => {
-  /**
-   * Basic setup with required props.
-   */
-  describe("basic setup", () => {
-    beforeEach(() => {
-      cy.visit("http://localhost:3001/form");
-    });
-
-    it("renders errors on submit", () => {
-      cy.get("#basic").within(() => {
-        cy.get("button").click();
-
-        cy.wait(50);
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(7);
-        });
-
-        cy.get("#first-name-basic").type("John");
-        cy.get("#last-name-basic").type("Dow");
-        cy.get("#email-basic").type("john@gmail.com");
-        cy.get("#password-basic").type("191919");
-        cy.get("#class-basic").select("interactive");
-        cy.get("#class-type-basic").within(() => {
-          cy.get("input")
-            .should(($p) => {
-              expect($p).to.have.length(3);
-            })
-            .check("kick-boxing");
-        });
-
-        cy.get("#comment-basic").type("Thank you!");
-
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
+  describe("Smart", () => {
+    /**
+     * @Test_1
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test component layout validating all accessibility attributes and
+     * associations are correct during form load and state changes where
+     * attribute updates are expected.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @Accessibility
+     *     - 1
+     *     - 2
+     *     - 3
+     *     - 4
+     *     - 5
+     *     - 6
+     *     - 7
+     *     - 8
+     *
+     * @form_components
+     *   @input
+     *   @label
+     *   @error
+     *   @info
+     */
+    describe("Test 1", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
       });
-    });
 
-    it("renders error on blur", () => {
-      cy.get("#basic").within(() => {
-        cy.get("#first-name-basic").focus().blur();
+      /**
+       * @attributes
+       *
+       * Test the existence of attributes and assocations after
+       * form loads.
+       */
+      it("should find accessibility attributes on load", () => {
+        cy.get("#smart-form-1").within(() => {
+          cy.get('div[id="smart-form-1-first-name-input"]').within(() => {
+            /** First Name: <required> **/
 
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(1);
-        });
+            /** Label */
+            cy.get('label[for="smart-form-1-first-name"]')
+              .contains("First Name")
+              .within(() => {
+                cy.get("span")
+                  .should("have.attr", "aria-hidden", "true")
+                  .should("have.attr", "aria-required", "true")
+                  .should("have.attr", "aria-label", "required");
+              });
 
-        cy.get("#first-name-basic").type("John");
+            /** Input */
+            cy.get('input[id="smart-form-1-first-name"]')
+              .should("have.attr", "aria-invalid", "false")
+              .should("have.attr", "type", "text")
+              .should("have.attr", "required");
 
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-      });
-    });
-  });
-
-  /**
-   * Enhanced setup with autoFocus enabled.
-   */
-  describe("auto focus setup", () => {
-    beforeEach(() => {
-      cy.visit("http://localhost:3001/form");
-    });
-
-    it("renders errors on submit and sets auto focus", () => {
-      cy.get("#auto-focus").within(() => {
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(7);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("first-name-auto");
-        });
-
-        cy.get("#first-name-auto").type("John");
-
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(6);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("last-name-auto");
-        });
-
-        cy.get("#last-name-auto").type("Doe");
-
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(5);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("email-auto");
-        });
-
-        cy.get("#email-auto").type("john@gmail.com");
-
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(4);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("password-auto");
-        });
-
-        cy.get("#password-auto").type("1919");
-
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(3);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("class-auto");
-        });
-
-        cy.get("#class-auto").select("interactive");
-
-        // auto fill click cycle
-        // focus is not setup for radio buttons.
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(2);
-        });
-
-        cy.get("#class-type-auto").within(() => {
-          cy.get("input")
-            .should(($p) => {
-              expect($p).to.have.length(3);
-            })
-            .check("kick-boxing");
-        });
-
-        // auto fill click cycle
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(1);
-        });
-
-        cy.focused().then(($el) => {
-          expect($el).to.have.id("comment-auto");
-        });
-
-        cy.get("#comment-auto").type("1919");
-        cy.get("#comment-auto").type("Thank you!");
-
-        // submit
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-
-        cy.get("button").click();
-
-        cy.get("#first-name-auto").should("have.value", "");
-        cy.get("#last-name-auto").should("have.value", "");
-        cy.get("#email-auto").should("have.value", "");
-        cy.get("#password-auto").should("have.value", "");
-        cy.get("#class-auto").should("have.value", "");
-        cy.get("#class-type-auto").within(() => {
-          cy.get("input")
-            .should(($p) => {
-              expect($p).to.have.length(3);
-            })
-            .should("not.be.checked");
-        });
-      });
-    });
-  });
-
-  /**
-   * Enhanced setup with validateOnSubmitOnly enabled.
-   */
-  describe("validiate on submit only", () => {
-    beforeEach(() => {
-      cy.visit("http://localhost:3001/form");
-    });
-
-    it("should render errors on empty form submission", () => {
-      cy.get("#validate-submit").within(() => {
-        cy.get("button").click();
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(6);
-        });
-      });
-    });
-
-    it("should not render errors on any input type on blur", () => {
-      cy.get("#validate-submit").within(() => {
-        /** should not render error on text input type */
-        cy.get("#first-name-validate-submit").focus().blur();
-
-        cy.wait(50);
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-
-        /** should not render error on email input type */
-        cy.get("#email-validate-submit").focus().blur();
-
-        cy.wait(50);
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-
-        // /** should not render error on email input type */
-        cy.get("#password-validate-submit").focus().blur();
-
-        cy.wait(50);
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-
-        /** should not render error on select input type */
-        cy.get("#class-validate-submit").focus().blur();
-
-        cy.wait(50);
-
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
-        });
-
-        /** should not render error on radio input type */
-        cy.get("#class-type-validate-submit")
-          .find("input")
-          .each(($input, index) => {
-            if (index === 2) {
-              cy.wrap($input).focus().blur();
-            }
+            /** Info */
+            cy.get('input[id="smart-form-1-first-name"]')
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("InfoFirstName")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
           });
 
-        cy.wait(50);
+          cy.get('div[id="smart-form-1-last-name-input"]').within(() => {
+            /** Last Name: <optional> **/
 
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
+            /** Label */
+            cy.get('label[for="smart-form-1-last-name"]')
+              .contains("Last Name")
+              .within(() => {
+                cy.get("span").should(($span) => {
+                  expect($span).to.have.length(0);
+                });
+              });
+
+            /** Input */
+            cy.get('input[id="smart-form-1-last-name"]')
+              .should("have.attr", "aria-invalid", "false")
+              .should("have.attr", "type", "text")
+              .should("not.attr", "required");
+
+            /** Info */
+            cy.get('input[id="smart-form-1-last-name"]')
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("InfoLastName")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
+
+          cy.get('div[id="smart-form-1-email-input"]').within(() => {
+            /** Email: <required> **/
+
+            /** Label */
+            cy.get('label[for="smart-form-1-email"]')
+              .contains("Email")
+              .within(() => {
+                cy.get("span")
+                  .should("have.attr", "aria-hidden", "true")
+                  .should("have.attr", "aria-required", "true")
+                  .should("have.attr", "aria-label", "required");
+              });
+
+            /** Input */
+            cy.get('input[id="smart-form-1-email"]')
+              .should("have.attr", "aria-invalid", "false")
+              .should("have.attr", "type", "email")
+              .should("have.attr", "required");
+
+            /** Info */
+            cy.get('input[id="smart-form-1-email"]')
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("InfoEmail")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
+
+          cy.get('div[id="smart-form-1-password-input"]').within(() => {
+            /** Password: <required> **/
+
+            /** Label */
+            cy.get('label[for="smart-form-1-password"]')
+              .contains("Password")
+              .within(() => {
+                cy.get("span")
+                  .should("have.attr", "aria-hidden", "true")
+                  .should("have.attr", "aria-required", "true")
+                  .should("have.attr", "aria-label", "required");
+              });
+
+            /** Input */
+            cy.get('input[id="smart-form-1-password"]')
+              .should("have.attr", "aria-invalid", "false")
+              .should("have.attr", "type", "password")
+              .should("have.attr", "required");
+
+            /** Info */
+            cy.get('input[id="smart-form-1-password"]')
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("InfoPassword")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
         });
+      });
 
-        /** should not render error on text area input type */
-        cy.get("#comment-validate-submit").focus().blur();
+      /**
+       * @attributes
+       *
+       * Test the existence of attributes and assocations after
+       * form updates into error state.
+       */
+      it("should find accessibility attributes on update", () => {
+        cy.get("#smart-form-1").within(() => {
+          cy.get('button[id="smart-form-1-submit-btn"]').click();
 
-        cy.wait(50);
+          /** First Name: <required> **/
 
-        cy.get('span:contains("Required")').should(($p) => {
-          expect($p).to.have.length(0);
+          /** Input & Error Associaton */
+          cy.get('div[id="smart-form-1-first-name-input"]').within(() => {
+            cy.get('input[id="smart-form-1-first-name"]')
+              .should("have.attr", "aria-invalid", "true")
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("Require")
+                  .should("have.attr", "role", "alert")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
+
+          /** Last Name: <optional> **/
+
+          /** No Error */
+          cy.get('div[id="smart-form-1-last-name-input"]').within(() => {
+            cy.get('input[id="smart-form-1-last-name"]')
+              .should("have.attr", "aria-invalid", "false")
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("InfoLastName")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
+
+          /** Email: <required> **/
+
+          /** Input & Error Associaton */
+          cy.get('div[id="smart-form-1-email-input"]').within(() => {
+            cy.get('input[id="smart-form-1-email"]')
+              .should("have.attr", "aria-invalid", "true")
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                console.log($value);
+                cy.get("div")
+                  .contains("Require")
+                  .should("have.attr", "role", "alert")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
+
+          /** Password: <required> **/
+
+          /** Input & Error Associaton */
+          cy.get('div[id="smart-form-1-password-input"]').within(() => {
+            cy.get('input[id="smart-form-1-password"]')
+              .should("have.attr", "aria-invalid", "true")
+              .should("have.attr", "aria-describedby")
+              .then(($value) => {
+                cy.get("div")
+                  .contains("Require")
+                  .should("have.attr", "role", "alert")
+                  .should("have.attr", "id")
+                  .then(($id) => {
+                    expect($id).to.eql($value);
+                  });
+              });
+          });
         });
       });
     });
+
+    /**
+     * @Test_2
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test components functionality validating the expected behavior with no
+     * validation. The form can be submitted regardless of any input conditions.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @none
+     *
+     * @form_components
+     *   @input
+     *
+     */
+    describe("Test 2", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
+      });
+
+      /**
+       * @functionality
+       *
+       * This test should submt the form with no validation.
+       *
+       */
+      it("should successfully submit none validated form ", () => {
+        cy.get("#smart-form-2").within(() => {
+          /** Submit empty form **/
+          cy.get('button[id="smart-form-2-submit-btn"]').click();
+
+          /** Fields should be empty **/
+          cy.get('input[id="smart-form-2-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-password"]').should("have.value", "");
+
+          /** Fill partial fields **/
+          cy.get('input[id="smart-form-2-first-name"]').type("john");
+          cy.get('input[id="smart-form-2-last-name"]').type("doe");
+          cy.get('input[id="smart-form-2-email"]').type("john@foo.com");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-2-submit-btn"]').click();
+
+          /** Successful submit will clear fields **/
+          cy.get('input[id="smart-form-2-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-2-password"]').should("have.value", "");
+        });
+      });
+    });
+
+    /**
+     * @Test_3
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test components functionality validating the expected behavior with
+     * validation enabled and tracked during any change event. The associated
+     * components for errors and info must work as expected while validation
+     * triggers state changes.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @validate_on_event_change
+     *
+     * @form_components
+     *   @input
+     */
+    describe("Test 3", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
+      });
+
+      /**
+       * @functionality
+       *
+       * This test should submt the form with no validation.
+       *
+       */
+      it("should successfully submit validated form (on change)", () => {
+        cy.get("#smart-form-3").within(() => {
+          /**
+           * Add value, remove and blur to set the error.
+           */
+          cy.get('input[id="smart-form-3-first-name"]').type("john");
+          cy.get('input[id="smart-form-3-first-name"]').clear().blur();
+
+          cy.get("#smart-form-3-first-name-input")
+            .contains("Required 3")
+            .should(($p) => {
+              expect($p).to.have.length(1);
+            });
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-3-submit-btn"]').click();
+
+          /**
+           * All fields should have errors.
+           */
+          cy.get(".smart-form-3-error").should(($p) => {
+            expect($p).to.have.length(4);
+          });
+
+          /** Fill partial fields **/
+          cy.get('input[id="smart-form-3-first-name"]').type("john");
+          cy.get('input[id="smart-form-3-last-name"]').type("doe");
+          cy.get('input[id="smart-form-3-email"]').type("john@foo.com");
+          cy.get('input[id="smart-form-3-password"]').type("1919");
+
+          /** Submit valid form **/
+          cy.get('button[id="smart-form-3-submit-btn"]').click();
+
+          /** Fields should be empty **/
+          cy.get('input[id="smart-form-3-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-3-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-3-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-3-password"]').should("have.value", "");
+        });
+      });
+    });
+
+    /**
+     * @Test_4
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test components functionality validating the expected behavior with
+     * validation enabled and tracked during form submission. The associated
+     * components for errors and info must work as expected while validation
+     * triggers state changes.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @validate_on_submit
+     *
+     * @form_components
+     *   @input
+     */
+    describe("Test 4", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
+      });
+
+      /**
+       * @functionality
+       *
+       * This test should submt the form with no validation.
+       *
+       */
+      it("should successfully submit validated form (on submit)", () => {
+        cy.get("#smart-form-4").within(() => {
+          /**
+           * Add value, remove and blur to set the error.
+           */
+          cy.get('input[id="smart-form-4-first-name"]').type("john");
+          cy.get('input[id="smart-form-4-first-name"]').clear().blur();
+
+          /**
+           * Should not have any errors.
+           */
+          cy.get("#smart-form-4-first-name-input")
+            .contains("Required 4")
+            .should(($p) => {
+              expect($p).to.have.length(0);
+            });
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-4-submit-btn"]').click();
+
+          /**
+           * All fields should have errors.
+           */
+          cy.get(".smart-form-4-error").should(($p) => {
+            expect($p).to.have.length(4);
+          });
+
+          /** Fill partial fields **/
+          cy.get('input[id="smart-form-4-first-name"]').type("john");
+          cy.get('input[id="smart-form-4-last-name"]').type("doe");
+          cy.get('input[id="smart-form-4-email"]').type("john@foo.com");
+          cy.get('input[id="smart-form-4-password"]').type("1919");
+
+          /** Submit valid form **/
+          cy.get('button[id="smart-form-4-submit-btn"]').click();
+
+          /** Fields should be empty **/
+          cy.get('input[id="smart-form-4-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-4-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-4-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-4-password"]').should("have.value", "");
+        });
+      });
+    });
+
+    /**
+     * @Test_5
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test components functionality validating the expected behavior with
+     * validation and auto focus enabled, and tracked during any change event.
+     * The associated components for errors and info must work as expected while
+     * validation triggers state changes.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @validate_on_event_change
+     *   @auto_focus
+     *
+     * @form_components
+     *   @input
+     */
+    describe("Test 5", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
+      });
+
+      /**
+       * @functionality
+       *
+       * This test should submt the form with validation while managing focus with
+       * auto focus during invalid submission attempts.
+       *
+       */
+      it("should successfully submit validated form after auto focus (on change) ", () => {
+        cy.get("#smart-form-5").within(() => {
+          /**
+           * Add value, remove and blur to set the error.
+           */
+          cy.get('input[id="smart-form-5-first-name"]').type("john");
+          cy.get('input[id="smart-form-5-first-name"]').clear().blur();
+
+          cy.get("#smart-form-5-first-name-input")
+            .contains("Required 5")
+            .should(($p) => {
+              expect($p).to.have.length(1);
+            });
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-5-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-5-first-name");
+          });
+          cy.get('input[id="smart-form-5-first-name"]').type("john");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-5-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-5-last-name");
+          });
+          cy.get('input[id="smart-form-5-last-name"]').type("doe");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-5-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-5-email");
+          });
+          cy.get('input[id="smart-form-5-email"]').type("john@foo.com");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-5-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-5-password");
+          });
+          cy.get('input[id="smart-form-5-password"]').type("1919");
+
+          /**
+           * No errors are found.
+           */
+          cy.get(".smart-form-5-error").should(($p) => {
+            expect($p).to.have.length(0);
+          });
+
+          /** Submit valid form **/
+          cy.get('button[id="smart-form-5-submit-btn"]').click();
+
+          /** Fields should be empty **/
+          cy.get('input[id="smart-form-5-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-5-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-5-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-5-password"]').should("have.value", "");
+        });
+      });
+    });
+
+    /**
+     * @Test_6
+     *
+     * @Form_type Smart
+     *
+     * @Description
+     * Test components functionality validating the expected behavior with
+     * validation and auto focus enabled, and tracked during form submission.
+     * The associated components for errors and info must work as expected
+     * while validation triggers state changes.
+     *
+     * @Covers
+     * @form_types
+     *   @smart
+     *
+     * @form_features
+     *   @validate_on_submit
+     *   @auto_focus
+     *
+     * @form_components
+     *   @input
+     */
+    describe("Test 6", () => {
+      beforeEach(() => {
+        cy.visit("http://localhost:3001/form");
+      });
+
+      /**
+       * @functionality
+       *
+       * This test should submt the form with validation while managing focus with
+       * auto focus during invalid submission attempts.
+       *
+       */
+      it("should successfully submit validated form after auto focus (on change) ", () => {
+        cy.get("#smart-form-6").within(() => {
+          /**
+           * Add value, remove and blur to set the error.
+           */
+          cy.get('input[id="smart-form-6-first-name"]').type("john");
+          cy.get('input[id="smart-form-6-first-name"]').clear().blur();
+
+          cy.get("#smart-form-6-first-name-input")
+            .contains("Required 6")
+            .should(($p) => {
+              expect($p).to.have.length(0);
+            });
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-6-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-6-first-name");
+          });
+          cy.get('input[id="smart-form-6-first-name"]').type("john");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-6-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-6-last-name");
+          });
+          cy.get('input[id="smart-form-6-last-name"]').type("doe");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-6-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-6-email");
+          });
+          cy.get('input[id="smart-form-6-email"]').type("john@foo.com");
+
+          /** Submit partial form **/
+          cy.get('button[id="smart-form-6-submit-btn"]').click();
+          cy.focused().then(($el) => {
+            expect($el).to.have.id("smart-form-6-password");
+          });
+          cy.get('input[id="smart-form-6-password"]').type("1919");
+
+          /**
+           * No errors are found.
+           */
+          cy.get(".smart-form-6-error").should(($p) => {
+            expect($p).to.have.length(0);
+          });
+
+          /** Submit valid form **/
+          cy.get('button[id="smart-form-6-submit-btn"]').click();
+
+          /** Fields should be empty **/
+          cy.get('input[id="smart-form-6-first-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-6-last-name"]').should("have.value", "");
+          cy.get('input[id="smart-form-6-email"]').should("have.value", "");
+          cy.get('input[id="smart-form-6-password"]').should("have.value", "");
+        });
+      });
+    });
+  });
+
+  describe("Standard", () => {
+    /**
+     * @Test_1
+     *
+     * @Form_type Standard
+     *
+     * @Description
+     *
+     * @Covers
+     * @form_types
+     *   @standard
+     *
+     * @form_features
+     *
+     * @form_components
+     */
+    describe("Test 1", () => {});
+  });
+
+  describe("Control", () => {
+    /**
+     * @Test_1
+     *
+     * @Form_type Control
+     *
+     * @Description
+     *
+     * @Covers
+     * @form_types
+     *   @standard
+     *
+     * @form_features
+     *
+     * @form_components
+     */
+    describe("Test 1", () => {});
   });
 });

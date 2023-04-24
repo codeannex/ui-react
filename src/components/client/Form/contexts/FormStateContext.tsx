@@ -5,10 +5,11 @@ import { getGuid } from "@utils/getGuid";
 import { STATE_ACTION_TYPE, State, StateAction, StateReducerActionContext } from "../types";
 
 export const DEFAULT_FORM_STATE = {
-  preSubmit: "",
-  submit: false,
-  postSubmit: false,
   errors: {},
+  formLoadComplete: false,
+  preSubmit: "",
+  postSubmit: false,
+  submit: false,
   touched: {},
   values: {},
   validators: {},
@@ -59,10 +60,15 @@ export const formStateReducer = (state: State, action: StateAction) => {
         ...state,
         errors: { ...errors, ...action.payload },
       };
-    case STATE_ACTION_TYPE.SET_TOUCHED:
+    case STATE_ACTION_TYPE.SET_FORM_LOAD_COMPLETE:
       return {
         ...state,
-        touched: { ...touched, ...action.payload },
+        formLoadComplete: true,
+      };
+    case STATE_ACTION_TYPE.UNSET_FORM_LOAD_COMPLETE:
+      return {
+        ...state,
+        formLoadComplete: false,
       };
     case STATE_ACTION_TYPE.SET_PRE_SUBMIT:
       return {
@@ -78,6 +84,11 @@ export const formStateReducer = (state: State, action: StateAction) => {
       return {
         ...state,
         postSubmit: true,
+      };
+    case STATE_ACTION_TYPE.SET_TOUCHED:
+      return {
+        ...state,
+        touched: { ...touched, ...action.payload },
       };
     case STATE_ACTION_TYPE.SET_VALIDATORS:
       return {

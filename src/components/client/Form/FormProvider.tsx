@@ -16,10 +16,11 @@ interface Props {
 
 export const FormProvider: React.FC<Props> = ({ children, staticProps }) => {
   const [formState, setFormState] = React.useReducer(formStateReducer, {
-    preSubmit: "",
-    submit: false,
-    postSubmit: false,
     errors: {},
+    formLoadComplete: false,
+    preSubmit: "",
+    postSubmit: false,
+    submit: false,
     touched: {},
     values: {},
     validators: {},

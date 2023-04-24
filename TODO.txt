@@ -18,6 +18,7 @@ TODO: Long
 2. Add compound component `Option` for Select component.
 3. Role attributes
 4. Accessibility
+5. Remove classname dependency. This is not being used in a complex manner.
 
 
 LEARNING:
@@ -48,11 +49,11 @@ FIX:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. updates made to read me files.
-2. fixed bug setting incorrect form ref maps.
-3. fixed auto focus bug.
-4. 
-5. 
+1. deleted excessive dirctory structure.
+2. fix reset not updated restricted flow bug.
+3. consolidated imports from playground and cypress form reference.
+4. wrote a bunch of tests.
+5. added support for controls clear form.
 
 IN PROGRESS:
 1. 
@@ -62,7 +63,7 @@ NOTE:
 2. 
 
 TODO: 
-1. developed unit tests for option component.
+1. 
 2. 
 3. 
 
@@ -88,5 +89,33 @@ LEFT OFF:
 2. Need to write test to ensure functionality for require associations doesn't break
 
 
+1. Associating a field label with an editor 
+2. Associating an editor with information text
+
+
 MOCKING CONTEXT:
 https://thedatalife.com/testing-and-mocking-react-contextapi-with-jest-and-react-testing-library
+
+const input = container.querySelector("input");
+expect(input).toBeInTheDocument();
+expect(input).toHaveAttribute("disabled", "");
+
+const info = screen.getByText(NAME_FOO);
+expect(info).toHaveAttribute("id", NAME_FOO);
+
+const result = getByText(text, { selector: 'h3' });
+
+
+
+console.log("19 ========");
+console.log(prettyDOM(container));
+console.log(errorId);
+console.log("19 ========");
+
+console.log("19 ========");
+console.log(prettyDOM(container));
+console.log("19 ========");
+
+console.log("19 ========");
+console.log(errorId);
+console.log("19 ========");
