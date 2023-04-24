@@ -14,8 +14,11 @@ jest.mock("../../contexts/FormStateContext", () => {
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
+const NAME_BAZ = "baz";
+const NAME_BIZ = "biz";
 
 const defaultProps = {
+  field: NAME_BIZ,
   label: NAME_FOO,
 };
 
@@ -33,7 +36,7 @@ describe("Component - Form: Label", () => {
       expect(container).toBeDefined();
     });
 
-    it("with `label` element", () => {
+    it("with `label` text", () => {
       render(renderComponent());
 
       const label = screen.getByText(NAME_FOO);
@@ -43,37 +46,12 @@ describe("Component - Form: Label", () => {
   });
 
   describe("props", () => {
-    it("htmlFor should add `form` attribute to label element", () => {
-      render(
-        renderComponent({
-          label: NAME_BAR,
-          htmlFor: "forBarFor",
-        })
-      );
-
-      const label = screen.getByText(NAME_BAR);
-
-      expect(label).toHaveAttribute("for", "forBarFor");
-    });
-
-    it("optional should add `optionl text` with label element", () => {
-      render(
-        renderComponent({
-          label: NAME_BAR,
-          optional: true,
-        })
-      );
-
-      const span = screen.getByText("Optional");
-
-      expect(span).toBeDefined();
-    });
-
     it("classes should add `class name/names` attribute to container (string)", () => {
       render(
         renderComponent({
-          label: NAME_BAR,
           classes: NAME_FOO,
+          field: NAME_BIZ,
+          label: NAME_BAR,
         })
       );
 
@@ -85,8 +63,9 @@ describe("Component - Form: Label", () => {
     it("classes should add `class name/names` attribute to container (array)", () => {
       render(
         renderComponent({
-          label: NAME_BAR,
           classes: [NAME_FOO, NAME_BAR],
+          field: NAME_BIZ,
+          label: NAME_BAR,
         })
       );
 
@@ -95,18 +74,93 @@ describe("Component - Form: Label", () => {
       expect(label).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
     });
 
-    it("field should add required span while validator exists", () => {
+    it("htmlFor should add `for` attribute to label element", () => {
       render(
         renderComponent({
+          field: NAME_BIZ,
+          htmlFor: NAME_BAZ,
           label: NAME_BAR,
-          classes: [NAME_FOO, NAME_BAR],
-          field: "firstName",
+        })
+      );
+
+      const label = screen.getByText(NAME_BAR);
+
+      expect(label).toHaveAttribute("for", NAME_BAZ);
+    });
+
+    it("id should add `id` attribute to label element", () => {
+      render(
+        renderComponent({
+          field: NAME_BIZ,
+          id: NAME_FOO,
+          label: NAME_BAR,
+        })
+      );
+
+      const label = screen.getByText(NAME_BAR);
+
+      expect(label).toHaveAttribute("id", NAME_FOO);
+    });
+
+    it("optional should add required with label element", () => {
+      render(
+        renderComponent({
+          field: NAME_BIZ,
+          label: NAME_BAR,
+          optional: true,
+        })
+      );
+
+      const span = screen.getByText("Optional");
+
+      expect(span).toBeDefined();
+    });
+
+    it("required should add required span with label element", () => {
+      render(
+        renderComponent({
+          field: NAME_BIZ,
+          label: NAME_BAR,
+          required: true,
         })
       );
 
       const span = screen.getByLabelText("required");
 
       expect(span).toBeDefined();
+    });
+
+    it("field should add required span while validator exists", () => {
+      render(
+        renderComponent({
+          classes: [NAME_FOO, NAME_BAR],
+          field: "firstName",
+          label: NAME_BAR,
+        })
+      );
+
+      const span = screen.getByLabelText("required");
+
+      expect(span).toBeDefined();
+    });
+  });
+
+  describe("aria", () => {
+    it("hidden should be added to the span when `required` is enabled", () => {
+      render(
+        renderComponent({
+          classes: [NAME_FOO, NAME_BAR],
+          field: "firstName",
+          label: NAME_BAR,
+        })
+      );
+
+      const span = screen.getByLabelText("required");
+
+      expect(span).toBeDefined();
+      expect(span.getAttribute("aria-hidden")).toBe("true");
+      expect(span.getAttribute("aria-label")).toBe("required");
+      expect(span.getAttribute("aria-required")).toBe("true");
     });
   });
 });

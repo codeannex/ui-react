@@ -4,6 +4,9 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
+  Error,
+  Info,
+  Label,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -11,9 +14,11 @@ import {
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { STATE_ACTION_TYPE } from "../../../types";
+import { getGuid } from "@utils/index";
 
-export type InputProps = {
+import { STATE_ACTION_TYPE } from "../../types";
+
+export type SmartInputProps = {
   /**
    * Sets the input attribute `type` to determine type of input
    * field. Supports all input types.
@@ -36,6 +41,11 @@ export type InputProps = {
   disabled?: boolean;
 
   /**
+   * Sets the error HTML element type.
+   */
+  errorAs?: "p" | "span" | "div";
+
+  /**
    * Required prop used to track form field state.
    */
   field: string;
@@ -43,7 +53,22 @@ export type InputProps = {
   /**
    * Sets the id attribute.
    */
-  id?: string;
+  id: string;
+
+  /**
+   * Enables helper information message.
+   */
+  info?: string;
+
+  /**
+   * Sets the error HTML element type.
+   */
+  infoAs?: "p" | "span" | "div";
+
+  /**
+   * Sets the label text.
+   */
+  label: string | undefined;
 
   /**
    * Sets the name attribute.
@@ -56,17 +81,21 @@ export type InputProps = {
   placeholder?: string;
 };
 
-export const Input: React.FC<InputProps> = ({
+export const SmartInput: React.FC<SmartInputProps> = ({
   asType = "text",
   classes,
   defaultValue,
   disabled,
+  errorAs,
   field,
   id,
+  info,
+  infoAs,
+  label,
   name,
   placeholder,
 }) => {
-  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
+  const { values = {}, touched = {}, errors = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -75,8 +104,15 @@ export const Input: React.FC<InputProps> = ({
   const ref = React.useRef<HTMLInputElement>(null);
 
   const _classes = classNames(classes && classes);
+  const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
+  const _info = info ? info : undefined;
+  const _label = label ? label : undefined;
   const _required = !!validators[field];
   const _value = values[field] as string;
+
+  const _ariaDescribById = React.useMemo(() => {
+    return getGuid();
+  }, []);
 
   /**
    * Handlers
@@ -128,25 +164,45 @@ export const Input: React.FC<InputProps> = ({
   }, []);
 
   return (
-    <Element
-      as={ELEMENT_OPTION_TYPE.INPUT}
-      classes={_classes || undefined}
-      disabled={disabled}
-      id={id || undefined}
-      name={name || undefined}
-      placeholder={placeholder}
-      ref={ref}
-      required={_required}
-      type={asType}
-      value={_value || ""}
-      /** Handlers **/
-      onBlur={handleBlur}
-      onChange={handleChange}
-    />
+    <Element as={ELEMENT_OPTION_TYPE.DIV}>
+      {_label && (
+        <Element as={ELEMENT_OPTION_TYPE.DIV}>
+          <Label field={field} htmlFor={id} label={label} />
+        </Element>
+      )}
+      <Element
+        aria-describedby={_ariaDescribById}
+        aria-invalid={_error ? "true" : "false"}
+        as={ELEMENT_OPTION_TYPE.INPUT}
+        classes={_classes || undefined}
+        disabled={disabled}
+        id={id || undefined}
+        name={name || undefined}
+        placeholder={placeholder}
+        ref={ref}
+        required={_required}
+        type={asType}
+        value={_value || ""}
+        /** Handlers **/
+        onBlur={handleBlur}
+        onChange={handleChange}
+      />
+      {_info && !_error && (
+        <Info
+          as={infoAs || ELEMENT_OPTION_TYPE.DIV}
+          field={field}
+          id={_ariaDescribById}
+          message={info}
+        />
+      )}
+      {_error && (
+        <Error as={errorAs || ELEMENT_OPTION_TYPE.DIV} field={field} id={_ariaDescribById} />
+      )}
+    </Element>
   );
 };
 
-Input.propTypes = {
+SmartInput.propTypes = {
   asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,

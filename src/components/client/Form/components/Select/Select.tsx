@@ -12,7 +12,7 @@ import {
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { STATE_ACTION_TYPE, SelectOption } from "../../../types";
+import { STATE_ACTION_TYPE, SelectOption } from "../../types";
 
 export type SelectProps = {
   /**

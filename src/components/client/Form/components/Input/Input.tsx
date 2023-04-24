@@ -9,11 +9,17 @@ import {
   useStaticPropsContext,
 } from "@components/client/Form/index";
 
-import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/server/Element/Element";
+import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { STATE_ACTION_TYPE } from "../../../types";
+import { STATE_ACTION_TYPE } from "../../types";
 
-export type InputTextProps = {
+export type InputProps = {
+  /**
+   * Sets the input attribute `type` to determine type of input
+   * field. Supports all input types.
+   */
+  asType?: string;
+
   /**
    * Sets CSS class/classes on the component for styling.
    */
@@ -50,7 +56,8 @@ export type InputTextProps = {
   placeholder?: string;
 };
 
-export const InputText: React.FC<InputTextProps> = ({
+export const Input: React.FC<InputProps> = ({
+  asType = "text",
   classes,
   defaultValue,
   disabled,
@@ -130,16 +137,17 @@ export const InputText: React.FC<InputTextProps> = ({
       placeholder={placeholder}
       ref={ref}
       required={_required}
-      type={INPUT_TYPE.TEXT}
+      type={asType}
       value={_value || ""}
-      /** Handlers */
+      /** Handlers **/
       onBlur={handleBlur}
       onChange={handleChange}
     />
   );
 };
 
-InputText.propTypes = {
+Input.propTypes = {
+  asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,

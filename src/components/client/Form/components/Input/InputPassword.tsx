@@ -11,7 +11,7 @@ import {
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { STATE_ACTION_TYPE } from "../../../types";
+import { STATE_ACTION_TYPE } from "../../types";
 
 export type InputPasswordProps = {
   /**

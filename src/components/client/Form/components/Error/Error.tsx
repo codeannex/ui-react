@@ -18,6 +18,11 @@ interface CommonProps {
    * Required prop used to track form field state.
    */
   field: string;
+
+  /**
+   * Sets the id attribute.
+   */
+  id?: string;
 }
 
 type ConditionalProps =
@@ -44,22 +49,27 @@ type ConditionalProps =
 
 export type ErrorProps = CommonProps & ConditionalProps;
 
-export const Error: React.FC<ErrorProps> = ({ as, classes, field, render }) => {
+export const Error: React.FC<ErrorProps> = ({ as, classes, field, id, render }) => {
   const { errors = {}, touched = {} } = useFormStateContext();
 
   const { classesError } = useStaticPropsContext();
 
   const _classes = classNames(classes && classes, classesError && classesError);
-
-  const error = errors[field] && touched[field] ? (errors[field] as string) : "";
+  const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
+  const _id = id || undefined;
 
   if (render) {
-    return render({ error });
+    return render({ error: _error });
   }
 
   return (
-    <Element as={as || ELEMENT_OPTION_TYPE.DIV} classes={_classes || undefined}>
-      {error}
+    <Element
+      as={as || ELEMENT_OPTION_TYPE.DIV}
+      classes={_classes || undefined}
+      id={_id}
+      role="alert"
+    >
+      {_error}
     </Element>
   );
 };

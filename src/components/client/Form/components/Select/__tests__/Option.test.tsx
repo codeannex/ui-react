@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { Option } from "@components/client/Form/components/Select/Option/Option";
+import { Option } from "@components/client/Form/components/Select/Option";
 
 import { SelectOption } from "../../../types";
 

@@ -8,11 +8,13 @@ export const enum STATE_ACTION_TYPE {
   RESET_FORM_STATE,
   SET_ERROR,
   SET_ERRORS,
-  SET_TOUCHED,
-  SET_PRE_SUBMIT,
-  SET_SUBMIT,
+  SET_FORM_LOAD_COMPLETE,
   SET_POST_SUBMIT,
+  SET_PRE_SUBMIT,
+  SET_TOUCHED,
+  SET_SUBMIT,
   SET_VALIDATORS,
+  UNSET_FORM_LOAD_COMPLETE,
   UNSET_TOUCHED,
   UPDATE_VALUE,
 }
@@ -20,6 +22,10 @@ export const enum STATE_ACTION_TYPE {
 export const enum FIELD_REF_ACTION_TYPE {
   REGISTER,
 }
+
+export const EVENT = {
+  CLEAR: "clear",
+};
 
 /**
  * Controls
@@ -31,6 +37,7 @@ export type SetTouched = { field: string; value: any };
 export type UnsetTouched = { field: string; value: any };
 export type UpdateValue = { field: string; value: any };
 
+export type _ClearForm = { dispatch: StateReducerActionContext };
 export type _GetValue = { field: string; values: Values };
 export type _GetValues = Values;
 export type _SetError = { field: string; value: any; dispatch: StateReducerActionContext };
@@ -56,6 +63,7 @@ export type StaticProps = {
 };
 
 export type Controls = {
+  clearForm: () => void;
   getValue: (field: GetValue) => string;
   getValues: () => Values;
   setError: ({ field, value }: SetError) => void;
@@ -67,6 +75,7 @@ export type Controls = {
 };
 
 export type _Controls = {
+  _clearForm: ({ dispatch }: _ClearForm) => void;
   _getValue: ({ field, values }: _GetValue) => string;
   _getValues: (values: _GetValues) => Values;
   _setError: ({ field, value, dispatch }: _SetError) => void;
@@ -94,10 +103,11 @@ export type Values = {
 };
 
 export type State = {
-  preSubmit?: string;
-  submit?: boolean;
-  postSubmit?: boolean;
   errors?: Errors;
+  formLoadComplete?: boolean;
+  preSubmit?: string;
+  postSubmit?: boolean;
+  submit?: boolean;
   touched?: Touched;
   values?: Values;
   validators?: Validators;
