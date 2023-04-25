@@ -1,59 +1,14 @@
-Form:
-
-NOTE:
-1. Might be a good idea to allow field component to be returned as a `li` for list markup.
-2. Error handle duplicate field names.
-
-TODO: 
-1. The `Label` for attribute should be the same as the input id. 
-2. The `Label` should be clickable and set focus to the associated input 
-3. CSS class name assignment fit according to style guied MSN.
-
-TODO Maybe:
-1. FieldSet
-2. Legend
-
-TODO: Long
-1. Fix proptype ref setup.
-2. Add compound component `Option` for Select component.
-3. Role attributes
-4. Accessibility
-5. Remove classname dependency. This is not being used in a complex manner.
-
-
-LEARNING:
-https://blog.logrocket.com/using-react-children-prop-with-typescript/
-
-
-
-CURRENT GIT:
-BRANCH: dev/
-1. 
-2. 
-3. 
-4. 
-5. 
-
-ISSUES:
-1. Radio error shows up weird, markup in general needs more thought.
-2. Surrounding the Field with a p tag gives invalid markup warning.
-3. Adding the error class was inconvientient since they should all look the same.
-4. 
-
-FIX:
-1. Looks like radio doesn't have an error class.
-
-// ======== TASK ======== //
+Form
 
 // ======== TASK ======== //
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. deleted excessive dirctory structure.
-2. fix reset not updated restricted flow bug.
-3. consolidated imports from playground and cypress form reference.
-4. wrote a bunch of tests.
-5. added support for controls clear form.
+1. 
+2. 
+3. 
+4. 
+5. 
 
 IN PROGRESS:
 1. 
@@ -63,8 +18,8 @@ NOTE:
 2. 
 
 TODO: 
-1. 
-2. 
+1. Remove error throwing code and replace with warnings.
+2. Add classesLabel to smart components.
 3. 
 
 TODO Maybe:
@@ -72,7 +27,7 @@ TODO Maybe:
 2. 
 
 TODO: Long
-1. 
+1. Add compound component `Option` for Select component.
 2. 
 
 ISSUES:
@@ -85,8 +40,8 @@ FIX:
 1. 
 
 LEFT OFF:
-1. Test is passing for autoFocus while it does not works
-2. Need to write test to ensure functionality for require associations doesn't break
+1. 
+2. 
 
 
 1. Associating a field label with an editor 
@@ -96,6 +51,16 @@ LEFT OFF:
 MOCKING CONTEXT:
 https://thedatalife.com/testing-and-mocking-react-contextapi-with-jest-and-react-testing-library
 
+LEARNING:
+https://blog.logrocket.com/using-react-children-prop-with-typescript/
+
+CURRENT BUGS:
+1. Create React App - internal safe set bug. Possibly caused by clearing form during un-mount.
+
+
+
+
+
 const input = container.querySelector("input");
 expect(input).toBeInTheDocument();
 expect(input).toHaveAttribute("disabled", "");
@@ -104,18 +69,3 @@ const info = screen.getByText(NAME_FOO);
 expect(info).toHaveAttribute("id", NAME_FOO);
 
 const result = getByText(text, { selector: 'h3' });
-
-
-
-console.log("19 ========");
-console.log(prettyDOM(container));
-console.log(errorId);
-console.log("19 ========");
-
-console.log("19 ========");
-console.log(prettyDOM(container));
-console.log("19 ========");
-
-console.log("19 ========");
-console.log(errorId);
-console.log("19 ========");

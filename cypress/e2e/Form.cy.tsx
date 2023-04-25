@@ -668,14 +668,30 @@ describe("component - Form", () => {
      * @Form_type Standard
      *
      * @Description
+     * Test component layout validating all accessibility attributes and
+     * associations are correct during form load and state changes where
+     * attribute updates are expected.
      *
      * @Covers
      * @form_types
-     *   @standard
+     *   @smart
      *
      * @form_features
+     *   @Accessibility
+     *     - 1
+     *     - 2
+     *     - 3
+     *     - 4
+     *     - 5
+     *     - 6
+     *     - 7
+     *     - 8
      *
      * @form_components
+     *   @input
+     *   @label
+     *   @error
+     *   @info
      */
     describe("Test 1", () => {});
   });
