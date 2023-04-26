@@ -152,6 +152,7 @@ export const InputText: React.FC<InputTextProps> = ({
 };
 
 InputText.propTypes = {
+  ariaDescribedby: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,

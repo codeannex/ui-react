@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { prettyDOM, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import { FormProvider, InputText } from "@components/client/Form";
 

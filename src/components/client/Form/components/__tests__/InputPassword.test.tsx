@@ -4,11 +4,14 @@ import { render } from "@testing-library/react";
 
 import { FormProvider, InputPassword } from "@components/client/Form/index";
 
+import * as state from "../../contexts/FormStateContext";
+
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
+const NAME_BAZ = "baz";
 
 const defaultProps = {
-  field: "firstName",
+  field: NAME_BAZ,
 };
 
 const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
@@ -38,13 +41,15 @@ describe("Component - Form: InputPassword", () => {
       expect(input).toHaveAttribute("type", "password");
     });
 
-    it("with `name` attribute added to input", () => {
-      const { container } = render(renderComponent({ name: NAME_FOO }));
+    describe("props", () => {
+      it("with `aria-describedby` attribute added to `input`", () => {
+        const { container } = render(renderComponent({ ariaDescribedby: NAME_FOO }));
 
-      const input = container.querySelector("input");
+        const input = container.querySelector("input");
 
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveAttribute("name", NAME_FOO);
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute("aria-describedby", NAME_FOO);
+      });
     });
 
     it("with class name/names attribute added to `input` from (string)", () => {
@@ -72,6 +77,15 @@ describe("Component - Form: InputPassword", () => {
       expect(input).toHaveAttribute("disabled", "");
     });
 
+    it("with `name` attribute added to input", () => {
+      const { container } = render(renderComponent({ name: NAME_FOO }));
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("name", NAME_FOO);
+    });
+
     it("with placeholder value", () => {
       const { container } = render(renderComponent({ placeholder: NAME_FOO }));
 
@@ -79,6 +93,40 @@ describe("Component - Form: InputPassword", () => {
 
       expect(input).toBeInTheDocument();
       expect(input).toHaveAttribute("placeholder", NAME_FOO);
+    });
+
+    it("with 'aria-invalid' set to 'false'", () => {
+      const { container } = render(renderComponent());
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("aria-invalid", "false");
+    });
+
+    it("with 'aria-invalid' set to 'false'", () => {
+      const { container } = render(renderComponent());
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("aria-invalid", "false");
+    });
+
+    it("with 'aria-invalid' set to 'false'", () => {
+      const spyState = jest.spyOn(state, "useFormStateContext").mockReturnValue({
+        errors: { [NAME_BAZ]: "Required" },
+        touched: { [NAME_BAZ]: true },
+      });
+
+      const { container } = render(renderComponent());
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("aria-invalid", "true");
+
+      spyState.mockReset();
     });
   });
 });

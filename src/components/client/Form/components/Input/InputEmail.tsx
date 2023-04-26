@@ -9,11 +9,18 @@ import {
   useStaticPropsContext,
 } from "@components/client/Form/index";
 
-import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
+import { ELEMENT_OPTION_TYPE, Element, INPUT_TYPE } from "@core/server/Element/Element";
 
 import { STATE_ACTION_TYPE } from "../../types";
 
 export type InputEmailProps = {
+  /**
+   * Sets aria describe by value to establish a relationship
+   * between widgets or groups and the text that describes
+   * them.
+   */
+  ariaDescribedby?: string;
+
   /**
    * Sets CSS class/classes on the component for styling.
    */
@@ -51,6 +58,7 @@ export type InputEmailProps = {
 };
 
 export const InputEmail: React.FC<InputEmailProps> = ({
+  ariaDescribedby,
   classes,
   defaultValue,
   disabled,
@@ -59,7 +67,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({
   name,
   placeholder,
 }) => {
-  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
+  const { errors = {}, values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -67,7 +75,9 @@ export const InputEmail: React.FC<InputEmailProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
+  const _ariaDescribedby = ariaDescribedby || undefined;
   const _classes = classNames(classes && classes);
+  const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
   const _required = !!validators[field];
   const _value = values[field] as string;
 
@@ -123,6 +133,8 @@ export const InputEmail: React.FC<InputEmailProps> = ({
   return (
     <Element
       as={ELEMENT_OPTION_TYPE.INPUT}
+      aria-describedby={_ariaDescribedby}
+      aria-invalid={_error ? "true" : "false"}
       classes={_classes || undefined}
       disabled={disabled}
       id={id || undefined}
@@ -140,6 +152,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({
 };
 
 InputEmail.propTypes = {
+  ariaDescribedby: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,

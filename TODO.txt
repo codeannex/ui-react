@@ -6,9 +6,9 @@ CURRENT GIT:
 BRANCH: dev/develop
 1. updated and completed projected goal for cypress smart component e2e tests.
 2. updated some components and associated tests.
-3. 
-4. 
-5. 
+3. updated all inputs and tests.
+4. updated info, error, label and tests.
+5. created cypress standard form e2e tests.
 
 IN PROGRESS:
 1. 
