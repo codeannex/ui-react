@@ -66,6 +66,12 @@ export type SmartInputProps = {
   infoAs?: "p" | "span" | "div";
 
   /**
+   * Hides info when the associated field has an
+   * error.
+   */
+  infoHideOnError?: boolean;
+
+  /**
    * Sets the label text.
    */
   label: string | undefined;
@@ -91,6 +97,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   id,
   info,
   infoAs,
+  infoHideOnError,
   label,
   name,
   placeholder,
@@ -105,7 +112,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
 
   const _classes = classNames(classes && classes);
   const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
-  const _info = info ? info : undefined;
+  const _info = infoHideOnError ? info && !_error : info;
   const _label = label ? label : undefined;
   const _required = !!validators[field];
   const _value = values[field] as string;
@@ -187,7 +194,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         onBlur={handleBlur}
         onChange={handleChange}
       />
-      {_info && !_error && (
+      {_info && (
         <Info
           as={infoAs || ELEMENT_OPTION_TYPE.DIV}
           field={field}

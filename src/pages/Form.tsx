@@ -478,42 +478,7 @@ export const FormPage = () => {
                 <Info field="firstName" id="first-name" />
                 <Error field="firstName" id="first-name-error" />
               </Element>
-
-              {/* <SmartInput
-                asType="text"
-                field="firstName"
-                id="standard-form-1-first-name"
-                info="InfoFirstName"
-                label="First Name"
-              /> */}
             </Element>
-            {/* <Element as={ELEMENT_OPTION_TYPE.DIV} id="standard-form-1-last-name-input">
-              <SmartInput
-                asType="text"
-                field="lastName"
-                id="standard-form-1-last-name"
-                info="InfoLastName"
-                label="Last Name"
-              />
-            </Element> */}
-            {/* <Element as={ELEMENT_OPTION_TYPE.DIV} id="standard-form-1-email-input">
-              <SmartInput
-                asType="email"
-                field="email"
-                id="standard-form-1-email"
-                info="InfoEmail"
-                label="Email"
-              />
-            </Element> */}
-            {/* <Element as={ELEMENT_OPTION_TYPE.DIV} id="standard-form-1-password-input">
-              <SmartInput
-                asType="password"
-                field="password"
-                id="standard-form-1-password"
-                info="InfoPassword."
-                label="Password"
-              />
-            </Element> */}
           </Form>
           <FormButton id="standard-form-1-submit-btn" formRef={formRefStandard7}>
             Clicker

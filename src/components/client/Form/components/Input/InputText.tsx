@@ -15,6 +15,13 @@ import { STATE_ACTION_TYPE } from "../../types";
 
 export type InputTextProps = {
   /**
+   * Sets aria describe by value to establish a relationship
+   * between widgets or groups and the text that describes
+   * them.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Sets CSS class/classes on the component for styling.
    */
   classes?: string | string[];
@@ -51,6 +58,7 @@ export type InputTextProps = {
 };
 
 export const InputText: React.FC<InputTextProps> = ({
+  ariaDescribedby,
   classes,
   defaultValue,
   disabled,
@@ -59,7 +67,7 @@ export const InputText: React.FC<InputTextProps> = ({
   name,
   placeholder,
 }) => {
-  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
+  const { errors = {}, values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -67,7 +75,9 @@ export const InputText: React.FC<InputTextProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
+  const _ariaDescribedby = ariaDescribedby || undefined;
   const _classes = classNames(classes && classes);
+  const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
   const _required = !!validators[field];
   const _value = values[field] as string;
 
@@ -123,6 +133,8 @@ export const InputText: React.FC<InputTextProps> = ({
   return (
     <Element
       as={ELEMENT_OPTION_TYPE.INPUT}
+      aria-describedby={_ariaDescribedby}
+      aria-invalid={_error ? "true" : "false"}
       classes={_classes || undefined}
       disabled={disabled}
       id={id || undefined}

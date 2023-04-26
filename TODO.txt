@@ -4,8 +4,8 @@ Form
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. 
-2. 
+1. updated and completed projected goal for cypress smart component e2e tests.
+2. updated some components and associated tests.
 3. 
 4. 
 5. 
@@ -43,7 +43,7 @@ LEFT OFF:
 1. 
 2. 
 
-
+COMMENTS:
 1. Associating a field label with an editor 
 2. Associating an editor with information text
 

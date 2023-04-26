@@ -4,29 +4,15 @@ import { render, screen } from "@testing-library/react";
 
 import { Error, ErrorProps } from "@components/client/Form/components/Error/Error";
 
-jest.mock("../../contexts/FormStaticPropsContext", () => {
-  return {
-    useStaticPropsContext: jest.fn().mockReturnValue({
-      classesError: "all",
-    }),
-  };
-});
-
-jest.mock("../../contexts/FormStateContext", () => {
-  return {
-    useFormStateContext: jest.fn().mockReturnValue({
-      errors: { name: "Required" },
-      touched: { name: true },
-    }),
-  };
-});
+import * as state from "../../contexts/FormStateContext";
+import * as staticState from "../../contexts/FormStaticPropsContext";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
-const FIELD = "name";
+const NAME_BAZ = "baz";
 
 const defaultProps = {
-  field: FIELD,
+  field: NAME_BAZ,
 };
 
 const renderComponent = (overrideDefaultProps?: ErrorProps): JSX.Element => {
@@ -42,24 +28,49 @@ describe("Component - Form: Error", () => {
     expect(container).toBeDefined();
   });
 
-  it("enders with global `class name/names` attribute to container (string)", () => {
+  it("renders with global `class name/names` attribute to container (string)", () => {
+    const spyStaticState = jest.spyOn(staticState, "useStaticPropsContext").mockReturnValue({
+      classesError: "error",
+    });
+
+    const spyState = jest.spyOn(state, "useFormStateContext").mockReturnValue({
+      errors: { [NAME_BAZ]: "Required" },
+      touched: { [NAME_BAZ]: true },
+    });
+
     render(
       renderComponent({
-        field: FIELD,
+        field: NAME_BAZ,
       })
     );
 
     const error = screen.getByText("Required");
 
-    expect(error).toHaveClass("all");
+    expect(error).toHaveClass("error");
+
+    spyStaticState.mockReset();
+    spyState.mockReset();
   });
 
   describe("props", () => {
+    let spy: any;
+
+    beforeEach(() => {
+      spy = jest.spyOn(state, "useFormStateContext").mockReturnValue({
+        errors: { [NAME_BAZ]: "Required" },
+        touched: { [NAME_BAZ]: true },
+      });
+    });
+
+    afterEach(() => {
+      spy.mockReset();
+    });
+
     it("classes should add `class name/names` attribute to container (string)", () => {
       render(
         renderComponent({
           classes: NAME_FOO,
-          field: FIELD,
+          field: NAME_BAZ,
         })
       );
 
@@ -72,7 +83,7 @@ describe("Component - Form: Error", () => {
       render(
         renderComponent({
           classes: [NAME_FOO, NAME_BAR],
-          field: FIELD,
+          field: NAME_BAZ,
         })
       );
 
@@ -84,7 +95,7 @@ describe("Component - Form: Error", () => {
     it("id should add `id` attribute to error element", () => {
       render(
         renderComponent({
-          field: FIELD,
+          field: NAME_BAZ,
           id: NAME_FOO,
         })
       );
@@ -92,6 +103,25 @@ describe("Component - Form: Error", () => {
       const error = screen.getByText("Required");
 
       expect(error).toHaveAttribute("id", NAME_FOO);
+    });
+
+    describe("render callback", () => {
+      it("should render error via `render` override callback", () => {
+        render(
+          renderComponent({
+            field: NAME_BAZ,
+            id: NAME_FOO,
+
+            render: ({ error }) => {
+              return error && <div>{error}</div>;
+            },
+          })
+        );
+
+        const error = screen.getByText("Required");
+
+        expect(error).toBeDefined();
+      });
     });
   });
 });

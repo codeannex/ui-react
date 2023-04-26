@@ -3,9 +3,14 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-import { useFormStateContext, useStaticPropsContext } from "@components/client/Form/index";
+import { Errors, useFormStateContext, useStaticPropsContext } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
+
+export type RenderArgs = {
+  error: string;
+  errors: Errors;
+};
 
 interface CommonProps {
   /**
@@ -31,7 +36,7 @@ type ConditionalProps =
        * Renders custom html while passing the error
        * indicator into the callback.
        */
-      render?: ({ error }: any) => any;
+      render?: ({ error, errors }: RenderArgs) => any;
 
       /** Prohibited if `render` is used. **/
       as?: never;
@@ -59,18 +64,22 @@ export const Error: React.FC<ErrorProps> = ({ as, classes, field, id, render }) 
   const _id = id || undefined;
 
   if (render) {
-    return render({ error: _error });
+    return render({ error: _error, errors });
   }
 
   return (
-    <Element
-      as={as || ELEMENT_OPTION_TYPE.DIV}
-      classes={_classes || undefined}
-      id={_id}
-      role="alert"
-    >
-      {_error}
-    </Element>
+    <>
+      {_error && (
+        <Element
+          as={as || ELEMENT_OPTION_TYPE.DIV}
+          classes={_classes || undefined}
+          id={_id}
+          role="alert"
+        >
+          {_error}
+        </Element>
+      )}
+    </>
   );
 };
 
