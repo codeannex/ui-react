@@ -2,14 +2,6 @@ Form
 
 // ======== TASK ======== //
 
-CURRENT GIT:
-BRANCH: dev/develop
-1. updated and completed projected goal for cypress smart component e2e tests.
-2. updated some components and associated tests.
-3. updated all inputs and tests.
-4. updated info, error, label and tests.
-5. created cypress standard form e2e tests.
-
 IN PROGRESS:
 1. 
 
@@ -43,10 +35,13 @@ LEFT OFF:
 1. 
 2. 
 
-COMMENTS:
-1. Associating a field label with an editor 
-2. Associating an editor with information text
-
+CURRENT GIT:
+BRANCH: dev/develop
+1. updated and completed projected goal for cypress smart component e2e tests.
+2. updated some components and associated tests.
+3. updated all inputs and tests.
+4. updated info, error, label and tests.
+5. created cypress standard form e2e tests.
 
 MOCKING CONTEXT:
 https://thedatalife.com/testing-and-mocking-react-contextapi-with-jest-and-react-testing-library
@@ -56,6 +51,7 @@ https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 CURRENT BUGS:
 1. Create React App - internal safe set bug. Possibly caused by clearing form during un-mount.
+2. Aria invalid is being checked for in cypress tests on optional fields. 
 
 
 

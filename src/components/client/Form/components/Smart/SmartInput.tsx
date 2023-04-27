@@ -170,6 +170,11 @@ export const SmartInput: React.FC<SmartInputProps> = ({
     });
   }, []);
 
+  console.log("19 ========");
+  console.log(_required);
+  console.log(field);
+  console.log("19 ========");
+
   return (
     <Element as={ELEMENT_OPTION_TYPE.DIV}>
       {_label && (
@@ -179,7 +184,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
       )}
       <Element
         aria-describedby={_ariaDescribById}
-        aria-invalid={_error ? "true" : "false"}
+        aria-invalid={_required ? (_error ? "true" : "false") : undefined}
         as={ELEMENT_OPTION_TYPE.INPUT}
         classes={_classes || undefined}
         disabled={disabled}

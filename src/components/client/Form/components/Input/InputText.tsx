@@ -130,18 +130,22 @@ export const InputText: React.FC<InputTextProps> = ({
     });
   }, []);
 
+  console.log("19 ========");
+  console.log(_required);
+  console.log("19 ========");
+
   return (
     <Element
       as={ELEMENT_OPTION_TYPE.INPUT}
       aria-describedby={_ariaDescribedby}
-      aria-invalid={_error ? "true" : "false"}
+      aria-invalid={_required ? (_error ? "true" : "false") : undefined}
       classes={_classes || undefined}
       disabled={disabled}
       id={id || undefined}
       name={name || undefined}
       placeholder={placeholder}
       ref={ref}
-      required={_required}
+      required={_required || undefined}
       type={INPUT_TYPE.TEXT}
       value={_value || ""}
       /** Handlers */
