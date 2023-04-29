@@ -14,7 +14,7 @@ describe("utils - isFunction", () => {
   });
 
   describe("should return false", () => {
-    test("when value is ", () => {
+    test("when value is not a function", () => {
       expect(isFunction("foo")).toBeFalsy();
       expect(isFunction(19)).toBeFalsy();
       expect(isFunction({})).toBeFalsy();

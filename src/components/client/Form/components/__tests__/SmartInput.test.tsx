@@ -6,7 +6,7 @@ import { SmartInput, SmartInputProps } from "@components/client/Form/index";
 
 import { ELEMENT_OPTION_TYPE } from "@core/server/Element/Element";
 
-import * as hook from "../../contexts/FormStateContext";
+import * as state from "../../contexts/FormStateContext";
 
 const INPUT_FIELD = "name";
 const INPUT_ID = "name";
@@ -40,7 +40,7 @@ describe("Component - Form: SmartInput", () => {
     });
 
     it("with correct `value`", () => {
-      const spy = jest.spyOn(hook, "useFormStateContext").mockReturnValue({
+      const spy = jest.spyOn(state, "useFormStateContext").mockReturnValue({
         values: { [INPUT_FIELD]: "abc" },
       });
 
@@ -61,103 +61,13 @@ describe("Component - Form: SmartInput", () => {
       spy.mockReset();
     });
 
-    describe("props", () => {
-      it("as `text` type input", () => {
-        const { container } = render(renderComponent());
+    it("with `aria-describedby` attribute added to `input`", () => {
+      const { container } = render(renderComponent());
 
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+      const input = container.querySelector("input");
 
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute("type", "text");
-      });
-
-      it("as `email` type input", () => {
-        const { container } = render(
-          renderComponent({
-            asType: "email",
-            field: INPUT_FIELD,
-            id: INPUT_ID,
-            label: INPUT_LABEL,
-          })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute("type", "email");
-      });
-
-      it("classes should add `class name/names` attribute to container (string)", () => {
-        const { container } = render(
-          renderComponent({
-            field: INPUT_FIELD,
-            id: INPUT_ID,
-            label: INPUT_LABEL,
-            classes: NAME_FOO,
-          })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toHaveClass(NAME_FOO);
-      });
-
-      it("classes should add `class name/names` attribute to container (array)", () => {
-        const { container } = render(
-          renderComponent({
-            field: INPUT_FIELD,
-            id: INPUT_ID,
-            label: INPUT_LABEL,
-            classes: [NAME_FOO, NAME_BAR],
-          })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
-      });
-
-      it("disabled should add the disabled attribute to the input", () => {
-        const { container } = render(
-          renderComponent({
-            field: INPUT_FIELD,
-            id: INPUT_ID,
-            label: INPUT_LABEL,
-            disabled: true,
-          })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute("disabled");
-      });
-
-      it("id should add `id` attribute to label element", () => {
-        const { container } = render(
-          renderComponent({
-            field: INPUT_FIELD,
-            id: INPUT_ID,
-            label: INPUT_LABEL,
-          })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute(ID, INPUT_ID);
-      });
-
-      it("name should be added `name` attribute", () => {
-        const { container } = render(
-          renderComponent({ field: INPUT_FIELD, id: INPUT_ID, label: INPUT_LABEL, name: NAME_FOO })
-        );
-
-        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
-
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute(NAME, NAME_FOO);
-      });
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("aria-describedby");
     });
 
     it("with placeholder value", () => {
@@ -174,6 +84,114 @@ describe("Component - Form: SmartInput", () => {
 
       expect(input).toBeInTheDocument();
       expect(input).toHaveAttribute("placeholder", NAME_FOO);
+    });
+
+    it("with 'aria-invalid' set to 'false'", () => {
+      const { container } = render(renderComponent());
+
+      const input = container.querySelector("input");
+
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveAttribute("aria-invalid", "false");
+    });
+
+    describe("props", () => {
+      it("with `text` type input", () => {
+        const { container } = render(renderComponent());
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute("type", "text");
+      });
+
+      it("with `email` type input", () => {
+        const { container } = render(
+          renderComponent({
+            asType: "email",
+            field: INPUT_FIELD,
+            id: INPUT_ID,
+            label: INPUT_LABEL,
+          })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute("type", "email");
+      });
+
+      it("with class name/names attribute added to `input` from (string)", () => {
+        const { container } = render(
+          renderComponent({
+            field: INPUT_FIELD,
+            id: INPUT_ID,
+            label: INPUT_LABEL,
+            classes: NAME_FOO,
+          })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toHaveClass(NAME_FOO);
+      });
+
+      it("with class name/names attribute added to `input` from (array)", () => {
+        const { container } = render(
+          renderComponent({
+            field: INPUT_FIELD,
+            id: INPUT_ID,
+            label: INPUT_LABEL,
+            classes: [NAME_FOO, NAME_BAR],
+          })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
+      });
+
+      it("with disabled attribute added to `input`", () => {
+        const { container } = render(
+          renderComponent({
+            field: INPUT_FIELD,
+            id: INPUT_ID,
+            label: INPUT_LABEL,
+            disabled: true,
+          })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute("disabled");
+      });
+
+      it("with id attribute added to `label` element", () => {
+        const { container } = render(
+          renderComponent({
+            field: INPUT_FIELD,
+            id: INPUT_ID,
+            label: INPUT_LABEL,
+          })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute(ID, INPUT_ID);
+      });
+
+      it("with name attribute added to `input`", () => {
+        const { container } = render(
+          renderComponent({ field: INPUT_FIELD, id: INPUT_ID, label: INPUT_LABEL, name: NAME_FOO })
+        );
+
+        const input = container.querySelector(ELEMENT_OPTION_TYPE.INPUT);
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute(NAME, NAME_FOO);
+      });
     });
   });
 
@@ -289,7 +307,7 @@ describe("Component - Form: SmartInput", () => {
     let spy: any = null;
 
     beforeEach(() => {
-      spy = jest.spyOn(hook, "useFormStateContext").mockReturnValue({
+      spy = jest.spyOn(state, "useFormStateContext").mockReturnValue({
         errors: { [INPUT_FIELD]: "Required" },
         touched: { [INPUT_FIELD]: true },
       });

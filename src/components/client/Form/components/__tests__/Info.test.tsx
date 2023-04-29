@@ -21,13 +21,59 @@ const renderComponent = (overrideDefaultProps?: InfoProps): JSX.Element => {
 };
 
 describe("Component - Form: Error", () => {
-  it("renders without crashing", () => {
-    const { container } = render(renderComponent());
+  describe("renders", () => {
+    it("without crashing", () => {
+      const { container } = render(renderComponent());
 
-    expect(container).toBeDefined();
+      expect(container).toBeDefined();
+    });
+
+    describe("props", () => {
+      it("with class name/names attribute added to  container` from (string)", () => {
+        render(
+          renderComponent({
+            classes: NAME_BAR,
+            field: NAME_BAZ,
+            message: NAME_FOO,
+          })
+        );
+
+        const info = screen.getByText(NAME_FOO);
+
+        expect(info).toHaveClass(NAME_BAR);
+      });
+
+      it("with class name/names attribute added to `container` from (array)", () => {
+        render(
+          renderComponent({
+            classes: [NAME_FOO, NAME_BAR],
+            field: NAME_BAZ,
+            message: NAME_FOO,
+          })
+        );
+
+        const info = screen.getByText(NAME_FOO);
+
+        expect(info).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
+      });
+
+      it("with `id` attribute to info element", () => {
+        render(
+          renderComponent({
+            field: NAME_BAZ,
+            id: NAME_FOO,
+            message: NAME_FOO,
+          })
+        );
+
+        const info = screen.getByText(NAME_FOO);
+
+        expect(info).toHaveAttribute("id", NAME_FOO);
+      });
+    });
   });
 
-  it("should NOT render", () => {
+  it("should NOT render with error", () => {
     const spy = jest.spyOn(hook, "useFormStateContext").mockReturnValue({
       errors: { [NAME_BAZ]: "Required" },
       touched: { [NAME_BAZ]: true },
@@ -38,6 +84,7 @@ describe("Component - Form: Error", () => {
         field: NAME_BAZ,
         id: NAME_FOO,
         message: NAME_FOO,
+        hideOnError: true,
       })
     );
 
@@ -48,47 +95,48 @@ describe("Component - Form: Error", () => {
     spy.mockReset();
   });
 
-  describe("props", () => {
-    it("classes should add `class name/names` attribute to container (string)", () => {
-      render(
-        renderComponent({
-          classes: NAME_BAR,
-          field: NAME_BAZ,
-          message: NAME_FOO,
-        })
-      );
-
-      const info = screen.getByText(NAME_FOO);
-
-      expect(info).toHaveClass(NAME_BAR);
-    });
-
-    it("classes should add `class name/names` attribute to container (array)", () => {
-      render(
-        renderComponent({
-          classes: [NAME_FOO, NAME_BAR],
-          field: NAME_BAZ,
-          message: NAME_FOO,
-        })
-      );
-
-      const info = screen.getByText(NAME_FOO);
-
-      expect(info).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
-    });
-
-    it("id should add `id` attribute to info element", () => {
+  describe("render callback", () => {
+    it("should render via `render` override when no error exists", () => {
       render(
         renderComponent({
           field: NAME_BAZ,
           id: NAME_FOO,
           message: NAME_FOO,
+
+          render: ({ error, id, message }) => {
+            return !error && <div id={id}>{message}</div>;
+          },
         })
       );
 
       const info = screen.getByText(NAME_FOO);
 
-      expect(info).toHaveAttribute("id", NAME_FOO);
+      expect(info).toBeDefined();
+    });
+
+    it("should not render via `render` override when error exists", () => {
+      const spy = jest.spyOn(hook, "useFormStateContext").mockReturnValue({
+        errors: { [NAME_BAZ]: "Required" },
+        touched: { [NAME_BAZ]: true },
+      });
+
+      render(
+        renderComponent({
+          field: NAME_BAZ,
+          id: NAME_FOO,
+          message: NAME_FOO,
+
+          render: ({ error, id, message }) => {
+            return !error && <div id={id}>{message}</div>;
+          },
+        })
+      );
+
+      const info = screen.queryByText(NAME_FOO);
+
+      expect(info).toBeNull();
+
+      spy.mockReset();
     });
   });
 });
