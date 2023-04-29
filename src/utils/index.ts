@@ -1,6 +1,12 @@
+/**
+ * Utility Modules
+ */
 export * from "./store/store";
+
+/**
+ * Utilites
+ */
 export * from "./cloneObject";
-export * from "./isEqual";
 export * from "./deleteUndefinedProps";
 export * from "./getGuid";
 export * from "./isBrowser";

@@ -15,6 +15,13 @@ import { STATE_ACTION_TYPE } from "../../types";
 
 export type InputProps = {
   /**
+   * Sets aria describe by value to establish a relationship
+   * between widgets or groups and the text that describes
+   * them.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Sets the input attribute `type` to determine type of input
    * field. Supports all input types.
    */
@@ -57,7 +64,8 @@ export type InputProps = {
 };
 
 export const Input: React.FC<InputProps> = ({
-  asType = "text",
+  ariaDescribedby,
+  asType,
   classes,
   defaultValue,
   disabled,
@@ -66,7 +74,7 @@ export const Input: React.FC<InputProps> = ({
   name,
   placeholder,
 }) => {
-  const { values = {}, touched = {}, validators = {} } = useFormStateContext();
+  const { errors = {}, values = {}, touched = {}, validators = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -74,8 +82,19 @@ export const Input: React.FC<InputProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const _classes = classNames(classes && classes);
-  const _required = !!validators[field];
+  const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
+
+  /** Attributes **/
+  const _required = !!validators[field] || undefined;
+  const _ariaDescribedby = ariaDescribedby || undefined;
+  const _ariaInvalid = _required ? (_error ? "true" : "false") : undefined;
+  const _classes = classNames(classes && classes) || undefined;
+  const _disabled = disabled || undefined;
+  const _id = id || undefined;
+  const _name = name || undefined;
+  const _placeholder = placeholder || undefined;
+  const _type = asType || "text";
+
   const _value = values[field] as string;
 
   /**
@@ -130,14 +149,16 @@ export const Input: React.FC<InputProps> = ({
   return (
     <Element
       as={ELEMENT_OPTION_TYPE.INPUT}
-      classes={_classes || undefined}
-      disabled={disabled}
-      id={id || undefined}
-      name={name || undefined}
-      placeholder={placeholder}
+      aria-describedby={_ariaDescribedby}
+      aria-invalid={_ariaInvalid}
+      classes={_classes}
+      disabled={_disabled}
+      id={_id}
+      name={_name}
+      placeholder={_placeholder}
       ref={ref}
       required={_required}
-      type={asType}
+      type={_type}
       value={_value || ""}
       /** Handlers **/
       onBlur={handleBlur}
@@ -147,10 +168,16 @@ export const Input: React.FC<InputProps> = ({
 };
 
 Input.propTypes = {
+  /** Required **/
+  field: PropTypes.string.isRequired,
+
+  /** Optional **/
+  ariaDescribedby: PropTypes.string,
   asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  field: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  name: PropTypes.string,
   placeholder: PropTypes.string,
 };

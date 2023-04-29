@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render } from "@testing-library/react";
 
-import { FormProvider, InputText } from "@components/client/Form/index";
+import { FormProvider, Input } from "@components/client/Form/index";
 
 const NAME_FOO = "foo";
 const NAME_BAR = "bar";
@@ -16,7 +16,7 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
 
   return (
     <FormProvider>
-      <InputText {...props} />
+      <Input {...props} />
     </FormProvider>
   );
 };
