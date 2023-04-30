@@ -2,3 +2,5 @@ node_modules
 dist
 .vscode
 cypress
+cypress.config.ts
+Main.tsx
