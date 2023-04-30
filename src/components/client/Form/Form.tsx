@@ -161,7 +161,7 @@ const _Form: React.FC<FormProps> = ({
   const { validator, fieldRef } = useStaticPropsContext();
 
   // TODO: !!! EXPERIMENTAL !!! develop futher as the API must be simple and useful.
-  const { executePreSubmit, status } = usePreSubmit(onPreSubmit);
+  const { executePreSubmit } = usePreSubmit(onPreSubmit);
 
   const controls = useFormControls({
     _clearForm,
@@ -437,7 +437,7 @@ const _Form: React.FC<FormProps> = ({
 };
 
 export const Form = Object.assign(
-  React.forwardRef((props: FormProps, ref: React.Ref<FormRef>): JSX.Element => {
+  (props: FormProps): JSX.Element => {
     const staticProps = React.useMemo((): StaticProps => {
       return {
         classesError: props?.classesError,
@@ -451,13 +451,13 @@ export const Form = Object.assign(
         <_Form {...props} formRef={props.formRef} />
       </FormProvider>
     );
-  }),
+  },
   {
     Control: Control,
   }
 );
 
-Form.propTypes = {
+_Form.propTypes = {
   autoFocus: PropTypes.bool,
   children: PropTypes.node,
   formRef: PropTypes.func.isRequired,

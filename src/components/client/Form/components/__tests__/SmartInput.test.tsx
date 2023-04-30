@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { prettyDOM, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { SmartInput, SmartInputProps } from "@components/client/Form/index";
 
