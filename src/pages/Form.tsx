@@ -8,6 +8,7 @@ import {
   Info,
   Input,
   Label,
+  SmartInput,
   Values,
 } from "@components/client/Form";
 
@@ -48,8 +49,6 @@ export const FormPage = () => {
       password: values.password ? undefined : "Required Standard 1",
     };
   };
-
-  const handleValidateStandard2 = (values: Values) => {};
 
   const handleValidateStandard3 = (values: Values) => {
     return {
@@ -96,8 +95,6 @@ export const FormPage = () => {
     };
   };
 
-  const handleValidateControl2 = (values: Values) => {};
-
   const handleValidateControl3 = (values: Values) => {
     return {
       firstName: values.firstName ? undefined : "Required Standard 3",
@@ -142,8 +139,6 @@ export const FormPage = () => {
       password: values.password ? undefined : "Required Smart 1",
     };
   };
-
-  const handleValidateSmart2 = (values: Values) => {};
 
   const handleValidateSmart3 = (values: Values) => {
     return {
@@ -1052,7 +1047,7 @@ export const FormPage = () => {
 
         {/* Control Form 2 ======== */}
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2">
-          <Form formRef={setFormRefStandard2} onSubmit={handleSubmit}>
+          <Form formRef={setFormRefControl2} onSubmit={handleSubmit}>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2-first-name-input">
               <Form.Control
                 field="firstName"
@@ -1190,10 +1185,10 @@ export const FormPage = () => {
               />
             </Element>
           </Form>
-          <FormButton id="control-form-2-submit-btn" formRef={formRefStandard2}>
+          <FormButton id="control-form-2-submit-btn" formRef={formRefControl2}>
             Clicker
           </FormButton>
-          <Element as="button" id="control-form-2-clear-btn" onClick={handleClearStandard2}>
+          <Element as="button" id="control-form-2-clear-btn" onClick={handleClearControl2}>
             Clear
           </Element>
         </Element>
@@ -1202,9 +1197,9 @@ export const FormPage = () => {
         {/* Control Form 3 ======== */}
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3">
           <Form
-            formRef={setFormRefStandard3}
+            formRef={setFormRefControl3}
             onSubmit={handleSubmit}
-            onValidate={handleValidateStandard3}
+            onValidate={handleValidateControl3}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3-first-name-input">
               <Form.Control
@@ -1359,10 +1354,10 @@ export const FormPage = () => {
               />
             </Element>
           </Form>
-          <FormButton id="control-form-3-submit-btn" formRef={formRefStandard3}>
+          <FormButton id="control-form-3-submit-btn" formRef={formRefControl3}>
             Clicker
           </FormButton>
-          <Element as="button" id="control-form-3-clear-btn" onClick={handleClearStandard3}>
+          <Element as="button" id="control-form-3-clear-btn" onClick={handleClearControl3}>
             Clear
           </Element>
         </Element>
@@ -1371,10 +1366,10 @@ export const FormPage = () => {
         {/* Control Form 4 ======== */}
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4">
           <Form
-            formRef={setFormRefStandard4}
+            formRef={setFormRefControl4}
             validateOnSubmitOnly
             onSubmit={handleSubmit}
-            onValidate={handleValidateStandard4}
+            onValidate={handleValidateControl4}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4-first-name-input">
               <Form.Control
@@ -1529,10 +1524,10 @@ export const FormPage = () => {
               />
             </Element>
           </Form>
-          <FormButton id="control-form-4-submit-btn" formRef={formRefStandard4}>
+          <FormButton id="control-form-4-submit-btn" formRef={formRefControl4}>
             Clicker
           </FormButton>
-          <Element as="button" id="control-form-4-clear-btn" onClick={handleClearStandard4}>
+          <Element as="button" id="control-form-4-clear-btn" onClick={handleClearControl4}>
             Clear
           </Element>
         </Element>
@@ -1542,9 +1537,9 @@ export const FormPage = () => {
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5">
           <Form
             autoFocus
-            formRef={setFormRefStandard5}
+            formRef={setFormRefControl5}
             onSubmit={handleSubmit}
-            onValidate={handleValidateStandard5}
+            onValidate={handleValidateControl5}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5-first-name-input">
               <Form.Control
@@ -1699,10 +1694,10 @@ export const FormPage = () => {
               />
             </Element>
           </Form>
-          <FormButton id="control-form-5-submit-btn" formRef={formRefStandard5}>
+          <FormButton id="control-form-5-submit-btn" formRef={formRefControl5}>
             Clicker
           </FormButton>
-          <Element as="button" id="control-form-5-clear-btn" onClick={handleClearStandard5}>
+          <Element as="button" id="control-form-5-clear-btn" onClick={handleClearControl5}>
             Clearå
           </Element>
         </Element>
@@ -1713,9 +1708,9 @@ export const FormPage = () => {
           <Form
             autoFocus
             validateOnSubmitOnly
-            formRef={setFormRefStandard6}
+            formRef={setFormRefControl6}
             onSubmit={handleSubmit}
-            onValidate={handleValidateStandard6}
+            onValidate={handleValidateControl6}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-6-first-name-input">
               <Form.Control
@@ -1870,14 +1865,336 @@ export const FormPage = () => {
               />
             </Element>
           </Form>
-          <FormButton id="control-form-6-submit-btn" formRef={formRefStandard6}>
+          <FormButton id="control-form-6-submit-btn" formRef={formRefControl6}>
             Clicker
           </FormButton>
-          <Element as="button" id="control-form-6-clear-btn" onClick={handleClearStandard6}>
+          <Element as="button" id="control-form-6-clear-btn" onClick={handleClearControl6}>
             Clear
           </Element>
         </Element>
         {/* Control Form 6 ======== END */}
+
+        {/* Smart Form 1 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1">
+          <Form
+            formRef={setFormRefSmart1}
+            onSubmit={handleSubmit}
+            onValidate={handleValidateSmart1}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-1-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-1-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-1-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-1-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-1-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-1-submit-btn" formRef={formRefSmart1}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-1-clear-btn" onClick={handleClearSmart1}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 1 ======== END */}
+
+        {/* Smart Form 2 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2">
+          <Form formRef={setFormRefSmart2} onSubmit={handleSubmit}>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-2-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-2-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-2-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-2-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-2-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-2-submit-btn" formRef={formRefSmart2}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-2-clear-btn" onClick={handleClearSmart2}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 2 ======== END */}
+
+        {/* Smart Form 3 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3">
+          <Form
+            classesError={"smart-form-3-error"}
+            formRef={setFormRefSmart3}
+            onSubmit={handleSubmit}
+            onValidate={handleValidateSmart3}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-3-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-3-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-3-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-3-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-3-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-3-submit-btn" formRef={formRefSmart3}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-3-clear-btn" onClick={handleClearSmart3}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 3 ======== END */}
+
+        {/* Smart Form 4 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4">
+          <Form
+            classesError={"smart-form-4-error"}
+            validateOnSubmitOnly
+            formRef={setFormRefSmart4}
+            onSubmit={handleSubmit}
+            onValidate={handleValidateSmart4}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-4-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-4-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-4-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-4-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-4-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-4-submit-btn" formRef={formRefSmart4}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-4-clear-btn" onClick={handleClearSmart4}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 4 ======== END */}
+
+        {/* Smart Form 5 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5">
+          <Form
+            classesError={"smart-form-5-error"}
+            autoFocus
+            formRef={setFormRefSmart5}
+            onSubmit={handleSubmit}
+            onValidate={handleValidateSmart5}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-5-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-5-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-5-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-5-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-5-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-5-submit-btn" formRef={formRefSmart5}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-5-clear-btn" onClick={handleClearSmart5}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 5 ======== END */}
+
+        {/* Smart Form 6 ======== */}
+        <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6">
+          <Form
+            classesError={"smart-form-6-error"}
+            autoFocus
+            validateOnSubmitOnly
+            formRef={setFormRefSmart6}
+            onSubmit={handleSubmit}
+            onValidate={handleValidateSmart6}
+          >
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-first-name-input">
+              <SmartInput
+                asType="text"
+                field="firstName"
+                id="smart-form-6-first-name"
+                info="InfoFirstName"
+                label="First Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-last-name-input">
+              <SmartInput
+                asType="text"
+                field="lastName"
+                id="smart-form-6-last-name"
+                info="InfoLastName"
+                label="Last Name"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-email-input">
+              <SmartInput
+                asType="email"
+                field="email"
+                id="smart-form-6-email"
+                info="InfoEmail"
+                label="Email"
+              />
+            </Element>
+            <Element as={ELEMENT_OPTION_TYPE.DIV} id="smart-form-6-password-input">
+              <SmartInput
+                asType="password"
+                field="password"
+                id="smart-form-6-password"
+                info="InfoPassword."
+                label="Password"
+              />
+            </Element>
+          </Form>
+          <FormButton id="smart-form-6-submit-btn" formRef={formRefSmart6}>
+            Clicker
+          </FormButton>
+          <Element as="button" id="smart-form-6-clear-btn" onClick={handleClearSmart6}>
+            Clear
+          </Element>
+        </Element>
+        {/* Smart Form 6 ======== END */}
       </main>
     </div>
   );

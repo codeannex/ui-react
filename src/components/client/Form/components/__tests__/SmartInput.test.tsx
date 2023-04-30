@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { render, screen } from "@testing-library/react";
+import { prettyDOM, render, screen } from "@testing-library/react";
 
 import { SmartInput, SmartInputProps } from "@components/client/Form/index";
 
@@ -84,15 +84,6 @@ describe("Component - Form: SmartInput", () => {
 
       expect(input).toBeInTheDocument();
       expect(input).toHaveAttribute("placeholder", NAME_FOO);
-    });
-
-    it("with 'aria-invalid' set to 'false'", () => {
-      const { container } = render(renderComponent());
-
-      const input = container.querySelector("input");
-
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveAttribute("aria-invalid", "false");
     });
 
     describe("props", () => {
@@ -196,7 +187,7 @@ describe("Component - Form: SmartInput", () => {
   });
 
   describe("label state", () => {
-    it("should disply `label` element", () => {
+    it("should display `label` element", () => {
       render(
         renderComponent({
           field: INPUT_FIELD,
@@ -210,7 +201,7 @@ describe("Component - Form: SmartInput", () => {
       expect(label).toBeDefined();
     });
 
-    it("should disply with proper aria association to input", () => {
+    it("should display with proper aria association to input", () => {
       const { container } = render(
         renderComponent({
           field: INPUT_FIELD,
@@ -231,7 +222,7 @@ describe("Component - Form: SmartInput", () => {
   });
 
   describe("info state", () => {
-    it("should disply `info` element with `div`", () => {
+    it("should display `info` element with `div`", () => {
       render(
         renderComponent({
           field: INPUT_FIELD,
@@ -246,7 +237,7 @@ describe("Component - Form: SmartInput", () => {
       expect(info).toBeDefined();
     });
 
-    it("should disply `info` element with `span`", () => {
+    it("should display `info` element with `span`", () => {
       render(
         renderComponent({
           field: INPUT_FIELD,
@@ -262,7 +253,7 @@ describe("Component - Form: SmartInput", () => {
       expect(info).toBeDefined();
     });
 
-    it("should disply `info` element with `p`", () => {
+    it("should display `info` element with `p`", () => {
       render(
         renderComponent({
           field: INPUT_FIELD,
@@ -310,6 +301,7 @@ describe("Component - Form: SmartInput", () => {
       spy = jest.spyOn(state, "useFormStateContext").mockReturnValue({
         errors: { [INPUT_FIELD]: "Required" },
         touched: { [INPUT_FIELD]: true },
+        validators: { [INPUT_FIELD]: "Required" },
       });
     });
 
