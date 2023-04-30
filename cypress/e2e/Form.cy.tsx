@@ -616,7 +616,7 @@ describe("component - Form", () => {
        * auto focus during invalid submission attempts.
        *
        */
-      it("should successfully submit validated form after auto focus (on change) ", () => {
+      it("should successfully submit validated form after auto focus (on submit) ", () => {
         cy.get("#standard-form-6").within(() => {
           /**
            * Add value, remove and blur to set the error.
@@ -1291,7 +1291,7 @@ describe("component - Form", () => {
        * auto focus during invalid submission attempts.
        *
        */
-      it("should successfully submit validated form after auto focus (on change) ", () => {
+      it("should successfully submit validated form after auto focus (on submit) ", () => {
         cy.get("#control-form-6").within(() => {
           /**
            * Add value, remove and blur to set the error.

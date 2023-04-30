@@ -32,7 +32,6 @@ import {
   _setErrors,
   _setTouched,
   _submit,
-  _unsetTouched,
   _updateValue,
 } from "./controls";
 import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Validators, Values } from "./types";
@@ -172,7 +171,6 @@ const _Form: React.FC<FormProps> = ({
     _setErrors,
     _setTouched,
     _submit,
-    _unsetTouched,
     _updateValue,
   });
 

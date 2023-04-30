@@ -907,40 +907,39 @@ export const FormPage = () => {
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-1-first-name-input">
               <Form.Control
                 field="firstName"
-                render={({ ref, error, value, onChange, onBlur }) => {
-                  console.log(error);
-                  return (
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
                     <div>
-                      <div>
-                        <label htmlFor="control-form-1-first-name">
-                          First Name
-                          <span aria-hidden="true" aria-required="true" aria-label="required">
-                            *
-                          </span>
-                        </label>
-                      </div>
-                      <input
-                        aria-describedby="control-form-1-info-first-name control-form-1-error-first-name"
-                        aria-invalid={!!error}
-                        id="control-form-1-first-name"
-                        required
-                        type="text"
-                        value={value}
-                        ref={ref}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                      />
-                      {!error && (
-                        <div id="control-form-1-info-first-name">Enter your first name</div>
-                      )}
-                      {error && (
-                        <div id="control-form-1-error-first-name" role="alert">
-                          {error}
-                        </div>
-                      )}
+                      <label htmlFor="control-form-1-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
                     </div>
-                  );
-                }}
+                    <input
+                      aria-describedby="control-form-1-info-first-name control-form-1-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-1-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-1-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-1-error-first-name"
+                        className="control-form-1-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
               />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-1-last-name-input">
@@ -991,7 +990,11 @@ export const FormPage = () => {
                     />
                     {!error && <div id="control-form-1-info-email">Enter your email</div>}
                     {error && (
-                      <div id="control-form-1-error-email" role="alert">
+                      <div
+                        id="control-form-1-error-email"
+                        className="control-form-1-error"
+                        role="alert"
+                      >
                         {error}
                       </div>
                     )}
@@ -1025,7 +1028,11 @@ export const FormPage = () => {
                     />
                     {!error && <div id="control-form-1-info-password">Enter your password</div>}
                     {error && (
-                      <div id="control-form-1-error-password" role="alert">
+                      <div
+                        id="control-form-1-error-password"
+                        className="control-form-1-error"
+                        role="alert"
+                      >
                         {error}
                       </div>
                     )}
@@ -1047,68 +1054,140 @@ export const FormPage = () => {
         <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2">
           <Form formRef={setFormRefStandard2} onSubmit={handleSubmit}>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2-first-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="firstName" htmlFor="control-form-2-first-name" label="First Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="firstName"
-                  ariaDescribedby="control-form-2-info-first-name control-form-2-error-first-name"
-                  id="control-form-2-first-name"
-                />
-                <Info
-                  field="firstName"
-                  id="control-form-2-info-first-name"
-                  message="InfoFirstName"
-                />
-                <Error field="firstName" id="control-form-2-error-first-name" />
-              </Element>
+              <Form.Control
+                field="firstName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-2-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-2-info-first-name control-form-2-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-2-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-2-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-2-error-first-name"
+                        className="control-form-2-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2-last-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="lastName" htmlFor="control-form-2-last-name" label="Last Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="lastName"
-                  ariaDescribedby="control-form-2-info-last-name control-form-2-error-last-name"
-                  id="control-form-2-last-name"
-                />
-                <Info field="lastName" id="control-form-2-info-last-name" message="InfoLastName" />
-                <Error field="lastName" id="control-form-2-error-last-name" />
-              </Element>
+              <Form.Control
+                field="lastName"
+                render={({ ref, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-2-last-name">Last Name</label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-2-info-last-name control-form-2-error-last-name"
+                      id="control-form-2-last-name"
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    <div id="control-form-2-info-last-name">Enter your last name</div>
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2-email-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="email" htmlFor="control-form-2-email" label="Email" />
-                </Element>
-                <Input
-                  asType="email"
-                  field="email"
-                  ariaDescribedby="control-form-2-info-email control-form-2-error-email"
-                  id="control-form-2-email"
-                />
-                <Info field="email" id="control-form-2-info-email" message="InfoEmail" />
-                <Error field="email" id="control-form-2-error-email" />
-              </Element>
+              <Form.Control
+                field="email"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-2-email">
+                        Email
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-2-info-email control-form-2-error-email"
+                      aria-invalid={!!error}
+                      id="control-form-2-email"
+                      required
+                      type="email"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-2-info-email">Enter your email</div>}
+                    {error && (
+                      <div
+                        id="control-form-2-error-email"
+                        className="control-form-2-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-2-password-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="password" htmlFor="control-form-2-password" label="Password" />
-                </Element>
-                <Input
-                  asType="password"
-                  field="password"
-                  ariaDescribedby="control-form-2-info-password control-form-2-error-password"
-                  id="control-form-2-password"
-                />
-                <Info field="password" id="control-form-2-info-password" message="InfoPassword" />
-                <Error field="password" id="control-form-2-error-password" />
-              </Element>
+              <Form.Control
+                field="password"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-2-password">
+                        Password
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-2-info-password control-form-2-error-password"
+                      aria-invalid={!!error}
+                      id="control-form-2-password"
+                      required
+                      type="password"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-2-info-password">Enter your password</div>}
+                    {error && (
+                      <div
+                        id="control-form-2-error-password"
+                        className="control-form-2-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
           </Form>
           <FormButton id="control-form-2-submit-btn" formRef={formRefStandard2}>
@@ -1128,100 +1207,156 @@ export const FormPage = () => {
             onValidate={handleValidateStandard3}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3-first-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="firstName" htmlFor="control-form-3-first-name" label="First Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="firstName"
-                  ariaDescribedby="control-form-3-info-first-name control-form-3-error-first-name"
-                  id="control-form-3-first-name"
-                />
-                <Info
-                  field="firstName"
-                  id="control-form-3-info-first-name"
-                  message="InfoFirstName"
-                  hideOnError
-                />
-                <Error
-                  field="firstName"
-                  classes="control-form-3-error"
-                  id="control-form-3-error-first-name"
-                />
-              </Element>
+              <Form.Control
+                field="firstName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-3-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-3-info-first-name control-form-3-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-3-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-3-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-3-error-first-name"
+                        className="control-form-3-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3-last-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="lastName" htmlFor="control-form-3-last-name" label="Last Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="lastName"
-                  ariaDescribedby="control-form-3-info-last-name control-form-3-error-last-name"
-                  id="control-form-3-last-name"
-                />
-                <Info
-                  field="lastName"
-                  id="control-form-3-info-last-name"
-                  message="InfoLastName"
-                  hideOnError
-                />
-                <Error
-                  field="lastName"
-                  classes="control-form-3-error"
-                  id="control-form-3-error-last-name"
-                />
-              </Element>
+              <Form.Control
+                field="lastName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-3-last-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-3-info-last-name control-form-3-error-last-name"
+                      aria-invalid={!!error}
+                      id="control-form-3-last-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-3-info-last-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-3-error-last-name"
+                        className="control-form-3-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3-email-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="email" htmlFor="control-form-3-email" label="Email" />
-                </Element>
-                <Input
-                  asType="email"
-                  field="email"
-                  ariaDescribedby="control-form-3-info-email control-form-3-error-email"
-                  id="control-form-3-email"
-                />
-                <Info
-                  field="email"
-                  id="control-form-3-info-email"
-                  message="InfoEmail"
-                  hideOnError
-                />
-                <Error
-                  field="email"
-                  classes="control-form-3-error"
-                  id="control-form-3-error-email"
-                />
-              </Element>
+              <Form.Control
+                field="email"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-3-email">
+                        Email
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-3-info-email control-form-3-error-email"
+                      aria-invalid={!!error}
+                      id="control-form-3-email"
+                      required
+                      type="email"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-3-info-email">Enter your email</div>}
+                    {error && (
+                      <div
+                        id="control-form-3-error-email"
+                        className="control-form-3-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-3-password-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="password" htmlFor="control-form-3-password" label="Password" />
-                </Element>
-                <Input
-                  asType="password"
-                  field="password"
-                  ariaDescribedby="control-form-3-info-password control-form-3-error-password"
-                  id="control-form-3-password"
-                />
-                <Info
-                  field="password"
-                  id="control-form-3-info-password"
-                  message="InfoPassword"
-                  hideOnError
-                />
-                <Error
-                  field="password"
-                  classes="control-form-3-error"
-                  id="control-form-3-error-password"
-                />
-              </Element>
+              <Form.Control
+                field="password"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-3-password">
+                        Password
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-3-info-password control-form-3-error-password"
+                      aria-invalid={!!error}
+                      id="control-form-3-password"
+                      required
+                      type="password"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-3-info-password">Enter your password</div>}
+                    {error && (
+                      <div
+                        id="control-form-3-error-password"
+                        className="control-form-3-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
           </Form>
           <FormButton id="control-form-3-submit-btn" formRef={formRefStandard3}>
@@ -1242,100 +1377,156 @@ export const FormPage = () => {
             onValidate={handleValidateStandard4}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4-first-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="firstName" htmlFor="control-form-4-first-name" label="First Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="firstName"
-                  ariaDescribedby="control-form-4-info-first-name control-form-4-error-first-name"
-                  id="control-form-4-first-name"
-                />
-                <Info
-                  field="firstName"
-                  id="control-form-4-info-first-name"
-                  message="InfoFirstName"
-                  hideOnError
-                />
-                <Error
-                  field="firstName"
-                  classes="control-form-4-error"
-                  id="control-form-4-error-first-name"
-                />
-              </Element>
+              <Form.Control
+                field="firstName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-4-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-4-info-first-name control-form-4-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-4-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-4-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-4-error-first-name"
+                        className="control-form-4-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4-last-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="lastName" htmlFor="control-form-4-last-name" label="Last Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="lastName"
-                  ariaDescribedby="control-form-4-info-last-name control-form-4-error-last-name"
-                  id="control-form-4-last-name"
-                />
-                <Info
-                  field="lastName"
-                  id="control-form-4-info-last-name"
-                  message="InfoLastName"
-                  hideOnError
-                />
-                <Error
-                  field="lastName"
-                  classes="control-form-4-error"
-                  id="control-form-4-error-last-name"
-                />
-              </Element>
+              <Form.Control
+                field="lastName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-4-last-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-4-info-last-name control-form-4-error-last-name"
+                      aria-invalid={!!error}
+                      id="control-form-4-last-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-4-info-last-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-4-error-last-name"
+                        className="control-form-4-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4-email-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="email" htmlFor="control-form-4-email" label="Email" />
-                </Element>
-                <Input
-                  asType="email"
-                  field="email"
-                  ariaDescribedby="control-form-4-info-email control-form-4-error-email"
-                  id="control-form-4-email"
-                />
-                <Info
-                  field="email"
-                  id="control-form-4-info-email"
-                  message="InfoEmail"
-                  hideOnError
-                />
-                <Error
-                  field="email"
-                  classes="control-form-4-error"
-                  id="control-form-4-error-email"
-                />
-              </Element>
+              <Form.Control
+                field="email"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-4-email">
+                        Email
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-4-info-email control-form-4-error-email"
+                      aria-invalid={!!error}
+                      id="control-form-4-email"
+                      required
+                      type="email"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-4-info-email">Enter your email</div>}
+                    {error && (
+                      <div
+                        id="control-form-4-error-email"
+                        className="control-form-4-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-4-password-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="password" htmlFor="control-form-4-password" label="Password" />
-                </Element>
-                <Input
-                  asType="password"
-                  field="password"
-                  ariaDescribedby="control-form-4-info-password control-form-4-error-password"
-                  id="control-form-4-password"
-                />
-                <Info
-                  field="password"
-                  id="control-form-4-info-password"
-                  message="InfoPassword"
-                  hideOnError
-                />
-                <Error
-                  field="password"
-                  classes="control-form-4-error"
-                  id="control-form-4-error-password"
-                />
-              </Element>
+              <Form.Control
+                field="password"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-4-password">
+                        Password
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-4-info-password control-form-4-error-password"
+                      aria-invalid={!!error}
+                      id="control-form-4-password"
+                      required
+                      type="password"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-4-info-password">Enter your password</div>}
+                    {error && (
+                      <div
+                        id="control-form-4-error-password"
+                        className="control-form-4-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
           </Form>
           <FormButton id="control-form-4-submit-btn" formRef={formRefStandard4}>
@@ -1356,100 +1547,156 @@ export const FormPage = () => {
             onValidate={handleValidateStandard5}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5-first-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="firstName" htmlFor="control-form-5-first-name" label="First Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="firstName"
-                  ariaDescribedby="control-form-5-info-first-name control-form-5-error-first-name"
-                  id="control-form-5-first-name"
-                />
-                <Info
-                  field="firstName"
-                  id="control-form-5-info-first-name"
-                  message="InfoFirstName"
-                  hideOnError
-                />
-                <Error
-                  field="firstName"
-                  classes="control-form-5-error"
-                  id="control-form-5-error-first-name"
-                />
-              </Element>
+              <Form.Control
+                field="firstName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-5-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-5-info-first-name control-form-5-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-5-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-5-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-5-error-first-name"
+                        className="control-form-5-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5-last-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="lastName" htmlFor="control-form-5-last-name" label="Last Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="lastName"
-                  ariaDescribedby="control-form-5-info-last-name control-form-5-error-last-name"
-                  id="control-form-5-last-name"
-                />
-                <Info
-                  field="lastName"
-                  id="control-form-5-info-last-name"
-                  message="InfoLastName"
-                  hideOnError
-                />
-                <Error
-                  field="lastName"
-                  classes="control-form-5-error"
-                  id="control-form-5-error-last-name"
-                />
-              </Element>
+              <Form.Control
+                field="lastName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-5-last-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-5-info-last-name control-form-5-error-last-name"
+                      aria-invalid={!!error}
+                      id="control-form-5-last-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-5-info-last-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-5-error-last-name"
+                        className="control-form-5-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5-email-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="email" htmlFor="control-form-5-email" label="Email" />
-                </Element>
-                <Input
-                  asType="email"
-                  field="email"
-                  ariaDescribedby="control-form-5-info-email control-form-5-error-email"
-                  id="control-form-5-email"
-                />
-                <Info
-                  field="email"
-                  id="control-form-5-info-email"
-                  message="InfoEmail"
-                  hideOnError
-                />
-                <Error
-                  field="email"
-                  classes="control-form-5-error"
-                  id="control-form-5-error-email"
-                />
-              </Element>
+              <Form.Control
+                field="email"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-5-email">
+                        Email
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-5-info-email control-form-5-error-email"
+                      aria-invalid={!!error}
+                      id="control-form-5-email"
+                      required
+                      type="email"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-5-info-email">Enter your email</div>}
+                    {error && (
+                      <div
+                        id="control-form-5-error-email"
+                        className="control-form-5-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-5-password-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="password" htmlFor="control-form-5-password" label="Password" />
-                </Element>
-                <Input
-                  asType="password"
-                  field="password"
-                  ariaDescribedby="control-form-5-info-password control-form-5-error-password"
-                  id="control-form-5-password"
-                />
-                <Info
-                  field="password"
-                  id="control-form-5-info-password"
-                  message="InfoPassword"
-                  hideOnError
-                />
-                <Error
-                  field="password"
-                  classes="control-form-5-error"
-                  id="control-form-5-error-password"
-                />
-              </Element>
+              <Form.Control
+                field="password"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-5-password">
+                        Password
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-5-info-password control-form-5-error-password"
+                      aria-invalid={!!error}
+                      id="control-form-5-password"
+                      required
+                      type="password"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-5-info-password">Enter your password</div>}
+                    {error && (
+                      <div
+                        id="control-form-5-error-password"
+                        className="control-form-5-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
           </Form>
           <FormButton id="control-form-5-submit-btn" formRef={formRefStandard5}>
@@ -1471,100 +1718,156 @@ export const FormPage = () => {
             onValidate={handleValidateStandard6}
           >
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-6-first-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="firstName" htmlFor="control-form-6-first-name" label="First Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="firstName"
-                  ariaDescribedby="control-form-6-info-first-name control-form-6-error-first-name"
-                  id="control-form-6-first-name"
-                />
-                <Info
-                  field="firstName"
-                  id="control-form-6-info-first-name"
-                  message="InfoFirstName"
-                  hideOnError
-                />
-                <Error
-                  field="firstName"
-                  classes="control-form-6-error"
-                  id="control-form-6-error-first-name"
-                />
-              </Element>
+              <Form.Control
+                field="firstName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-6-first-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-6-info-first-name control-form-6-error-first-name"
+                      aria-invalid={!!error}
+                      id="control-form-6-first-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-6-info-first-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-6-error-first-name"
+                        className="control-form-6-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-6-last-name-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="lastName" htmlFor="control-form-6-last-name" label="Last Name" />
-                </Element>
-                <Input
-                  asType="text"
-                  field="lastName"
-                  ariaDescribedby="control-form-6-info-last-name control-form-6-error-last-name"
-                  id="control-form-6-last-name"
-                />
-                <Info
-                  field="lastName"
-                  id="control-form-6-info-last-name"
-                  message="InfoLastName"
-                  hideOnError
-                />
-                <Error
-                  field="lastName"
-                  classes="control-form-6-error"
-                  id="control-form-6-error-last-name"
-                />
-              </Element>
+              <Form.Control
+                field="lastName"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-6-last-name">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-6-info-last-name control-form-6-error-last-name"
+                      aria-invalid={!!error}
+                      id="control-form-6-last-name"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-6-info-last-name">Enter your first name</div>}
+                    {error && (
+                      <div
+                        id="control-form-6-error-last-name"
+                        className="control-form-6-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-6-email-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="email" htmlFor="control-form-6-email" label="Email" />
-                </Element>
-                <Input
-                  asType="email"
-                  field="email"
-                  ariaDescribedby="control-form-6-info-email control-form-6-error-email"
-                  id="control-form-6-email"
-                />
-                <Info
-                  field="email"
-                  id="control-form-6-info-email"
-                  message="InfoEmail"
-                  hideOnError
-                />
-                <Error
-                  field="email"
-                  classes="control-form-6-error"
-                  id="control-form-6-error-email"
-                />
-              </Element>
+              <Form.Control
+                field="email"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-5-email">
+                        Email
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-6-info-email control-form-6-error-email"
+                      aria-invalid={!!error}
+                      id="control-form-6-email"
+                      required
+                      type="email"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-6-info-email">Enter your email</div>}
+                    {error && (
+                      <div
+                        id="control-form-6-error-email"
+                        className="control-form-6-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
             <Element as={ELEMENT_OPTION_TYPE.DIV} id="control-form-6-password-input">
-              <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                <Element as={ELEMENT_OPTION_TYPE.DIV}>
-                  <Label field="password" htmlFor="control-form-6-password" label="Password" />
-                </Element>
-                <Input
-                  asType="password"
-                  field="password"
-                  ariaDescribedby="control-form-6-info-password control-form-6-error-password"
-                  id="control-form-6-password"
-                />
-                <Info
-                  field="password"
-                  id="control-form-6-info-password"
-                  message="InfoPassword"
-                  hideOnError
-                />
-                <Error
-                  field="password"
-                  classes="control-form-6-error"
-                  id="control-form-6-error-password"
-                />
-              </Element>
+              <Form.Control
+                field="password"
+                render={({ ref, error, value, onChange, onBlur }) => (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form-6-password">
+                        Password
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-6-info-password control-form-6-error-password"
+                      aria-invalid={!!error}
+                      id="control-form-6-password"
+                      required
+                      type="password"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-6-info-password">Enter your password</div>}
+                    {error && (
+                      <div
+                        id="control-form-6-error-password"
+                        className="control-form-6-error"
+                        role="alert"
+                      >
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </Element>
           </Form>
           <FormButton id="control-form-6-submit-btn" formRef={formRefStandard6}>

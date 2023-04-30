@@ -44,7 +44,6 @@ export type _SetError = { field: string; value: any; dispatch: StateReducerActio
 export type _SetErrors = { errors: Errors; dispatch: StateReducerActionContext };
 export type _SetTouched = { field: string; value: any; dispatch: StateReducerActionContext };
 export type _Submit = { dispatch: StateReducerActionContext };
-export type _UnsetTouched = { field: string; value: any; dispatch: StateReducerActionContext };
 export type _UpdateValue = { field: string; value: any; dispatch: StateReducerActionContext };
 
 /**
@@ -70,7 +69,6 @@ export type Controls = {
   setErrors: (errors: SetErrors) => void;
   setTouched: ({ field, value }: SetTouched) => void;
   submit: () => void;
-  unsetTouched: ({ field, value }: UnsetTouched) => void;
   updateValue: ({ field, value }: UpdateValue) => void;
 };
 
@@ -82,7 +80,6 @@ export type _Controls = {
   _setErrors: ({ errors, dispatch }: _SetErrors) => void;
   _setTouched: ({ field, value, dispatch }: _SetTouched) => void;
   _submit: ({ dispatch }: _Submit) => void;
-  _unsetTouched: ({ field, value, dispatch }: _UnsetTouched) => void;
   _updateValue: ({ field, value, dispatch }: _UpdateValue) => void;
 };
 

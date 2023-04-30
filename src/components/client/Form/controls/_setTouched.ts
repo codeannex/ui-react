@@ -6,15 +6,15 @@ import { _SetTouched } from "../types";
 
 export const _setTouched = ({ field, value, dispatch }: _SetTouched) => {
   if (!field) {
-    throw new Error(`${ERROR.MISSING_PARAM} field`);
+    throw new Error(`_setTouched ${ERROR.MISSING_PARAM} field`);
   }
 
   if (!value) {
-    throw new Error(`${ERROR.MISSING_PARAM} value`);
+    throw new Error(`_setTouched ${ERROR.MISSING_PARAM} value`);
   }
 
   if (!dispatch) {
-    throw new Error(`${ERROR.MISSING_PARAM} dispatch`);
+    throw new Error(`_setTouched ${ERROR.MISSING_PARAM} dispatch`);
   }
 
   dispatch({
