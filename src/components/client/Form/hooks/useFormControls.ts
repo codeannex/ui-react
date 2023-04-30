@@ -13,7 +13,6 @@ import {
   SetError,
   SetErrors,
   SetTouched,
-  UnsetTouched,
   UpdateValue,
   _Controls,
 } from "../types";
@@ -23,7 +22,6 @@ export const useFormControls = ({
   _getValue,
   _getValues,
   _setTouched,
-  _unsetTouched,
   _updateValue,
   _setError,
   _setErrors,
@@ -66,10 +64,6 @@ export const useFormControls = ({
     _setTouched({ field, value, dispatch });
   };
 
-  const unsetTouched = ({ field, value }: UnsetTouched) => {
-    _unsetTouched({ field, value, dispatch });
-  };
-
   const updateValue = ({ field, value }: UpdateValue) => {
     _updateValue({ field, value, dispatch });
   };
@@ -86,7 +80,6 @@ export const useFormControls = ({
     setErrors,
     setTouched,
     submit,
-    unsetTouched,
     updateValue,
   };
 

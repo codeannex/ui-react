@@ -1,22 +1,27 @@
 import * as React from "react";
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import { FormProvider, Input } from "@components/client/Form/index";
+import { Control, Form, FormProvider, Values } from "@components/client/Form/index";
 
-const NAME_FOO = "foo";
-const NAME_BAR = "bar";
+import * as state from "../../contexts/FormStateContext";
 
-const defaultProps = {
-  field: "firstName",
+const getUseStateMock = () => {
+  const setStateMock = jest.fn();
+  const useStateMock: any = (useState: any) => [useState, setStateMock];
+
+  const useStateSpy = jest.spyOn(React, "useState").mockImplementation(useStateMock);
+
+  return { setStateMock, useStateMock, useStateSpy };
 };
 
-const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
-  const props = { ...defaultProps, ...overrideDefaultProps };
-
+const renderComponent = (setStateMock: any): JSX.Element => {
   return (
     <FormProvider>
-      <Input {...props} />
+      <Form formRef={setStateMock} onSubmit={() => {}}>
+        <Control field="firstName" render={() => <div>Form Field</div>} />
+      </Form>
     </FormProvider>
   );
 };
@@ -24,52 +29,229 @@ const renderComponent = (overrideDefaultProps?: any): JSX.Element => {
 describe("Component - Form: Control", () => {
   describe("renders", () => {
     it("without crashing", () => {
-      const { container } = render(renderComponent());
+      const { setStateMock, useStateSpy } = getUseStateMock();
+
+      const { container } = render(renderComponent(setStateMock));
 
       expect(container).toBeDefined();
+      expect(setStateMock).toHaveBeenCalled();
+
+      useStateSpy.mockReset();
     });
 
-    // it("as `text` type input", () => {
-    //   const { container } = render(renderComponent());
+    it("with input and info un-touched state", () => {
+      const { setStateMock, useStateSpy } = getUseStateMock();
 
-    //   const input = container.querySelector("input");
+      const handleValidator = (values: Values) => {
+        return {
+          firstName: values.firstName ? undefined : "Required",
+        };
+      };
 
-    //   expect(input).toBeInTheDocument();
-    //   expect(input).toHaveAttribute("type", "text");
-    // });
+      const { container } = render(
+        <FormProvider>
+          <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
+            <Control
+              field="firstName"
+              render={({ ref, error, value, onBlur, onChange }) => {
+                return (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-info control-form-error"
+                      aria-invalid={!!error}
+                      id="control-form"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-info">Enter your first name</div>}
+                    {error && (
+                      <div id="control-form-errore" role="alert">
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                );
+              }}
+            />
+          </Form>
+        </FormProvider>
+      );
 
-    // it("with class name/names attribute added to `input` from (string)", () => {
-    //   const { container } = render(renderComponent({ classes: NAME_FOO }));
+      const required = container.querySelector("span");
 
-    //   const input = container.querySelector("input");
+      expect(required).toHaveAttribute("aria-hidden", "true");
+      expect(required).toHaveAttribute("aria-label", "required");
+      expect(required).toHaveAttribute("aria-required", "true");
 
-    //   expect(input).toHaveClass(`${NAME_FOO}`);
-    // });
+      const input = screen.getByRole("textbox");
 
-    // it("with class name/names attribute added to `input` from (array)", () => {
-    //   const { container } = render(renderComponent({ classes: [NAME_FOO, NAME_BAR] }));
+      expect(input).toHaveAttribute("aria-invalid", "false");
+      expect(input).toHaveAttribute("required");
 
-    //   const input = container.querySelector("input");
+      const info = screen.getByText("Enter your first name", { selector: "div" });
 
-    //   expect(input).toHaveClass(`${NAME_FOO} ${NAME_BAR}`);
-    // });
+      expect(info).toHaveAttribute("id", "control-form-info");
 
-    // it("with disabled value", () => {
-    //   const { container } = render(renderComponent({ disabled: true }));
+      const error = screen.queryByText("Required");
 
-    //   const input = container.querySelector("input");
+      expect(error).toBeNull();
 
-    //   expect(input).toBeInTheDocument();
-    //   expect(input).toHaveAttribute("disabled", "");
-    // });
+      useStateSpy.mockReset();
+    });
 
-    // it("with placeholder value", () => {
-    //   const { container } = render(renderComponent({ placeholder: NAME_FOO }));
+    it("with input and error state", () => {
+      const { setStateMock, useStateSpy } = getUseStateMock();
 
-    //   const input = container.querySelector("input");
+      const handleValidator = (values: Values) => {
+        return {
+          firstName: values.firstName ? undefined : "Required",
+        };
+      };
 
-    //   expect(input).toBeInTheDocument();
-    //   expect(input).toHaveAttribute("placeholder", NAME_FOO);
-    // });
+      const spyState = jest.spyOn(state, "useFormStateContext").mockReturnValue({
+        errors: { ["firstName"]: "Required" },
+        touched: { ["firstName"]: true },
+        validators: { ["firstName"]: "Required" },
+      });
+
+      const { container } = render(
+        <FormProvider>
+          <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
+            <Control
+              field="firstName"
+              render={({ ref, error, value, onBlur, onChange }) => {
+                return (
+                  <div>
+                    <div>
+                      <label htmlFor="control-form">
+                        First Name
+                        <span aria-hidden="true" aria-required="true" aria-label="required">
+                          *
+                        </span>
+                      </label>
+                    </div>
+                    <input
+                      aria-describedby="control-form-info control-form-error"
+                      aria-invalid={!!error}
+                      id="control-form"
+                      required
+                      type="text"
+                      value={value}
+                      ref={ref}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    {!error && <div id="control-form-info">Enter your first name</div>}
+                    {error && (
+                      <div id="control-form-error" role="alert">
+                        {error}
+                      </div>
+                    )}
+                  </div>
+                );
+              }}
+            />
+          </Form>
+        </FormProvider>
+      );
+
+      const required = container.querySelector("span");
+
+      expect(required).toHaveAttribute("aria-hidden", "true");
+      expect(required).toHaveAttribute("aria-label", "required");
+      expect(required).toHaveAttribute("aria-required", "true");
+
+      const input = screen.getByRole("textbox");
+
+      expect(input).toHaveAttribute("aria-invalid", "true");
+      expect(input).toHaveAttribute("required");
+
+      const info = screen.queryByText("Enter your first name");
+
+      expect(info).toBeNull();
+
+      const error = screen.getByText("Required", { selector: "div" });
+
+      expect(error).toHaveAttribute("id", "control-form-error");
+      expect(error).toHaveAttribute("role", "alert");
+
+      spyState.mockReset();
+      useStateSpy.mockReset();
+    });
+  });
+
+  it("should update value", () => {
+    const { setStateMock, useStateSpy } = getUseStateMock();
+
+    const handleValidator = (values: Values) => {
+      return {
+        firstName: values.firstName ? undefined : "Required",
+      };
+    };
+
+    render(
+      <FormProvider>
+        <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
+          <Control
+            field="firstName"
+            render={({ ref, error, value, onBlur, onChange }) => {
+              return (
+                <div>
+                  <div>
+                    <label htmlFor="control-form">
+                      First Name
+                      <span aria-hidden="true" aria-required="true" aria-label="required">
+                        *
+                      </span>
+                    </label>
+                  </div>
+                  <input
+                    aria-describedby="control-form-info control-form-error"
+                    aria-invalid={!!error}
+                    id="control-form"
+                    required
+                    type="text"
+                    value={value}
+                    ref={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                  {!error && <div id="control-form-info">Enter your first name</div>}
+                  {error && (
+                    <div id="control-form-errore" role="alert">
+                      {error}
+                    </div>
+                  )}
+                </div>
+              );
+            }}
+          />
+        </Form>
+      </FormProvider>
+    );
+
+    const inputA = screen.getByRole("textbox");
+
+    expect(inputA).toHaveAttribute("value", "");
+
+    userEvent.type(inputA, "abc");
+
+    const inputB = screen.getByRole("textbox");
+
+    expect(inputB).toHaveAttribute("value", "abc");
+
+    useStateSpy.mockReset();
   });
 });

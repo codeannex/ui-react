@@ -69,3 +69,6 @@ const info = screen.getByText(NAME_FOO);
 expect(info).toHaveAttribute("id", NAME_FOO);
 
 const result = getByText(text, { selector: 'h3' });
+
+const info = screen.queryByText(NAME_FOO);
+expect(info).toBeNull();

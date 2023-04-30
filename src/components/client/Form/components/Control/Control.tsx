@@ -3,17 +3,23 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 import {
+  Errors,
   STATE_ACTION_TYPE,
+  Touched,
+  Values,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
 } from "@components/client/Form/index";
 
 export type RenderArgs = {
-  field: string;
-  error: string;
-  value: string;
   ref: any;
+  errors: Errors;
+  error: string;
+  touched: Touched;
+  values: Values;
+  value: string;
+  field: string;
 
   onBlur: () => void;
   onChange: (e: React.ChangeEvent<any>) => void;
@@ -21,11 +27,21 @@ export type RenderArgs = {
 
 export interface ControlProps {
   field: string;
-  render: ({ error, value, ref, onBlur, onChange }: RenderArgs) => any;
+  render: ({
+    ref,
+    errors,
+    error,
+    touched,
+    values,
+    value,
+    field,
+    onBlur,
+    onChange,
+  }: RenderArgs) => any;
 }
 
 export const Control: React.FC<ControlProps> = ({ field, render }) => {
-  const { errors = {}, values = {}, touched = {} } = useFormStateContext();
+  const { errors = {}, touched = {}, values = {} } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -73,7 +89,17 @@ export const Control: React.FC<ControlProps> = ({ field, render }) => {
     });
   }, []);
 
-  return render({ field, ref, error, value, onBlur: handleBlur, onChange: handleChange });
+  return render({
+    ref,
+    errors,
+    error,
+    touched,
+    values,
+    value,
+    field,
+    onBlur: handleBlur,
+    onChange: handleChange,
+  });
 };
 
 export default Control;
