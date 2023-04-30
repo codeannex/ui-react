@@ -11,6 +11,7 @@ export * from "./components/client/Form/components/Error/Error";
 export * from "./components/client/Form/components/FormButton/FormButton";
 export * from "./components/client/Form/components/Input/Input";
 export * from "./components/client/Form/components/Label/Label";
+export * from "./components/client/Form/components/Smart/SmartInput";
 export * from "./components/client/Form/components/TextArea/TextArea";
 
 export * from "./components/client/Form/types";
