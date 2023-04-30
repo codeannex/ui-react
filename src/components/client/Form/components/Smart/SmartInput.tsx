@@ -88,7 +88,7 @@ export type SmartInputProps = {
 };
 
 export const SmartInput: React.FC<SmartInputProps> = ({
-  asType = "text",
+  asType,
   classes,
   defaultValue,
   disabled,
@@ -110,11 +110,19 @@ export const SmartInput: React.FC<SmartInputProps> = ({
 
   const ref = React.useRef<HTMLInputElement>(null);
 
-  const _classes = classNames(classes && classes);
   const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
+
+  const _required = !!validators[field] || undefined;
+  const _ariaInvalid = _required ? (_error ? "true" : "false") : undefined;
+  const _classes = classNames(classes && classes) || undefined;
+  const _disabled = disabled || undefined;
   const _info = infoHideOnError ? info && !_error : info;
+  const _id = id || undefined;
   const _label = label ? label : undefined;
-  const _required = !!validators[field];
+  const _name = name || undefined;
+  const _placeholder = placeholder || undefined;
+  const _type = asType || "text";
+
   const _value = values[field] as string;
 
   const _ariaDescribById = React.useMemo(() => {
@@ -178,17 +186,17 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         </Element>
       )}
       <Element
-        aria-describedby={_ariaDescribById}
-        aria-invalid={_error ? "true" : "false"}
         as={ELEMENT_OPTION_TYPE.INPUT}
-        classes={_classes || undefined}
-        disabled={disabled}
-        id={id || undefined}
-        name={name || undefined}
-        placeholder={placeholder}
+        aria-describedby={_ariaDescribById}
+        aria-invalid={_ariaInvalid}
+        classes={_classes}
+        disabled={_disabled}
+        id={_id}
+        name={_name}
+        placeholder={_placeholder}
         ref={ref}
         required={_required}
-        type={asType}
+        type={_type}
         value={_value || ""}
         /** Handlers **/
         onBlur={handleBlur}
@@ -210,10 +218,15 @@ export const SmartInput: React.FC<SmartInputProps> = ({
 };
 
 SmartInput.propTypes = {
+  /** Required **/
+  field: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+
+  /** Optional **/
   asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
-  field: PropTypes.string.isRequired,
+  name: PropTypes.string,
   placeholder: PropTypes.string,
 };
