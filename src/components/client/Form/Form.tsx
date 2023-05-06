@@ -63,7 +63,7 @@ export interface FormProps extends FormPropComposition {
    * giving the caller components access to make modifications to
    * state and respond to changes.
    */
-  formRef: (ref: FormRef) => void;
+  formRef?: (ref: FormRef) => void;
 
   /**
    * Disallows the occurrence of validation when form state changes are
@@ -120,6 +120,7 @@ export interface FormProps extends FormPropComposition {
  *
  * @rules
  * https://developer.mozilla.org/en-US/docs/Learn/Forms
+ * https://www.nngroup.com/articles/errors-forms-design-guidelines/
  *
  * @validation
  * Validation process:
@@ -184,6 +185,15 @@ const _Form: React.FC<FormProps> = ({
   } = state;
 
   const [cachedPreSubmitId, setCachedPreSubmitId] = React.useState<any>("");
+
+  /**
+   * Handle submit from native submit button.
+   */
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    controls?.submit();
+  };
 
   /**
    * @name Form_Ref_Setter
@@ -433,7 +443,11 @@ const _Form: React.FC<FormProps> = ({
     };
   }, []);
 
-  return <form>{children}</form>;
+  return (
+    <form noValidate onSubmit={handleSubmit}>
+      {children}
+    </form>
+  );
 };
 
 export const Form = Object.assign(
@@ -460,7 +474,7 @@ export const Form = Object.assign(
 _Form.propTypes = {
   autoFocus: PropTypes.bool,
   children: PropTypes.node,
-  formRef: PropTypes.func.isRequired,
+  formRef: PropTypes.func,
   validateOnSubmitOnly: PropTypes.bool,
 
   /** Handlers */
