@@ -19,7 +19,7 @@ TODO Maybe:
 2. 
 
 TODO: Long
-1. Add compound component `Option` for Select component.
+1.
 2. 
 
 ISSUES:
@@ -36,20 +36,18 @@ LEFT OFF:
 2. 
 
 COMMENTS:
-1. Associating a field label with an editor 
-2. Associating an editor with information text
+1. 
+2. 
 
 CURRENT GIT:
 BRANCH: dev/develop
-1. fixed smart input export.
+1.
 2. 
 3.
 4. 
 5. 
 6.
 7. 
-
-
 
 MOCKING CONTEXT:
 https://thedatalife.com/testing-and-mocking-react-contextapi-with-jest-and-react-testing-library
@@ -59,6 +57,7 @@ https://blog.logrocket.com/using-react-children-prop-with-typescript/
 
 CURRENT BUGS:
 1. Create React App - internal safe set bug. Possibly caused by clearing form during un-mount.
+2. Form.Control type checking doesn't work for the render prop. Required props passed into the callback are not enforced. Also adding any to the caller ( { ref, error, value, onChange, onBlur }: any ) is not cool.
 
 
 const input = container.querySelector("input");

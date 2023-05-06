@@ -33,4 +33,4 @@ Links to the available components.
 
 Component example useages.
 
-[Form](https://github.com/codeannex/ui-react/blob/main/src/components/client/Form/BASIC_FORM.md)
+[Form](https://github.com/codeannex/ui-react/blob/main/src/components/client/Form/EXAMPLE_BASIC_FORM.md)
