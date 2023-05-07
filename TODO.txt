@@ -41,9 +41,9 @@ COMMENTS:
 
 CURRENT GIT:
 BRANCH: dev/develop
-1.
-2. 
-3.
+1. fixed bug - reseting default values after post submission.
+2. added unit test for default value feature. 
+3. added cypress test for default value featrue. 
 4. 
 5. 
 6.
