@@ -2,6 +2,11 @@
 
 This tutorial walks through setting up a form using the base components. Features will be added and explained along the way to give an overall view of how the `Form` components work. This example will build a basic signup form to illustrate how the main features are implemented.
 
+## Table of Contents
+
+1. [Basic Form Setup](#step-1)
+2. [Select Box Example](#select-box-example)
+
 ## Step 1
 
 Import the `Form` component and add the minimum required code for creating the first form field. After adding the code seen below, the form will contain a single field. Technically the form will work, however the form has no limitations enabled and will submit the form regardless of the field state. The base form components allow adding standard html form elements to the form by wrapping them with the base components. The base components handle all the heavy lifting of form submission, validation, and error handling, while allowing access to the current state as well as controls for updating or manipulating form state.
@@ -178,7 +183,7 @@ Lets add validation to the form. Validation is registered into the form via the 
 
 `*` An important item to note is the validators can do any type of validation, however the return value must be either `undefined` for valid input, or `error message` for invalid input. When the input is invalid the error message provided will be render to the associated field.
 
-`* Currently` Additionally the form will validate as the user causes change events to fire. However the form will not register a fields error state for the first time until the fields `touched` state has been set. This occurs after the onBlur event fires when the user leaves the field. This behavior can be changed by passing the validateOnSubmitOnly prop into the `Form` component `see step 4 below.`
+`*` Additionally the form will validate as the user causes change events to fire. However the form will not register a fields error state for the first time until the fields `touched` state has been set. This occurs after the onBlur event fires when the user leaves the field. This behavior can be changed by passing the validateOnSubmitOnly prop into the `Form` component `see step 4 below.`
 
 ```
 const handleValidators = (values: Values) => {
@@ -375,7 +380,7 @@ export const MainPage = () => {
 
 ## Step 4 _<sub><sup><span style="color:#c3e88d">optional</span></sup></sub>_
 
-So far the form is setup to work properly and no further setup is required. However validation during change events is not always desired. We can regulate validation to only during form submission by passing validateOnSubmitOnly to the `Form` component.
+So far the form is setup to work properly and no further setup is required. However validation during change events is not always desired. We can regulate validation to occur during form submission by passing validateOnSubmitOnly to the `Form` component.
 
 ```
 <Form
@@ -393,4 +398,45 @@ Another optional feature allows enabling auto focus by passing `autoFocus` to th
   onSubmit={handleSubmit}
   onValidate={handleValidate}
 >
+```
+
+## Select Box Example
+
+```
+<Form.Control
+  field="color"
+  render={({ ref, error, value, onChange, onBlur }) => {
+    return (
+      <div>
+        <div>
+          <label htmlFor="color">
+            Color
+            <span aria-hidden="true" aria-required="true" aria-label="required">
+              *
+            </span>
+          </label>
+        </div>
+        <select
+          aria-describedby="info-color error-color"
+          id="color"
+          ref={ref}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        >
+          <option value="">"--Please choose an option--"</option>
+          <option value="red">Red</option>
+          <option value="white">White</option>
+          <option value="blue">Blue</option>
+        </select>
+        {!error && <div id="info-color">Select a color</div>}
+        {error && (
+          <div id="error-color" role="alert">
+            {error}
+          </div>
+        )}
+      </div>
+    );
+  }}
+/>
 ```

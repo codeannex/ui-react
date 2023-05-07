@@ -26,7 +26,16 @@ export type RenderArgs = {
 };
 
 export interface ControlProps {
+  /**
+   * Sets the defualt value on the form field.
+   */
+  defaultValue?: string;
+
+  /**
+   * Required prop used to track form field state.
+   */
   field: string;
+
   render: ({
     ref,
     errors,
@@ -40,8 +49,8 @@ export interface ControlProps {
   }: RenderArgs) => any;
 }
 
-export const Control: React.FC<ControlProps> = ({ field, render }) => {
-  const { errors = {}, touched = {}, values = {} } = useFormStateContext();
+export const Control: React.FC<ControlProps> = ({ defaultValue, field, render }) => {
+  const { errors = {}, touched = {}, values = {}, formLoadComplete } = useFormStateContext();
 
   const { fieldRef } = useStaticPropsContext();
 
@@ -76,6 +85,18 @@ export const Control: React.FC<ControlProps> = ({ field, render }) => {
       });
     }
   };
+
+  /** Init default value **/
+  React.useEffect(() => {
+    if (defaultValue && !formLoadComplete) {
+      displatch({
+        type: STATE_ACTION_TYPE.UPDATE_VALUE,
+        payload: {
+          [field]: defaultValue,
+        },
+      });
+    }
+  }, [defaultValue, formLoadComplete]);
 
   /** Init field ref **/
   React.useEffect(() => {

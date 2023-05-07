@@ -3,7 +3,7 @@ import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { Control, Form, FormProvider, Values } from "@components/client/Form/index";
+import { Form, FormProvider, Values } from "@components/client/Form/index";
 
 import * as state from "../../contexts/FormStateContext";
 
@@ -20,7 +20,7 @@ const renderComponent = (setStateMock: any): JSX.Element => {
   return (
     <FormProvider>
       <Form formRef={setStateMock} onSubmit={() => {}}>
-        <Control field="firstName" render={() => <div>Form Field</div>} />
+        <Form.Control field="firstName" render={() => <div>Form Field</div>} />
       </Form>
     </FormProvider>
   );
@@ -51,7 +51,7 @@ describe("Component - Form: Control", () => {
       const { container } = render(
         <FormProvider>
           <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
-            <Control
+            <Form.Control
               field="firstName"
               render={({ ref, error, value, onBlur, onChange }) => {
                 return (
@@ -129,7 +129,7 @@ describe("Component - Form: Control", () => {
       const { container } = render(
         <FormProvider>
           <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
-            <Control
+            <Form.Control
               field="firstName"
               render={({ ref, error, value, onBlur, onChange }) => {
                 return (
@@ -204,7 +204,7 @@ describe("Component - Form: Control", () => {
     render(
       <FormProvider>
         <Form formRef={setStateMock} onSubmit={() => {}} onValidate={handleValidator}>
-          <Control
+          <Form.Control
             field="firstName"
             render={({ ref, error, value, onBlur, onChange }) => {
               return (
@@ -253,5 +253,55 @@ describe("Component - Form: Control", () => {
     expect(inputB).toHaveAttribute("value", "abc");
 
     useStateSpy.mockReset();
+  });
+
+  it("should set `defaultValue` to form field", () => {
+    const { setStateMock, useStateSpy } = getUseStateMock();
+
+    const { container } = render(
+      <FormProvider>
+        <Form formRef={setStateMock} onSubmit={() => {}}>
+          <Form.Control
+            field="firstName"
+            defaultValue="john"
+            render={({ ref, error, value, onBlur, onChange }) => {
+              return (
+                <div>
+                  <div>
+                    <label htmlFor="control-form">
+                      First Name
+                      <span aria-hidden="true" aria-required="true" aria-label="required">
+                        *
+                      </span>
+                    </label>
+                  </div>
+                  <input
+                    aria-describedby="control-form-info control-form-error"
+                    aria-invalid={!!error}
+                    id="control-form"
+                    required
+                    type="text"
+                    value={value}
+                    ref={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
+                  {!error && <div id="control-form-info">Enter your first name</div>}
+                  {error && (
+                    <div id="control-form-errore" role="alert">
+                      {error}
+                    </div>
+                  )}
+                </div>
+              );
+            }}
+          />
+        </Form>
+      </FormProvider>
+    );
+
+    const inputA = screen.getByRole("textbox");
+
+    expect(inputA).toHaveAttribute("value", "john");
   });
 });
