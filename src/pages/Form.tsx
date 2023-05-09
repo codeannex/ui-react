@@ -288,8 +288,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-1-info-first-name control-form-1-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-1-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -348,8 +348,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-1-info-email control-form-1-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-1-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -386,8 +386,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-1-info-password control-form-1-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-1-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -437,8 +437,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-2-info-first-name control-form-2-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-2-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -497,8 +497,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-2-info-email control-form-2-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-2-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -535,8 +535,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-2-info-password control-form-2-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-2-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -590,8 +590,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-3-info-first-name control-form-3-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-3-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -628,8 +628,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-3-info-last-name control-form-3-error-last-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-3-last-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -666,8 +666,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-3-info-email control-form-3-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-3-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -704,8 +704,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-3-info-password control-form-3-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-3-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -760,8 +760,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-4-info-first-name control-form-4-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-4-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -798,8 +798,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-4-info-last-name control-form-4-error-last-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-4-last-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -836,8 +836,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-4-info-email control-form-4-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-4-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -874,8 +874,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-4-info-password control-form-4-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-4-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -930,8 +930,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-5-info-first-name control-form-5-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-5-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -968,8 +968,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-5-info-last-name control-form-5-error-last-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-5-last-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -1006,8 +1006,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-5-info-email control-form-5-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-5-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -1044,8 +1044,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-5-info-password control-form-5-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-5-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -1101,8 +1101,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-6-info-first-name control-form-6-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-6-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -1139,8 +1139,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-6-info-last-name control-form-6-error-last-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-6-last-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -1177,8 +1177,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-6-info-email control-form-6-error-email"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-6-email"
-                      required
                       type="email"
                       value={value}
                       ref={ref}
@@ -1215,8 +1215,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-6-info-password control-form-6-error-password"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-6-password"
-                      required
                       type="password"
                       value={value}
                       ref={ref}
@@ -1273,8 +1273,8 @@ export const FormPage = () => {
                     <input
                       aria-describedby="control-form-7-info-first-name control-form-7-error-first-name"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form-7-first-name"
-                      required
                       type="text"
                       value={value}
                       ref={ref}

@@ -63,7 +63,7 @@ describe("component - Form", () => {
             cy.get('input[id="control-form-1-first-name"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "text")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="control-form-1-first-name"]')
@@ -130,7 +130,7 @@ describe("component - Form", () => {
             cy.get('input[id="control-form-1-email"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "email")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="control-form-1-email"]')
@@ -164,7 +164,7 @@ describe("component - Form", () => {
             cy.get('input[id="control-form-1-password"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "password")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="control-form-1-password"]')

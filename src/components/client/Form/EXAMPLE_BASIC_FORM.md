@@ -6,6 +6,7 @@ This tutorial walks through setting up a form using the base components. Feature
 
 1. [Basic Form Setup](#step-1)
 2. [Select Box Example](#select-box-example)
+3. [Radio Group Example](#radio-group-example)
 
 ## Step 1
 
@@ -25,7 +26,7 @@ const handleSubmit = (values: Value) => {
       <div>
         <div>
           <label htmlFor="email">
-            Name
+            Email
             <span aria-hidden="true" aria-required="true" aria-label="required">
               *
             </span>
@@ -34,8 +35,8 @@ const handleSubmit = (values: Value) => {
         <input
           aria-describedby="info-email error-email"
           aria-invalid={!!error}
+          aria-required="true"
           id="email"
-          required
           type="email"
           value={value}
           ref={ref}
@@ -78,7 +79,7 @@ const handleSubmit = (values: Value) => {
       <div>
         <div>
           <label htmlFor="email">
-            Name
+            Email
             <span aria-hidden="true" aria-required="true" aria-label="required">
               *
             </span>
@@ -87,8 +88,8 @@ const handleSubmit = (values: Value) => {
         <input
           aria-describedby="info-email error-email"
           aria-invalid={!!error}
+          aria-required="true"
           id="email"
-          required
           type="email"
           value={value}
           ref={ref}
@@ -110,7 +111,7 @@ const handleSubmit = (values: Value) => {
       <div>
         <div>
           <label htmlFor="password">
-            Name
+            Password
             <span aria-hidden="true" aria-required="true" aria-label="required">
               *
             </span>
@@ -119,8 +120,8 @@ const handleSubmit = (values: Value) => {
         <input
           aria-describedby="info-password error-password"
           aria-invalid={!!error}
+          aria-required="true"
           id="password"
-          required
           type="password"
           value={value}
           ref={ref}
@@ -143,7 +144,7 @@ const handleSubmit = (values: Value) => {
         <div>
           <div>
             <label htmlFor="confirm">
-              Name
+              Confirm Password
               <span aria-hidden="true" aria-required="true" aria-label="required">
                 *
               </span>
@@ -152,8 +153,8 @@ const handleSubmit = (values: Value) => {
           <input
             aria-describedby="info-confirm error-confirm"
             aria-invalid={!!error}
+            aria-required="true"
             id="confirm"
-            required
             type="password"
             value={value}
             ref={ref}
@@ -286,8 +287,8 @@ export const MainPage = () => {
             <input
               aria-describedby="info-email error-email"
               aria-invalid={!!error}
+              aria-required="true"
               id="email"
-              required
               type="email"
               value={value}
               ref={ref}
@@ -318,8 +319,8 @@ export const MainPage = () => {
             <input
               aria-describedby="info-password error-password"
               aria-invalid={!!error}
+              aria-required="true"
               id="password"
-              required
               type="password"
               value={value}
               ref={ref}
@@ -351,8 +352,8 @@ export const MainPage = () => {
               <input
                 aria-describedby="info-confirm error-confirm"
                 aria-invalid={!!error}
+                aria-required="true"
                 id="confirm"
-                required
                 type="password"
                 value={value}
                 ref={ref}
@@ -418,6 +419,8 @@ Another optional feature allows enabling auto focus by passing `autoFocus` to th
         </div>
         <select
           aria-describedby="info-color error-color"
+          aria-invalid={!!error}
+          aria-required="true"
           id="color"
           ref={ref}
           value={value}
@@ -430,6 +433,75 @@ Another optional feature allows enabling auto focus by passing `autoFocus` to th
           <option value="blue">Blue</option>
         </select>
         {!error && <div id="info-color">Select a color</div>}
+        {error && (
+          <div id="error-color" role="alert">
+            {error}
+          </div>
+        )}
+      </div>
+    );
+  }}
+/>
+```
+
+## Radio Group Example
+
+```
+<Form.Control
+  field="color"
+  render={({ ref, error, value, onChange, onBlur }) => {
+    return (
+      <div tabIndex={-1} onBlur={onBlur}>
+        <div
+          aria-labelledby="color-label"
+          aria-describedby="info-color error-color"
+          aria-invalid={!!error}
+          aria-required="true"
+          role="radiogroup"
+        >
+          <h3 id="color-label">Color</h3>
+          <div>
+            <input
+              aria-checked={value === "red"}
+              checked={value === "red"}
+              tabIndex={value === "red" ? -1 : 0}
+              type="radio"
+              name="red"
+              id="color-red"
+              value="red"
+              ref={ref}
+              onChange={onChange}
+            />
+            <label htmlFor="color-red">Red</label>
+          </div>
+          <div>
+            <input
+              aria-checked={value === "white"}
+              checked={value === "white"}
+              tabIndex={value === "white" ? -1 : 0}
+              type="radio"
+              name="white"
+              id="color-white"
+              value="white"
+              onChange={onChange}
+            />
+            <label htmlFor="color-white">White</label>
+          </div>
+          <div>
+            <input
+              aria-checked={value === "blue"}
+              checked={value === "blue"}
+              tabIndex={value === "blue" ? -1 : 0}
+              type="radio"
+              name="blue"
+              id="color-blue"
+              value="blue"
+              onChange={onChange}
+            />
+            <label htmlFor="color-blue">Blue</label>
+          </div>
+        </div>
+        {!error && <div id="info-color">Select a Color</div>}
         {error && (
           <div id="error-color" role="alert">
             {error}
