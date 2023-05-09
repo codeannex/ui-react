@@ -21,7 +21,7 @@ export type RenderArgs = {
   value: string;
   field: string;
 
-  onBlur: () => void;
+  onBlur: (e: React.FocusEvent<HTMLElement>) => void;
   onChange: (e: React.ChangeEvent<any>) => void;
 };
 
@@ -75,14 +75,21 @@ export const Control: React.FC<ControlProps> = ({ defaultValue, field, render })
     });
   };
 
-  const handleBlur = () => {
-    if (!touched[field]) {
-      displatch({
-        type: STATE_ACTION_TYPE.SET_TOUCHED,
-        payload: {
-          [field]: true,
-        },
-      });
+  const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
+    /**
+     * Prevent firing blur event if any of its children receives focus. This
+     * was needed to stop blur events from firing on input fields when the
+     * blur method was bound to the parent div with radio group.
+     */
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      if (!touched[field]) {
+        displatch({
+          type: STATE_ACTION_TYPE.SET_TOUCHED,
+          payload: {
+            [field]: true,
+          },
+        });
+      }
     }
   };
 

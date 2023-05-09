@@ -67,8 +67,8 @@ describe("Component - Form: Control", () => {
                     <input
                       aria-describedby="control-form-info control-form-error"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -98,7 +98,7 @@ describe("Component - Form: Control", () => {
       const input = screen.getByRole("textbox");
 
       expect(input).toHaveAttribute("aria-invalid", "false");
-      expect(input).toHaveAttribute("required");
+      expect(input).toHaveAttribute("aria-required", "true");
 
       const info = screen.getByText("Enter your first name", { selector: "div" });
 
@@ -145,8 +145,8 @@ describe("Component - Form: Control", () => {
                     <input
                       aria-describedby="control-form-info control-form-error"
                       aria-invalid={!!error}
+                      aria-required="true"
                       id="control-form"
-                      required
                       type="text"
                       value={value}
                       ref={ref}
@@ -176,7 +176,7 @@ describe("Component - Form: Control", () => {
       const input = screen.getByRole("textbox");
 
       expect(input).toHaveAttribute("aria-invalid", "true");
-      expect(input).toHaveAttribute("required");
+      expect(input).toHaveAttribute("aria-required", "true");
 
       const info = screen.queryByText("Enter your first name");
 
@@ -220,8 +220,8 @@ describe("Component - Form: Control", () => {
                   <input
                     aria-describedby="control-form-info control-form-error"
                     aria-invalid={!!error}
+                    aria-required="true"
                     id="control-form"
-                    required
                     type="text"
                     value={value}
                     ref={ref}
@@ -258,7 +258,7 @@ describe("Component - Form: Control", () => {
   it("should set `defaultValue` to form field", () => {
     const { setStateMock, useStateSpy } = getUseStateMock();
 
-    const { container } = render(
+    render(
       <FormProvider>
         <Form formRef={setStateMock} onSubmit={() => {}}>
           <Form.Control
@@ -278,8 +278,8 @@ describe("Component - Form: Control", () => {
                   <input
                     aria-describedby="control-form-info control-form-error"
                     aria-invalid={!!error}
+                    aria-required="true"
                     id="control-form"
-                    required
                     type="text"
                     value={value}
                     ref={ref}
