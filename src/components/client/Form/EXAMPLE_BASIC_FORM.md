@@ -1,10 +1,10 @@
-# Basic Form Setup
+# Control Form Setup
 
 This tutorial walks through setting up a form using the base components. Features will be added and explained along the way to give an overall view of how the `Form` components work. This example will build a basic signup form to illustrate how the main features are implemented.
 
 ## Table of Contents
 
-1. [Basic Form Setup](#step-1)
+1. [Form Setup](#step-1)
 2. [Select Box Example](#select-box-example)
 3. [Radio Group Example](#radio-group-example)
 
@@ -62,8 +62,6 @@ const handleSubmit = (values: Value) => {
 ## Step 2
 
 Lets add the remaining fields to complete the form. Adding password and password confirm fields gives us the remaining fields needed to complete the signup form.
-
-`*` To reiterate the form currently has no special functionality. Next we will learn how validation works.
 
 ```
 import { Form } from "@codeannex/ui-react";
@@ -172,11 +170,11 @@ const handleSubmit = (values: Value) => {
       );
     }}
   />
-  <button className="submit" type="submit">
-    Submit
-  </button>
+  <button type="submit">Submit</button>
 </Form>
 ```
+
+`*` To reiterate the form currently has no special functionality. Next we will learn how validation works.
 
 ## Step 3
 
@@ -371,9 +369,7 @@ export const MainPage = () => {
           );
         }}
       />
-      <button className="submit" type="submit">
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </Form>
   );
 };

@@ -793,7 +793,7 @@ describe("component - Form", () => {
             cy.get('input[id="declaritive-form-1-first-name"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "text")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="declaritive-form-1-first-name"]')
@@ -860,7 +860,7 @@ describe("component - Form", () => {
             cy.get('input[id="declaritive-form-1-email"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "email")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="declaritive-form-1-email"]')
@@ -894,7 +894,7 @@ describe("component - Form", () => {
             cy.get('input[id="declaritive-form-1-password"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "password")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="declaritive-form-1-password"]')
@@ -1470,7 +1470,7 @@ describe("component - Form", () => {
             cy.get('input[id="smart-form-1-first-name"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "text")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="smart-form-1-first-name"]')
@@ -1480,7 +1480,10 @@ describe("component - Form", () => {
                   .contains("InfoFirstName")
                   .should("have.attr", "id")
                   .then(($id) => {
-                    expect($id).to.eql($value);
+                    // @ts-ignore
+                    const descId = $value?.split(" ")[1];
+
+                    expect($id).to.eql(descId);
                   });
               });
           });
@@ -1511,7 +1514,10 @@ describe("component - Form", () => {
                   .contains("InfoLastName")
                   .should("have.attr", "id")
                   .then(($id) => {
-                    expect($id).to.eql($value);
+                    // @ts-ignore
+                    const descId = $value?.split(" ")[1];
+
+                    expect($id).to.eql(descId);
                   });
               });
           });
@@ -1533,7 +1539,7 @@ describe("component - Form", () => {
             cy.get('input[id="smart-form-1-email"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "email")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="smart-form-1-email"]')
@@ -1543,7 +1549,10 @@ describe("component - Form", () => {
                   .contains("InfoEmail")
                   .should("have.attr", "id")
                   .then(($id) => {
-                    expect($id).to.eql($value);
+                    // @ts-ignore
+                    const descId = $value?.split(" ")[1];
+
+                    expect($id).to.eql(descId);
                   });
               });
           });
@@ -1565,7 +1574,7 @@ describe("component - Form", () => {
             cy.get('input[id="smart-form-1-password"]')
               .should("have.attr", "aria-invalid", "false")
               .should("have.attr", "type", "password")
-              .should("have.attr", "required");
+              .should("have.attr", "aria-required", "true");
 
             /** Info */
             cy.get('input[id="smart-form-1-password"]')
@@ -1575,7 +1584,10 @@ describe("component - Form", () => {
                   .contains("InfoPassword")
                   .should("have.attr", "id")
                   .then(($id) => {
-                    expect($id).to.eql($value);
+                    // @ts-ignore
+                    const descId = $value?.split(" ")[1];
+
+                    expect($id).to.eql(descId);
                   });
               });
           });
@@ -1605,7 +1617,10 @@ describe("component - Form", () => {
                   .should("have.attr", "role", "alert")
                   .should("have.attr", "id")
                   .then(($id) => {
-                    expect($id).to.eql($value);
+                    // @ts-ignore
+                    const descId = $value?.split(" ")[0];
+
+                    expect($id).to.eql(descId);
                   });
               });
           });
