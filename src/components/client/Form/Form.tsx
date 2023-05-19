@@ -36,11 +36,11 @@ import {
 } from "./controls";
 import { Errors, FormRef, STATE_ACTION_TYPE, StaticProps, Validators, Values } from "./types";
 
-export interface FormPropComposition {
+export interface FormPropsComposition {
   Control?: React.FC<ControlProps>;
 }
 
-export interface FormProps extends FormPropComposition {
+export interface FormProps extends FormPropsComposition {
   /**
    * Enables auto focus to be set on the first form field in DOM order
    * containing an error following form submission.

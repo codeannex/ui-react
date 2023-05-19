@@ -10,6 +10,8 @@ export * from "./components/FormButton/FormButton";
 export * from "./components/Info/Info";
 export * from "./components/Input/Input";
 export * from "./components/Label/Label";
+export * from "./components/Select/Option";
+export * from "./components/Select/Select";
 export * from "./components/TextArea/TextArea";
 
 /** Smart Components **/

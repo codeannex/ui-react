@@ -3,7 +3,7 @@
 
 # Codeannex UI React
 
-A React UI library built with Typescript and accessibility in mind, fully tested for stability.
+A React UI library built with Typescript and fully tested for stability.
 
 ## Table of Contents
 

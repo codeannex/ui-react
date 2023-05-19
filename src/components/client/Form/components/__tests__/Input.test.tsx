@@ -122,6 +122,21 @@ describe("Component - Form: Input", () => {
     });
 
     describe("props with required field", () => {
+      it("should set 'aria-required' to 'true'", () => {
+        const spyState = jest.spyOn(state, "useFormStateContext").mockReturnValue({
+          validators: { [NAME_BAZ]: "Required" },
+        });
+
+        const { container } = render(renderComponent());
+
+        const input = container.querySelector("input");
+
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute("aria-required", "true");
+
+        spyState.mockReset();
+      });
+
       it("should set 'aria-invalid' to 'false'", () => {
         const spyState = jest.spyOn(state, "useFormStateContext").mockReturnValue({
           validators: { [NAME_BAZ]: "Required" },

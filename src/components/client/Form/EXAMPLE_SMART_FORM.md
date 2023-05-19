@@ -1,3 +1,0 @@
-# Smart Form Setup
-
-## TODO
