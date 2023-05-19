@@ -117,7 +117,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   const _classes = classNames(classes && classes) || undefined;
   const _disabled = disabled || undefined;
   const _info = infoHideOnError ? info && !_error : info;
-  const _id = id || undefined;
   const _label = label ? label : undefined;
   const _name = name || undefined;
   const _placeholder = placeholder || undefined;
@@ -125,7 +124,20 @@ export const SmartInput: React.FC<SmartInputProps> = ({
 
   const _value = values[field] as string;
 
-  const _ariaDescribById = React.useMemo(() => {
+  const _ariaDescribByErrorId = React.useMemo(() => {
+    return getGuid();
+  }, []);
+
+  const _ariaDescribByInfoId = React.useMemo(() => {
+    return getGuid();
+  }, []);
+
+  const _ariaDescribBy =
+    [_required ? _ariaDescribByErrorId : undefined, _info ? _ariaDescribByInfoId : undefined]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
+  const _id = React.useMemo(() => {
     return getGuid();
   }, []);
 
@@ -182,20 +194,20 @@ export const SmartInput: React.FC<SmartInputProps> = ({
     <Element as={ELEMENT_OPTION_TYPE.DIV}>
       {_label && (
         <Element as={ELEMENT_OPTION_TYPE.DIV}>
-          <Label field={field} htmlFor={id} label={label} />
+          <Label field={field} htmlFor={id || _id} label={_label} />
         </Element>
       )}
       <Element
         as={ELEMENT_OPTION_TYPE.INPUT}
-        aria-describedby={_ariaDescribById}
+        aria-describedby={_ariaDescribBy}
         aria-invalid={_ariaInvalid}
+        aria-required={_required}
         classes={_classes}
         disabled={_disabled}
-        id={_id}
+        id={id || _id}
         name={_name}
         placeholder={_placeholder}
         ref={ref}
-        required={_required}
         type={_type}
         value={_value || ""}
         /** Handlers **/
@@ -206,12 +218,12 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         <Info
           as={infoAs || ELEMENT_OPTION_TYPE.DIV}
           field={field}
-          id={_ariaDescribById}
+          id={_ariaDescribByInfoId}
           message={info}
         />
       )}
       {_error && (
-        <Error as={errorAs || ELEMENT_OPTION_TYPE.DIV} field={field} id={_ariaDescribById} />
+        <Error as={errorAs || ELEMENT_OPTION_TYPE.DIV} field={field} id={_ariaDescribByErrorId} />
       )}
     </Element>
   );
@@ -227,6 +239,11 @@ SmartInput.propTypes = {
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
+  errorAs: PropTypes.oneOf(["p", "span", "div"]),
+  info: PropTypes.string,
+  infoAs: PropTypes.oneOf(["p", "span", "div"]),
+  infoHideOnError: PropTypes.bool,
+  label: PropTypes.string,
   name: PropTypes.string,
   placeholder: PropTypes.string,
 };

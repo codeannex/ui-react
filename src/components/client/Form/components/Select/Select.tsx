@@ -4,6 +4,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {
+  Option,
   useFormStateActionContext,
   useFormStateContext,
   useStaticPropsContext,
@@ -11,21 +12,15 @@ import {
 
 import { ELEMENT_OPTION_TYPE, Element } from "@core/server/Element/Element";
 
-import { STATE_ACTION_TYPE } from "../../types";
+import { STATE_ACTION_TYPE, SelectOption } from "../../types";
 
-export type InputProps = {
+export type SelectProps = {
   /**
    * Sets aria describe by value to establish a relationship
    * between widgets or groups and the text that describes
    * them.
    */
   ariaDescribedby?: string;
-
-  /**
-   * Sets the input attribute `type` to determine type of input
-   * field. Supports all input types.
-   */
-  asType?: string;
 
   /**
    * Sets CSS class/classes on the component for styling.
@@ -53,26 +48,19 @@ export type InputProps = {
   id?: string;
 
   /**
-   * Sets the name attribute.
+   * Array of options used to build the select options.
    */
-  name?: string;
-
-  /**
-   * Sets the placeholder value on the form field.
-   */
-  placeholder?: string;
+  options: SelectOption[];
 };
 
-export const Input: React.FC<InputProps> = ({
+export const Select: React.FC<SelectProps> = ({
   ariaDescribedby,
-  asType,
   classes,
   defaultValue,
   disabled,
   field,
   id,
-  name,
-  placeholder,
+  options,
 }) => {
   const { errors = {}, values = {}, touched = {}, validators = {} } = useFormStateContext();
 
@@ -80,7 +68,7 @@ export const Input: React.FC<InputProps> = ({
 
   const displatch = useFormStateActionContext();
 
-  const ref = React.useRef<HTMLInputElement>(null);
+  const ref = React.useRef<HTMLSelectElement>(null);
 
   const _error = errors[field] && touched[field] ? (errors[field] as string) : "";
 
@@ -88,19 +76,16 @@ export const Input: React.FC<InputProps> = ({
   const _required = !!validators[field] || undefined;
   const _ariaDescribedby = ariaDescribedby || undefined;
   const _ariaInvalid = _required ? (_error ? "true" : "false") : undefined;
-  const _classes = classNames(classes && classes) || undefined;
+  const _classes = classNames(classes && classes);
   const _disabled = disabled || undefined;
   const _id = id || undefined;
-  const _name = name || undefined;
-  const _placeholder = placeholder || undefined;
-  const _type = asType || "text";
 
   const _value = values[field] as string;
 
   /**
    * Handlers
    */
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e?.target.value;
 
     displatch({
@@ -148,36 +133,35 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <Element
-      as={ELEMENT_OPTION_TYPE.INPUT}
+      as={ELEMENT_OPTION_TYPE.SELECT}
       aria-describedby={_ariaDescribedby}
       aria-invalid={_ariaInvalid}
       aria-required={_required}
       classes={_classes}
       disabled={_disabled}
       id={_id}
-      name={_name}
-      placeholder={_placeholder}
       ref={ref}
-      type={_type}
       value={_value || ""}
-      /** Handlers **/
+      /** Handlers */
       onBlur={handleBlur}
       onChange={handleChange}
-    />
+    >
+      {options?.map((option: SelectOption) => {
+        return <Option option={option} key={option?.id} />;
+      })}
+    </Element>
   );
 };
 
-Input.propTypes = {
+Select.propTypes = {
   /** Required **/
   field: PropTypes.string.isRequired,
 
   /** Optional **/
   ariaDescribedby: PropTypes.string,
-  asType: PropTypes.string,
   classes: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
-  name: PropTypes.string,
-  placeholder: PropTypes.string,
+  options: PropTypes.array.isRequired,
 };
